@@ -1,10 +1,10 @@
 import React from 'react'
-import OrderLogo from '../../assets/Mackdonald/Order Completed.png'
-import MotorCycle from '../../assets/Mackdonald/Motocross.png'
-import Rectangle1 from '../../assets/Mackdonald/Rectangle 43.png'
-import Rectangle2 from '../../assets/Mackdonald/Rectangle 44.png'
-import Rectangle3 from '../../assets/Mackdonald/Rectangle 64.png'
-import clock from '../../assets/Mackdonald/Clock.png'
+import OrderLogo from '@assets/Mackdonald/Order_Completed.png'
+import MotorCycle from '@assets/Mackdonald/Motocross.png'
+import Rectangle1 from '@assets/Mackdonald/Rectangle_43.png'
+import Rectangle2 from '@assets/Mackdonald/Rectangle_44.png'
+import Rectangle3 from '@assets/Mackdonald/Rectangle_64.png'
+import clock from '@assets/Mackdonald/Clock.png'
 
 
 

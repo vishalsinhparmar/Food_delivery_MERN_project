@@ -1,78 +1,27 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
-import SidebarImg from '../../assets/Order/OrderBottomImg.png'
-import Plusimg from '../../assets/Offer_img/Plus (1).png'
-import OrderSidebarApp from './OrderSidebarApp'
-import PizzaDetailCard from './PizzaDetailCard'
-import GarlicDetailcard from './PIzzaCardDetail/GarlicDetailcard';
-import CalzoneDetailCard from './PIzzaCardDetail/CalzoneDetailCard';
-import KebabasDetailCard from './PIzzaCardDetail/KebabasDetailCard';
-import SaladDetailCard from './PIzzaCardDetail/SaladDetailCard';
-import Cold_DrinksDetailCard from './PIzzaCardDetail/Cold_DrinksDetailCard';
-import Happy_MealDetailCard from './PIzzaCardDetail/Happy_MealDetailCard';
-import DessertsDetailCard from './PIzzaCardDetail/DessertsDetailCard';
-import Hot_drinksDetailCard from './PIzzaCardDetail/Hot_drinksDetailCard';
-import OrbitDetailCard from './PIzzaCardDetail/OrbitDetailCard';
+import SidebarImg from '@assets/Order/OrderBottomImg.png'
+import Plusimg from '@assets/Offer_img/Plus_(1).png'
+
 import { BsArrowDownCircleFill } from 'react-icons/bs';
-import MyBasket from './MyBasket';
+import MyBasket from './cart/MyBasket';
 import { BiSolidFoodMenu } from 'react-icons/bi';
+import { OrderContext } from './context/MyContext'
+import OrderSidebarApp from './OrderSidebarApp';
+import PizzaDetailCard from './PizzaDetailCard';
 
 export default function OrderingPageDetail() {
   const [ValueforToggelMenu ,setMenuToggel]= useState(false);
-  const [orderCopmonentValue,SetOrderComponentValue] =useState('Pizza');
-
+     const {orderCopmonentValue} = useContext(OrderContext)
   const HangelToggelMenu = () => {
      setMenuToggel(!ValueforToggelMenu)
   }
-// for toglermenu menuItem
-  const handelSetOrderComponentValue = (menuItem)=>{
-        SetOrderComponentValue(menuItem)
-        setMenuToggel(false)
-  }
-  // const HangelToggelMenu = () => {
-  //   setMenuToggel(!ValueforToggelMenu);
-  // }
-// forsiderBarApp
+ 
+ 
 
-  const CopmponentDetail = ()=>{
-    switch(orderCopmonentValue){
-      case 'Pizza':
-      return <PizzaDetailCard/>;
 
-      case 'Garlic':
-      return <GarlicDetailcard/>;
 
-      case 'Calzone':
-      return <CalzoneDetailCard/>;
 
-      case 'Kebabas':
-      return <KebabasDetailCard/>;
-
-      case 'Salads':
-      return <SaladDetailCard/>;
-
-      case 'Cold drinks':
-      return <Cold_DrinksDetailCard/>;
-
-      case 'Happy Meal':
-      return <Happy_MealDetailCard/>;
-
-      case 'Desserts':
-      return <DessertsDetailCard/>;
-
-      case 'Hot drinks':
-      return <Hot_drinksDetailCard/>;
-       
-      case 'Sauces':
-      return <SaladDetailCard/>;
-
-      case 'Orbit':
-      return <OrbitDetailCard/>;
-
-      default:
-      return <PizzaDetailCard/>
-    }
-  }
   return (
     <section className='container '>
         {/* main sec */}
@@ -103,8 +52,7 @@ export default function OrderingPageDetail() {
                 
                 <section className='lg:grid col-span-1 hidden '>
                     {/* sub-main-1-start-for-Sidebar */}
-                        <OrderSidebarApp SetOrderComponentValue = {SetOrderComponentValue}
-                         orderCopmonentValue={orderCopmonentValue} />
+                        <OrderSidebarApp/>
                     {/* sub-main-1-end-for-Sidebar */}
                 </section>
               
@@ -123,7 +71,7 @@ export default function OrderingPageDetail() {
                                  <BiSolidFoodMenu className='mr-4 text-3xl'/>
                   
                                    Menu
-                                <p className='font-normal text-sm flex items-center' >{orderCopmonentValue} 
+                                <p className='font-normal text-sm flex items-center' >{orderCopmonentValue.name} 
                                    <BsArrowDownCircleFill className='ml-5 text-gray-300'/>
                                 </p>
                                 </h1>
@@ -142,18 +90,8 @@ export default function OrderingPageDetail() {
                                       Menu                    
                                   </h1>
                                </li>
-                <li className='my-10 font-bold'><button className={` text-white w-full ps-10 text-left py-2 ${orderCopmonentValue=='Pizza' ? 'bg-black text-white':''}`} onClick={()=>{handelSetOrderComponentValue("Pizza")}}>Pizzas</button></li>
-                <li className='my-6 font-bold'><button className={` text-white w-full ps-10 text-left py-2 ${orderCopmonentValue=='Garlic' ? 'bg-black text-white':''}`}  onClick={()=>{handelSetOrderComponentValue('Garlic')}}>Garlic Bread</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Calzone')}}>Calzone</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Kebabas')}}>Kebabas</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Salads')}}>Salads</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Cold drinks')}}>Cold drinks</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Happy Meal')}}>Happy Meal®</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Desserts')}}>Desserts</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Hot drinks')}}>Hot drinks</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Sauces')}}>Sauces</button></li>
-                <li className='my-6 font-bold '><button className='hover:bg-slate-200 w-full ps-10 text-left py-2' onClick={()=>{handelSetOrderComponentValue('Orbit')}}>Orbit®</button></li>
-            </ul>
+        
+            </ul> 
 
           </div> 
                     )}
@@ -169,7 +107,7 @@ export default function OrderingPageDetail() {
 
            {/* sub-main-2-start */}
                   <div className='lg:flex items-center lg:justify-between lg:py-4 lg:px-6  justify-around py-4 hidden  '>
-                     <h1 className='text-2xl font-bold'>{orderCopmonentValue}</h1> 
+                     <h1 className='text-2xl font-bold'>{orderCopmonentValue.name}</h1> 
                       <button className='lg:flex lg:items-center lg:justify-between  border rounded-full'>
                           <div className='flex items-center px-4 py-3' >
                             <p className='mr-4'>Sort by Pricing</p> 
@@ -179,7 +117,7 @@ export default function OrderingPageDetail() {
                   </div>
                   <div className='h-screen pt-30'>
                  
-                      {CopmponentDetail()}
+                      <PizzaDetailCard/>
                       
                       {/* img for card for mobile-start*/}
                       <div className='lg:hidden py-5'>

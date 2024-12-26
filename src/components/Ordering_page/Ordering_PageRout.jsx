@@ -1,25 +1,24 @@
-import React from 'react'
-import NavabarApp from '../NavabarApp'
-import Mackdonald from '../Restaurant/Mackdonald'
+import NavabarApp from '../Layout/NavabarApp'
 import Tandoori_Pizza from './Tandoori_Pizza'
 import OrderingPageDetail from './OrderingPageDetail'
 import RestaurantLocation from '../Restaurant/RestaurantLocation'
 import CustomerReviews from '../Restaurant/CustomerReviews'
 import SimiliarRestaurant from '../Restaurant/SimiliarRestaurant'
-import Footer from '../Footer'
+import Footer from '../Layout/Footer'
 import InformationAbout from '../Restaurant/InformationAbout'
+import { OrderProvider } from './context/MyContext'
 
 export default function Ordering_PageRout() {
   return (
-    <div>
-        <NavabarApp/>
+    <OrderProvider>
+      
         <Tandoori_Pizza/>
-        <OrderingPageDetail/>
+         <OrderingPageDetail/>
          <InformationAbout/>
         <RestaurantLocation/>
         <CustomerReviews/>
         <SimiliarRestaurant/>
-        <Footer/>
-    </div>
+       
+    </OrderProvider>
   )
 }

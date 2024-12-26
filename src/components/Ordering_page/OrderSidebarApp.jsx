@@ -1,11 +1,28 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BiSolidFoodMenu } from 'react-icons/bi'
 import { NavLink } from 'react-router-dom'
-import SidebarImg from '../../assets/Order/OrderBottomImg.png'
-import Plusimg from '../../assets/Offer_img/Plus (1).png'
+import SidebarImg from '@assets/Order/OrderBottomImg.png'
+import Plusimg from '@assets/Offer_img/Plus_(1).png'
+import { getcategory } from '../adminDashboard/Apibaseurl'
+import { OrderContext } from './context/MyContext'
 
 
-export default function OrderSidebarApp({SetOrderComponentValue,orderCopmonentValue}) {
+
+export default function OrderSidebarApp() {
+  const {orderCopmonentValue,handelSetOrderComponentValue} = useContext(OrderContext)
+const [category,setcategoryData] = useState([]);
+  const FetchcategoryData = async ()=>{
+    const res = await getcategory();
+    console.log("res in the FetchcategoryData",res)
+    if(res.success === true){
+      setcategoryData(res.data)
+    }
+   
+  }
+
+  useEffect(()=>{
+    FetchcategoryData();
+  },[])
   return (
       <nav className=''>
         <div className='space-y-4' >
@@ -19,17 +36,19 @@ export default function OrderSidebarApp({SetOrderComponentValue,orderCopmonentVa
                      
                   </h1>
                 </li>
-                <li className='my-6 font-bold'><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Pizza' ? 'bg-black text-white ':''}`} onClick={()=>{SetOrderComponentValue("Pizza")}}>Pizzas</button></li>
-                <li className='my-6 font-bold'><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Garlic' ? 'bg-black text-white ':''}`} onClick={()=>{SetOrderComponentValue('Garlic')}}>Garlic Bread</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Calzone' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Calzone')}}>Calzone</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Kebabas' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Kebabas')}}>Kebabas</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Salads' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Salads')}}>Salads</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Cold drinks' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Cold drinks')}}>Cold drinks</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Happy Meal' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Happy Meal')}}>Happy Meal®</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Desserts' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Desserts')}}>Desserts</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Hot drinks' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Hot drinks')}}>Hot drinks</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='Sauces' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Sauces')}}>Sauces</button></li>
-                <li className='my-6 font-bold '><button className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue=='GOrbit' ? 'bg-black text-white':''}`} onClick={()=>{SetOrderComponentValue('Orbit')}}>Orbit®</button></li>
+           {category.map((item)=>(
+            <>
+             <li className='my-6 font-bold'>
+             <button 
+             className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue ===`${item.Categoryname}` ? 'bg-black text-white ':''}`} 
+             onClick={()=>handelSetOrderComponentValue(item.Categoryname,item._id)}>
+              {item.Categoryname}
+             </button>
+             </li>
+           
+           </>
+           ))}
+                
             </ul>
 
           </div>

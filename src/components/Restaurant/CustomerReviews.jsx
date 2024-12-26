@@ -1,6 +1,6 @@
 import React from 'react'
 import { IoIosArrowBack, IoIosArrowForward, IoMdStopwatch } from 'react-icons/io'
-import AvatarImg from '../../assets/Revieimg/Ellipse 3.png'
+import AvatarImg from '@assets/Revieimg/Ellipse_3.png'
 import { TiStarFullOutline } from 'react-icons/ti'
 
 export default function CustomerReviews() {

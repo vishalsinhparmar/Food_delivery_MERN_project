@@ -1,0 +1,7 @@
+Categorey_Name
+Categorey_Details
+Categorey_Img
+Small_pricing
+Medium_pricing
+Large_pricing
+XlLarge_pricing

@@ -1,6 +1,6 @@
 import React from 'react'
-import LocationImg from '../../assets/Location/Rectangle 52.png'
-import previousLocation from '../../assets/Location/Previous Location.png'
+import LocationImg from '@assets/Location/Rectangle_52.png'
+import previousLocation from '@assets/Location/Previous_Location.png'
 
 export default function RestaurantLocation() {
   return (

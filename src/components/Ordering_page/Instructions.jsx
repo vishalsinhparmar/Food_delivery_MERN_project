@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
-import Rectangle56 from '../../assets/Order/Rectangle 53.png'
+import Rectangle56 from '@assets/Order/Rectangle_53.png'
 import { BsArrowRightCircleFill } from 'react-icons/bs'
-import Elips6 from '../../assets/Order/Ellipse 6.png'
+import Elips6 from '@assets/Order/Ellipse_6.png'
 
 import { NavLink } from 'react-router-dom'
 import { MdCancel } from 'react-icons/md'
@@ -41,9 +41,9 @@ const handelClosemodal = ()=>{
 
     }
 
-    axios.post(`http://localhost:4000/BaketData`,InputData).then(()=>{
+    // axios.post(`http://localhost:4000/BaketData`,InputData).then(()=>{
       
-    })
+    // })
   // e.target.reset();
 
   }

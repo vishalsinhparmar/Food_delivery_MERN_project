@@ -13,6 +13,13 @@
       "Categorey_Name": "HavalianPizza",
       "qty": "2",
       "Categorey_Details": "please extra chese"
+    },
+    {
+      "id": "ec21",
+      "pricing": "596",
+      "Categorey_Name": "HavalianPizza",
+      "qty": "4",
+      "Categorey_Details": ""
     }
   ],
   "Pizza": [

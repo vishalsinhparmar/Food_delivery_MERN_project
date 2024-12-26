@@ -1,10 +1,10 @@
 import React from 'react'
-import Restaurant1 from '../../assets/Restaurant/Rectangle 13.png'
-import Restaurant2 from '../../assets/Restaurant/Rectangle 13 (1).png'
-import Restaurant3 from '../../assets/Restaurant/Rectangle 13 (2).png'
-import Restaurant4 from '../../assets/Restaurant/Rectangle 13 (3).png'
-import Restaurant5 from '../../assets/Restaurant/Rectangle 13 (4).png'
-import Restaurant6 from '../../assets/Restaurant/Rectangle 13 (5).png'
+import Restaurant1 from '@assets/Restaurant/Rectangle_13_1.png'
+import Restaurant2 from '@assets/Restaurant/Rectangle_13_2.png'
+import Restaurant3 from '@assets/Restaurant/Rectangle_13_3.png'
+import Restaurant4 from '@assets/Restaurant/Rectangle_13_4.png'
+import Restaurant5 from '@assets/Restaurant/Rectangle_13_5.png'
+import Restaurant6 from '@assets/Restaurant/Rectangle_13_6.png'
 
 export default function SimiliarRestaurant() {
     const Restaurant = [

@@ -1,11 +1,11 @@
 import React from 'react'
-import TandooriPizza from '../../assets/Pizza/Rectangle 44.png'
-import OrderLogo from '../../assets/Mackdonald/Order Completed.png'
-import MotorCycle from '../../assets/Mackdonald/Motocross.png'
-import Rectangle1 from '../../assets/Mackdonald/Rectangle 43.png'
-// import Rectangle2 from '../../assets/Mackdonald/Rectangle 44.png'
-// import Rectangle3 from '../../assets/Mackdonald/Rectangle 64.png'
-import clock from '../../assets/Mackdonald/Clock.png'
+import TandooriPizza from '@assets/Pizza/Rectangle_44.png'
+import OrderLogo from '@assets/Mackdonald/Order_Completed.png'
+import MotorCycle from '@assets/Mackdonald/Motocross.png'
+import Rectangle1 from '@assets/Mackdonald/Rectangle_43.png'
+// import Rectangle2 from '@assets/Mackdonald/Rectangle 44.png'
+// import Rectangle3 from '@assets/Mackdonald/Rectangle 64.png'
+import clock from '@assets/Mackdonald/Clock.png'
 import { TiStarFullOutline } from 'react-icons/ti'
 
 export default function Tandoori_Pizza() {

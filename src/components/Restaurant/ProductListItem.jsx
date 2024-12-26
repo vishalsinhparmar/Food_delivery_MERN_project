@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import product1 from '../../assets/ProductListItem/Rectangle 46 (1).png'
-import Plusimg from '../../assets/Offer_img/Plus (1).png'
-import product2 from '../../assets/ProductListItem/Rectangle 46 (2).png'
-import product3 from '../../assets/ProductListItem/Rectangle 46 (3).png'
+import Plusimg from '@assets/Offer_img/Plus_(1).png'
 // import ReactModal from 'react-modal'
 import Modal from 'react-modal'
 import ModalforListItem from './ModalforListItem'
 import axios from 'axios'
-import { data } from 'autoprefixer'
+// import { data } from 'autoprefixer'
 Modal.setAppElement('#root');
 export default function ProductListItem() {
   const [modaldata,setmodaldata]=useState(null);

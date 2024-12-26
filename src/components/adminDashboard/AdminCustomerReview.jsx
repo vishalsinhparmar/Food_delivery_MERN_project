@@ -1,7 +1,7 @@
 import React from 'react'
 import { TiStarFullOutline } from 'react-icons/ti'
-import adminReview from '../../assets/png_logo/adminimage 4.png'
-import adminAvatar from '../../assets/png_logo/adminplaceholder.png'
+import adminReview from '@assets/png_logo/adminimage_4.png'
+import adminAvatar from '@assets/png_logo/adminplaceholder.png'
 
 export default function AdminCustomerReview() {
   return (

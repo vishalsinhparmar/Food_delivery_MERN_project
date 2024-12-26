@@ -1,9 +1,9 @@
 import React from 'react'
 import { FaSearch } from 'react-icons/fa'
-import offerimg1 from '../../assets/Offer_img/Rectangle 8.png'
-import offerimg2 from '../../assets/Offer_img/Rectangle 8 (2).png'
-import offerimg3 from '../../assets/Offer_img/Rectangle 8 (1).png'
-import Plusimg from '../../assets/Offer_img/Plus (1).png'
+import offerimg1 from '@assets/Offer_img/Rectangle_8.png'
+import offerimg2 from '@assets/Offer_img/Rectangle_8_(2).png'
+import offerimg3 from '@assets/Offer_img/Rectangle_8_(1).png'
+import Plusimg from '@assets/Offer_img/Plus_(1).png'
 
 
 

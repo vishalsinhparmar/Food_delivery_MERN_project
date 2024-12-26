@@ -1,11 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import Rectangle56 from '../../assets/Order/Rectangle 53.png'
+import React, { useContext, useEffect, useState } from 'react'
+import Rectangle56 from '@assets/Order/Rectangle_53.png'
 import { MdCancel } from 'react-icons/md';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
+import { getsubcategory } from '../adminDashboard/Apibaseurl';
+import { OrderContext } from './context/MyContext';
 
-export default function PizzaModal({closemodal,selectPrice,AddMOdelisOpen,setTotalPrice, setCount,setSelectedPizza}) {
+export default function PizzaModal({closemodal,selectPrice,AddMOdelisOpen,lPrice, setCount,setSelectedPizza}) {
     const [counts, setCounts] = useState({});
+    const {orderCopmonentValue} = useContext(OrderContext)
     const[data,setdata]=useState([]);
     const[selectPizza,setselectpizza]=useState(null);
     const handleIncrement = (id) => {
@@ -35,16 +38,18 @@ export default function PizzaModal({closemodal,selectPrice,AddMOdelisOpen,setTot
     };
 
     useEffect(()=>{
-        axios.get(`http://localhost:4000/subCategory`).then((res)=>{
-            setdata(res.data)
-        })
-    });
+        const FetchsubCategory = async ()=>{
+            const res = await getsubcategory(orderCopmonentValue.id);
 
-    useEffect(() => {
-        setTotalPrice(calculateTotalPrice());
-        setCount(Object.values(counts).reduce((a, b) => a + b, 0));
-        setSelectedPizza(selectPizza);
-      }, [counts, selectPizza, setTotalPrice, setCount, setSelectedPizza]);
+            if(res.success === true){
+                setdata(res.data.subcategories)
+            }
+            console.log('res of subcategories',res)
+        }
+        FetchsubCategory()
+    },[orderCopmonentValue.id]);
+
+  
   return (
     <div>
                     
@@ -71,11 +76,11 @@ export default function PizzaModal({closemodal,selectPrice,AddMOdelisOpen,setTot
                        
                            <div className='p-4  flex items-center justify-between'>
                                <div className='border-r-2 px-2' >
-                                 <img src={item.subCategoryImg} alt="" className='w-14 h-14 rounded-full' />
+                                 <img src={item.image} alt="" className='w-14 h-14 rounded-full' />
                                </div>
 
                                 <div className='ml-4 font-bold'>
-                                <h1 className=''>{item.subCategoryName} </h1>
+                                <h1 className=''>{item.subCategoryname} </h1>
                                 </div>
                                
                            </div>

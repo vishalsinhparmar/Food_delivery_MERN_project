@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Rectangle56 from '../../assets/Order/Rectangle 53.png'
-import Elips6 from '../../assets/Order/Ellipse 6.png'
+import Rectangle56 from '@assets/Order/Rectangle_53.png'
+import Elips6 from '@assets/Order/Ellipse_6.png'
 import { NavLink } from 'react-router-dom'
 import { BsArrowRightCircleFill } from 'react-icons/bs'
 import { MdCancel } from 'react-icons/md'
