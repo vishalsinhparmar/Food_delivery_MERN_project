@@ -14,9 +14,10 @@ import Home from './components/Layout/Home';
 import AuthRoute from './components/Auth/AuthRoute';
 import SignIn from '../src/components/Auth/UserSignIn';
 import SignUp from './components/Auth/UserSignUp';
-import { ForgottePassword } from './services/Api';
+import { ForgottePassword, VerifyUser } from './services/Api';
 import NewPassword from './components/Auth/NewPassword';
 import ForgotPassword from './components/Auth/ForgottePassword';
+import VerifyuserBymail from './components/Auth/VerifyUser';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -38,7 +39,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="ForgottePassword" element={<ForgotPassword/>}/>
                 <Route path="NewPassword" element={<NewPassword/>}/>
                 <Route path="NewPassword/:token" element={<NewPassword/>}/>
-                {/* <Route path="/verifyUser/:token" element={<VerifyuserBymail/>}/> */}
+                <Route path="verifyemail/:token" element={<VerifyuserBymail/>}/>
+                <Route path="verifyemail" element={<VerifyuserBymail/>}/>
+
             
   
    </Route>

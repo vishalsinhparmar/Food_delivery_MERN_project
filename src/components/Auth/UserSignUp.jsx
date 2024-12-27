@@ -36,6 +36,7 @@ function SignUp() {
       }
 
        const res = await UserSignUp(formData);
+       
 
       if (res.ok) {
         const result = await res.json();
@@ -136,7 +137,7 @@ function SignUp() {
 
           <button type="submit" disabled={loading}  className={`text-white  font-medium text-2xl w-1/2 mx-auto mt-1 p-3  rounded-md border ${loading ? "bg-slate-600 cursor-progress":"bg-black  hover:bg-slate-800"} `}>{loading ? "processing..." : "signUp"}</button>
 
-          <p className="font-thin text-right mt-1">Already have an account? <span className="text-blue-600"><Link to="/SignIn">Sign In</Link></span></p>
+          <p className="font-thin text-right mt-1">Already have an account? <span className="text-blue-600"><Link to="/auth">Sign In</Link></span></p>
 
         </form>
       </div>

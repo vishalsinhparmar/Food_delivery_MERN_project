@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {MdMarkEmailRead} from 'react-icons/md'
 import PasswordComponets from './PasswordInput';
 import { ResetPassword } from '../../services/Api';
+import Swal from 'sweetalert2'
 
 
 function NewPassword() {
@@ -34,6 +35,7 @@ function NewPassword() {
         const data = await res.json();
         console.log('the data is', data);
         alert(`The message is: ${data.message}`);
+        Swal.fire('Update','password update a successfully')
         navigate('/SignIn')
          
       } else {
