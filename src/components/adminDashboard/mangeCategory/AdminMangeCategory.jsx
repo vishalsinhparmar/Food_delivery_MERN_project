@@ -13,18 +13,12 @@ export default function AddFoodCategory() {
     setSelectvalue
   } = useContext(MyContext);
 
-  useEffect(()=>{
-    setSelectvalue((prev)=>(
-      {
-        ...prev,
-        slectitem:"default"
-        
-      }
-    ))
-  },[setSelectvalue])
+
+ 
+ 
   console.log(select)
   const categorycomponets = () => {
-    switch (select.slectitem) {
+    switch (select.category) {
       case "category":
         return <MangeCategory/>
 
@@ -50,9 +44,9 @@ export default function AddFoodCategory() {
 
       <div className="m-4">
         <select
-          name="slectitem"
+          name="category"
           id=""
-          value={select.slectitem}
+          value={select.category || "default"}
           className="bg-white rounded-md p-4"
           onChange={handleChangeCategory}
 

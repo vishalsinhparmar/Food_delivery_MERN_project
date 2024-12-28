@@ -4,6 +4,7 @@ const OrderContext = createContext();
 const OrderProvider = ({children})=>{
     const [orderCopmonentValue,SetOrderComponentValue] =useState({name:"",id:null});
     const [category,setCategory] = useState();
+    const [Subcategoryprice,setSubcategoryprice] = useState({price:0})
 
      const handelSetOrderComponentValue = (menuItem,id)=>{
              console.log('id is',id)
@@ -19,7 +20,9 @@ const OrderProvider = ({children})=>{
     return(
         <OrderContext.Provider value={{
                                   handelSetOrderComponentValue,
-                                  orderCopmonentValue
+                                  orderCopmonentValue,
+                                  setSubcategoryprice,
+                                  Subcategoryprice
         }} >
             {children}
         </OrderContext.Provider>

@@ -14,15 +14,7 @@ const MangeCategory = () => {
     console.log('categoryId', categoryId)
 
 
-    useEffect(()=>{
-        setSelectvalue((prev)=>(
-          {
-            ...prev,
-            
-            
-          }
-        ))
-      },[setSelectvalue])
+   
 
     const handleCategorydelete = async (id) => {
         alert(id)

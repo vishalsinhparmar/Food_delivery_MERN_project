@@ -10,7 +10,7 @@ import { OrderContext } from './context/MyContext'
 
 export default function OrderSidebarApp() {
   const {orderCopmonentValue,handelSetOrderComponentValue} = useContext(OrderContext)
-const [category,setcategoryData] = useState([]);
+  const [category,setcategoryData] = useState([]);
   const FetchcategoryData = async ()=>{
     const res = await getcategory();
     console.log("res in the FetchcategoryData",res)

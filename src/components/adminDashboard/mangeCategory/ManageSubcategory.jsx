@@ -22,19 +22,14 @@ const ManageSubcategory = () => {
 
     useEffect(() => {
         // setSelectvalue({})
-        setSelectvalue((prev)=>(
-            {
-            ...prev,
-            category:"default"
-            
-        })
-    )
+     
+    
         try {
             const FetchsubcategoryData = async () => {
                 console.log('id', select.subcategory)
                  if(select.subcategory){
 
-                const res = await getsubcategory(select.subcategory);
+                const res = await getsubcategory(select.subcategory || []);
                 
                 if (res.success === true) {
                     alert('category response is successfully')
@@ -71,8 +66,8 @@ const ManageSubcategory = () => {
             <div>
                 <select type="text"
                     className='w-full rounded-2xl p-3 border outline-none '
-                    name="category"
-                    value={select.category}
+                    name="subcategory"
+                    value={select.subcategory || "default"}
                     onChange={handleChangeCategory}
                     placeholder="category"
                     required

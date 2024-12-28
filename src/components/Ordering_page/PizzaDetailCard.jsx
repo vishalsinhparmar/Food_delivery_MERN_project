@@ -8,15 +8,10 @@ import PizzaModal from './PizzaModal'
 import { getfoodcategory } from '../adminDashboard/Apibaseurl'
 import { OrderContext } from './context/MyContext'
 
-
-
-
 export default function PizzaDetailCard() {
 
-
-  const { orderCopmonentValue } = useContext(OrderContext)
+  const { orderCopmonentValue ,Subcategoryprice,setSubcategoryprice} = useContext(OrderContext)
   const [data, setdata] = useState([]);
-
 
   useEffect(() => {
     const FetchcategoryItem = async () => {
@@ -34,18 +29,13 @@ export default function PizzaDetailCard() {
 
   const [modelIsopen, setmodelisOpen] = useState();
 
-  // this state is to set the value of modal
-
-
   // for add to cart usestate
   const [nextmodalIsopen, NextsetmodelIsopen] = useState();
-  // const [nextSelectedValue, SetaddSelectedValue] = useState(null);
 
 
   const closemodal = () => {
     setmodelisOpen(false)
     NextsetmodelIsopen(false)
-
 
   }
   const Modelisopen = () => {
@@ -59,25 +49,21 @@ export default function PizzaDetailCard() {
   //   setmodelisOpen(false)
 
   // }
-
-
-
-
   // for selected button value
 
   // const [selectPrice, setSelctedPricebutton] = useState({});
 
 
   // const [selectButton, setselectedButton] = useState({});
-  const HandelSelectedButton = () => {
+  const HandelSelectedButton = (price) => {
+    setSubcategoryprice((prev)=>(
+      {
+        ...prev,
+       price:Number(price)
 
-
-
-
-
+      }
+    ))
     Modelisopen(true);
-
-
   }
 
 
@@ -151,7 +137,7 @@ export default function PizzaDetailCard() {
                   <>
 
                     <div className="flex flex-col  bg-white items-center justify-center">
-                      <div className="flex w-full border p-2 items-center justify-center bg-slate-100 rounded-md" onClick={() => HandelSelectedButton()}>
+                      <div className="flex w-full border p-2 items-center justify-center bg-slate-100 rounded-md" onClick={() => HandelSelectedButton(price.price)}>
                         <p className='lg:mr-5 mr-2 '>{price.size}</p>
                         <p className='py-2 lg:px-4 px-2 bg-green-700 text-white font-bold rounded-md'>&#8377;&nbsp;{price.price}</p>
                       </div>

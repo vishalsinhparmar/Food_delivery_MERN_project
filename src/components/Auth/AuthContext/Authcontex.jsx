@@ -6,8 +6,8 @@ const AuthContextProvider = ({children})=>{
   
           return (
         <AuthContext.Provider value={{
-          setError,
-          Error    
+        
+              
         }}>
           {children}
         </AuthContext.Provider>

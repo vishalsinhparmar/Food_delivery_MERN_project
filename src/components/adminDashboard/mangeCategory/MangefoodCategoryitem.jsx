@@ -23,16 +23,17 @@ const ManagefoodCategoryitem = () => {
     console.log('product is', product)
     useEffect(() => {
         console.log('select from the categoryItem',select)
+ 
     
         
         try {
             const FetchcategoryData = async () => {
-                console.log('id', select.categoryItem)
-                if(select.categoryItem){
-                const res = await getfoodcategory(select.categoryItem);
+                console.log('id', select.categoryItemselect)
+                if(select.categoryItemselect){
+                const res = await getfoodcategory(select.categoryItemselect);
                 if (res.success === true) {
                     alert('category response is successfully')
-                    setcategoryData(res.data.categoryIteam)
+                    setcategoryData(res.data.categoryIteam || [])
                 }
                 console.log('category res is', res)
             }
@@ -41,7 +42,7 @@ const ManagefoodCategoryitem = () => {
         } catch (err) {
             console.log('error occur in the mangeCategory', err.message)
         }
-    }, [setSelectvalue,select.categoryIteam]);
+    }, [select.categoryItemselect]);
 
         const handleCategorydelete = async (id) => {
             alert(id)
@@ -66,8 +67,8 @@ const ManagefoodCategoryitem = () => {
             <div>
                 <select type="text"
                     className='w-full rounded-2xl p-3 border outline-none '
-                    name="categoryItem"
-                    value={select.categoryItem}
+                    name="categoryItemselect"
+                    value={select.categoryItemselect || "default"}
                     onChange={handleChangeCategory}
                     placeholder="category"
                     required
@@ -124,7 +125,7 @@ const ManagefoodCategoryitem = () => {
                                     </div>                              
                                              <div className="p-2 gap-2 flex items-center justify-center">
                                                  <button className="p-2 bg-red-400 flex items-center justify-center gap-2 text-xl text-white w-1/3 hover:bg-red-500 rounded-md mx-2" onClick={()=>handleCategorydelete(data._id)}><RiDeleteBin5Line/>delete</button>
-                                                 <button className="p-2 bg-yellow-300 font-medium flex items-center justify-center gap-2 text-xl text-white w-1/3 hover:bg-yellow-400 rounded-md mx-2" onClick={()=> navigate(`/Foods/${data._id}`)}><FaRegEdit/>edit</button>
+                                                 <button className="p-2 bg-yellow-300 font-medium flex items-center justify-center gap-2 text-xl text-white w-1/3 hover:bg-yellow-400 rounded-md mx-2" onClick={()=> navigate(`/admin/Foods/${data._id}`)}><FaRegEdit/>edit</button>
 
                                              </div>
                                        </div>

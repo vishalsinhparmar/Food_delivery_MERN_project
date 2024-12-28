@@ -37,10 +37,8 @@ export default function AdminAddSubCategory() {
   console.log("categoryId data", categoryId);
 
 
-  useEffect(() => {
-  
+  useEffect(() => { 
     if (id) {
-
       const FetchsubcategorybyId = async () => {
         const res = await getsubcategorybyId(id);
         if (res.success === true) {
@@ -69,12 +67,8 @@ export default function AdminAddSubCategory() {
 
       FetchsubcategorybyId()
 
-    } else {
-      setSelectvalue((prev) => ({
-        ...prev,
-        subcategory: "default",
-      }));
-    }
+    } 
+    
   }, [setSelectvalue, setimage, id,setproductvalue])
 
 
@@ -105,7 +99,9 @@ export default function AdminAddSubCategory() {
             setproductvalue({}),
             setimage({})
         }
-      }else {const res = await addsubcategory(formdata);
+      }else {
+        console.log('formdata for subcategory',formdata)
+      const res = await addsubcategory(formdata);
       console.log('res is', res);
       if (res.success === true) {
         Swal.fire("Added!", "Subcategory added successfully", "success");
@@ -141,7 +137,7 @@ export default function AdminAddSubCategory() {
               name="subcategory"
 
               id="category"
-              value={select.subcategory || ""}
+              value={select.subcategory || "default"}
               className='bg-white p-2 w-1/4 border hover:bg-slate-50 '
               onChange={handleChangeCategory}
             >

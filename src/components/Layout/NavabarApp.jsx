@@ -11,6 +11,8 @@ import { FiAlignJustify } from "react-icons/fi";
 import { FaShoppingBasket } from "react-icons/fa";
 
 export default function NavabarApp(){
+
+    
     const [toggelMenu,SetToggleMenu]=useState();
 
     const HandelToggleMenu = ()=>{
@@ -105,7 +107,7 @@ export default function NavabarApp(){
                     <li className='mx-5'><NavLink to='/order'>Special Offers</NavLink></li>
                     <li className='mx-5'><NavLink to='/restaurant'><button className=' bg-orange-400 p-2 px-6 rounded-full text-white'> Restaurants</button></NavLink></li>
                     <li className='mx-5'><NavLink to='/order'>Track Order</NavLink></li>
-                    <li className='mx-5'><NavLink to='/Auth'><button className='bg-black text-white p-3 px-5 rounded-full'><img src={profile} className='inline-flex items-center'/>Login/Signup</button></NavLink> </li>       
+                    <li className='mx-5'><NavLink to='/auth'><button className='bg-black text-white p-3 px-5 rounded-full'><img src={profile} className='inline-flex items-center'/>Login/Signup</button></NavLink> </li>       
                 </ul>
               </nav>
         </>

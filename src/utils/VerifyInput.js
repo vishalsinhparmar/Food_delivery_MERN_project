@@ -4,5 +4,5 @@ export const Verifyemail = (value)=>{
 } 
 
 export const passwordverify = (value)=>{
-    return value.length >=6
+    return value.length === 6
 };

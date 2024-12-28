@@ -1,16 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../contextprovider/Mycontext";
-import { addcategoryItem, categoryUpdatebyId, getfoodcategory } from "../Apibaseurl";
-import { useParams } from "react-router-dom";
+import { addcategoryItem, categoryUpdatebyId, getfoodcategory, getfoodcategoryItembyid } from "../Apibaseurl";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddfoddCategoryItem = () => {
     const {id} = useParams();
+    const navigate = useNavigate()
     const { handleChangevalue,
             product,
             categoryId,
             select,
             setimage,
             image,
+            handleChangeCategory,
+            setSelectvalue,
             setproductvalue,
             handlchangeImage} = useContext(MyContext);
             
@@ -29,11 +32,49 @@ const AddfoddCategoryItem = () => {
         setprice(updateprice)
      }
     //  formhandle
+        useEffect(() => { 
+          if (id) {
+            const FetchsubcategorybyId = async () => {
+              const res = await getfoodcategoryItembyid(id);
+              if (res.success === true) {
+                setproductvalue((prev) => (
+                  {
+                    ...prev,
+                    categoryId:select.categoryselect,
+                    categoryItemname:res.data.categoryItemName,
+                    description:res.data.description,
+                   
+                  }
+                ))
+
+                setprice(res.data.pricing)
+                    
+                const { image} = res.data;
+      
+                setimage((prev) => (
+                  {
+                    ...prev,
+                    image,
+                  }
+                ))
+      
+                console.log("image for uploaded", image)
+              }
+              console.log("res from the subcategory by id", res.data)
+            }
+      
+            FetchsubcategorybyId()
+      
+          } 
+          
+        }, [setSelectvalue, setimage, id,setproductvalue])
+
+        // update form
     const FormHandelSubmit = async (e)=>{
          e.preventDefault();
 
          const formdetail = new FormData();
-         formdetail.append('categoryId',product.category)
+         formdetail.append('categoryId',select.categoryItemselect)
          formdetail.append('categoryItemName',product.categoryItemname)
          formdetail.append('description',product.description)
          if(image.image){
@@ -45,9 +86,24 @@ const AddfoddCategoryItem = () => {
 
          try{
             if(id){
-            const res = await getfoodcategory(id);
-            const data = await categoryUpdatebyId(formdetail);
-            }
+                const res = await getfoodcategoryItembyid(id,formdetail);
+                console.log('categorydataItem categoryUpdatebyId',res);
+                if(res.success === true){
+                    alert('category item Update successfully')
+                    setprice( [
+                        { size: "small", price: 0 },
+                        { size: "medium", price: 0 },
+                        { size: "large", price: 0 },
+                        { size: "xlarge", price: 0 }  
+                      ])
+                    setimage({})
+                    setproductvalue({})
+                    setSelectvalue({})
+                    navigate('/admin/Managefoodcategory')
+                }
+                 
+            }else{
+        
             const res = await addcategoryItem(formdetail);
             console.log('categorydataItem',res);
             if(res.success === true){
@@ -60,7 +116,10 @@ const AddfoddCategoryItem = () => {
                   ])
                 setimage({})
                 setproductvalue({})
+                
+                
             }
+        }
          }catch(error){
             console.log('error occur in the AddFoodCategoryitem',error.message)
          }
@@ -74,13 +133,13 @@ const AddfoddCategoryItem = () => {
                 <div className="bg-white mt-10 p-4 rounded-md ">
                     <select type="text"
                         className='w-full rounded-2xl p-3 border outline-none '
-                        name="category"
-                        value={product.category}
-                        onChange={handleChangevalue}
+                        name="categoryItemselect"
+                        value={select.categoryItemselect || "default"}
+                        onChange={handleChangeCategory}
                         placeholder="category"
                         required
                     >
-                        <option value="" disabled>
+                        <option value="default" disabled>
                             Select category
                         </option>
                         {
@@ -129,7 +188,15 @@ const AddfoddCategoryItem = () => {
                             className='w-full rounded-2xl p-3 border outline-none '
                             onChange={handlchangeImage}
                         />
-                       {image.image && < img src={URL.createObjectURL(image.image)} className="mt-4 w-32 h-32 object-cover rounded-lg" />}
+                        
+                       {typeof image.image === "string" ? (
+                      < img src={image.image} className="mt-4 w-32 h-32 object-cover rounded-lg" />
+
+                       ):(
+                           image.image && < img src={URL.createObjectURL(image.image)} className="mt-4 w-32 h-32 object-cover rounded-lg" />
+                       )
+                    }
+
 
                     </div>
 
@@ -157,7 +224,7 @@ const AddfoddCategoryItem = () => {
                     </div>
 
                     <div className='py-4 flex items-center justify-center space-x-4'>
-                        <button type='submit' className='p-2 px-4 border bg-blue-400 hover:bg-blue-500 text-white rounded-lg ' >Submit</button>
+                        <button type='submit' className='p-2 px-4 border bg-blue-400 hover:bg-blue-500 text-white rounded-lg ' >{id ? "Update" : "Submit"}</button>
                         <button type='reset' className='p-2 px-4 border bg-red-300 hover:bg-red-400 text-white rounded-lg '>Reset</button>
 
                     </div>

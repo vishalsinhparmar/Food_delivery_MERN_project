@@ -9,7 +9,7 @@ import AdminAddSubCategory from "./AddSubCategory.jsx";
 import CategoreyAdd from "./AddCategoryadd.jsx";
 
 export default function AddFoodCategory() {
-  const {id} = useParams()
+
   // const {id} = useParams();
   // const [updid,seupdtId] = useState(null)
   const {
@@ -20,23 +20,11 @@ export default function AddFoodCategory() {
   } = useContext(MyContext);
 console.log("for select are providing only a seleted object",select)
  console.log('select value from the category main',select);
-useEffect(()=>{
-  if(!id){
-  setSelectvalue((prev)=>(
-    {
-      ...prev,
-      slectitem:"default"
-      
-    }
-  )) 
-}
 
-
-},[setSelectvalue])
 
  const categorycomponets = ()=>{
   
-   switch(select.slectitem){
+   switch(select.category){
     
     case "category":
     return  <CategoreyAdd/>
@@ -51,17 +39,41 @@ useEffect(()=>{
      
 
     default :null
+
+   }
+  }
+
     return (
 
     <div>
           <p className="text-2xl flex items-center justify-center font-semibold text-blue-500">please select a category</p>
+          <div className="m-4">
+        <select
+          name="category"
+          id=""
+          value={select.category || "default"}
+          className="bg-white rounded-md p-4"
+          onChange={handleChangeCategory}
 
+        >
+          <option disabled value="default" className="bg-white p-4">selct List</option>
+          <option value="category">category</option>
+          <option value="categoryIteam">categoryIteam</option>
+          <option value="subcategory">subcategory</option>
+
+        </select>
+      </div>
+        
+
+       <div>
+   
+        {categorycomponets()}
+   
+       </div>
     </div>
     )
      
-  }
 
- }
 
 
 

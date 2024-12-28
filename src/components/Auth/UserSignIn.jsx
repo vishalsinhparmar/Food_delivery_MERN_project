@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PasswordComponets from './PasswordInput';
 import { UserSignIn } from '../../services/Api';
-import { AuthContext } from './AuthContext/Authcontex';
+// import { AuthContext } from './AuthContext/Authcontex';
 import Swal from 'sweetalert2';
-import { passwordverify, Verifyemail, VerifyPassword,} from '../../utils/VerifyInput';
+import { passwordverify, Verifyemail,} from '../../utils/VerifyInput';
 
-
+// const {} = useContext(AuthContext)
 function SignIn() {
   const navigate = useNavigate();
   const [Form, setForm] = useState({ email: '', password: '' });
@@ -37,7 +37,7 @@ function SignIn() {
           email:"email is not provided basis"
          })
       }
-
+      console.log("passsword verify output",passwordverify(value))
       if(name === "passsword" && !passwordverify(value)){
         setError({
          ...Error,
@@ -52,7 +52,8 @@ function SignIn() {
     setloading(true)
     const { email, password } = Form;
      const verifyEmail = Verifyemail(email);
-     const VerifyPassword = VerifyPassword(password);
+     const VerifyPassword = passwordverify(password);
+     console.log('VerifyPassword from the submit button',VerifyPassword)
     if(!verifyEmail || !VerifyPassword){
           setError({
             ...Error,

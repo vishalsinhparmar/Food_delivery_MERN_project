@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from './AuthContext/Authcontex';
 
-function PasswordComponets({ onChangefn, valName, placeholderName, label, name, error }) {
+function PasswordComponets({onChangefn, valName, placeholderName, label, name, error }) {
   console.log("error in the password components",error)
   const [showpasssword, setshowPassword] = useState(false);
   console.log("showpasssword are from the password", showpasssword)

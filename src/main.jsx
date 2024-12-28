@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css';
 import './App.scss';
 import Layout from './Layout';
-import { BrowserRouter as Router,Routes,Route, BrowserRouter} from 'react-router-dom'
+import { BrowserRouter as Router,Routes,Route, BrowserRouter, Navigate} from 'react-router-dom'
 import RestaurantRout from './components/Restaurant/RestaurantRout';
 import Ordering_PageRout from './components/Ordering_page/Ordering_PageRout';
 import OrderingPageDetail from './components/Ordering_page/OrderingPageDetail';

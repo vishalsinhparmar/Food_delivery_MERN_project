@@ -42,7 +42,12 @@ const MyProvider = ({children}) =>{
     }
     const handleChangeCategory = (e)=>{
       const {name,value} = e.target
-      setSelectvalue({...select, [name]:value})
+      setSelectvalue((prev)=>(
+        {
+          ...prev,
+          [name]:value
+        }
+      ))
 }
 
     const handlchangeImage = (e) => {
