@@ -71,7 +71,8 @@ function SignIn() {
         
         
         if (res.success === true) {
-          localStorage.setItem('token', res.token);
+          localStorage.setItem('authToken', res.data?.token);
+          // console.log("token",res.data?.token)
           // setuserToken(res.token);
           setForm({ email: '', password: '' });
           setError(null); 

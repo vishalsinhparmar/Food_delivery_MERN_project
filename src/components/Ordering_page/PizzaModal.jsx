@@ -5,49 +5,98 @@ import { MdCancel } from 'react-icons/md';
 import { BsArrowRightCircleFill } from 'react-icons/bs';
 import { getsubcategory } from '../adminDashboard/Apibaseurl';
 import { OrderContext } from './context/MyContext';
+import { addsubcategoryCartdata } from '../../services/Api';
 
 export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lPrice, setCount, setSelectedPizza }) {
-    const [counts, setCounts] = useState({});
+    // const [counts, setCounts] = useState({});
     const { orderCopmonentValue, Subcategoryprice } = useContext(OrderContext)
     const [data, setdata] = useState([]);
-    const [total,settotal] = useState(0);
-    console.log("total is",total)
-    const [selectPizza, setselectpizza] = useState(null);
-     
-    const handleIncrement = (id,price)=>{
-        console.log("price handleIncrement",price)
-        setCounts((prevcount)=>{
-            const newcount =  (prevcount[id] || 0) + 1
-            settotal((prevtotal)=>prevtotal + Number(price))
-            return {
-                ...prevcount,
-                [id]:newcount
+   
+    const [selectPizza, setselectpizza] = useState(null)
+    const [categorystate, setcatecorystate] = useState({});
+
+    const handleNext = async ()=>{
+        if(Object.keys(categorystate).length === 0) return alert("you can select item first")
+        console.log('category pizza',categorystate)
+        const keys = Object.keys(categorystate)
+        console.log("keys",keys)
+         const categoryItem  = {
+            qty:categorystate[keys]?.qty,
+            total:categorystate[keys]?.total,
+            subcategoryId:keys[0]
+         };
+         console.log('categoryItem',categoryItem)
+
+         try{
+            const res = await addsubcategoryCartdata(categoryItem)
+            console.log('res is',res)
+            if(res.success === true){
+               AddMOdelisOpen('pizza')
+               alert('added a success a subcategories to a cart')
             }
-    })
+         }catch(err){
+            console.log(err.message)
+         }
+    }
+ 
+    // console.log("counts",counts)
+    const defautprice = Number(Subcategoryprice.price) || 0;
+
+    const handleselectpizza = (pizzaId) => {
+        // if(setselectpizza(pizza === pizza._id)) return;
+        setcatecorystate ({})
+        setselectpizza(pizzaId)
+        if (selectPizza !== pizzaId) {
+            setcatecorystate((prevstate) => (
+                {
+                    ...prevstate,
+                    [pizzaId]: {
+                        qty:1,
+                        total: defautprice
+                    }
+                }))
+        }else{
+            setcatecorystate({})
+        }
     }
 
-    const handleDecrement = (id,price)=>{
-        // settotal((prevtotal)=> prevtotal*counts[id])
-        setCounts((prevcount)=>{
-             const currentCount = (prevcount[id] || 0) 
+    const handleIncrement = (id) => {
+        setcatecorystate((prevstate) => {
+            const newCount = prevstate[id]?.qty ;
+            const prevId = prevstate[id]
+        if(prevId && newCount >= 1){
+           return {
+                ...prevstate,
+                [id]: {
+                    qty: newCount + 1 ,
+                    total: prevstate[id]?.total + defautprice
+                }
+            }
+        }
+        return prevstate
+        }
+        )
 
-             if(currentCount>0){
-                 settotal((prevtotal)=> prevtotal - Number(price))
-                const newcount = currentCount -1
-                return {
-                    ...prevcount,
-                    [id]:newcount
-                  }
-             }
+    }
 
-            return prevcount
-          
-    })
-
-  }
-
-    console.log("counts",counts)
-
+    const handleDecrement = (id) => {
+        setcatecorystate((prevstate) => {
+            const prevId = prevstate[id]
+            const prevcount = prevstate[id]?.qty;
+            if(prevId && prevcount>1){
+              return {  
+                ...prevstate,
+                [id]: {
+                    qty: prevcount - 1,
+                    total: prevstate[id]?.total - defautprice
+                }
+            }
+         }
+           
+          return prevstate  
+        }
+        )
+    }
 
     useEffect(() => {
         const FetchsubCategory = async () => {
@@ -61,7 +110,8 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
         FetchsubCategory()
     }, [orderCopmonentValue.id]);
 
-
+  
+     
     return (
         <div>
 
@@ -82,12 +132,12 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
                     <div className='lg:w-96 w-auto  mx-auto'>
                         {data.map((item) => (
 
-                            <button onClick={() => { setselectpizza(item) }} 
-                                    className={`lg:w-96 w-auto my-2 
-                                        ${selectPizza && selectPizza.id == item.id ? 'bg-black text-white' : ''} mx-auto bg-Aboutcolor  rounded-lg`} 
-                                     key={item.id} 
+                            <div onClick={(e) => { e.stopPropagation(); handleselectpizza(item._id) }}
+                                className={`lg:w-96 w-auto my-2 
+                                        ${selectPizza && selectPizza === item._id ? 'bg-black text-white ' : 'hover:bg-none'} mx-auto bg-Aboutcolor hover:bg-slate-900 hover:text-white cursor-pointer  rounded-lg`}
+                                key={item.id}
                             >
-                                <div className=' w-full    flex justify-between pr-4 ' key={item.id}>
+                                <div className=' w-full    flex justify-between pr-4 ' key={item._id}>
 
 
                                     <div className='p-4  flex items-center justify-between'>
@@ -100,21 +150,24 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
                                         </div>
 
                                     </div>
+                                    {selectPizza && (
+                                        <div className='inline-flex items-center'>
+                                            <div>
+                                                <button className={`bg-black  rounded-full w-6 text-white flex justify-center ${selectPizza && selectPizza == item._id ? 'bg-orange-500 text-white ' : ''} `} onClick={(e) => { e.stopPropagation(); handleDecrement(item._id)  }} disabled={categorystate[item._id?.qty === 1]}>-</button>
+                                            </div>
+                                            <div className='px-2'>
+                                                <input type='number' className={`w-16 h-16 rounded-lg focus:outline-none ${selectPizza && selectPizza == item._id ? ' text-black ' : ''}   text-center text-black text-xl no-arrows`} value={categorystate[item._id]?.qty || 1 } readOnly />
+                                            </div>
+                                            <div>
+                                                <button className={`bg-black  rounded-full w-6 text-white flex justify-center ${selectPizza && selectPizza === item._id ? 'bg-orange-500 text-white ' : ''}  `}
+                                                    onClick={(e) => { e.stopPropagation(); handleIncrement(item._id) }}>+</button>
+                                            </div>
+                                        </div>
+                                    )
+                                    }
 
-                                    <div className='inline-flex items-center'>
-                                        <div>
-                                            <button className={`bg-black  rounded-full w-6 text-white flex justify-center ${selectPizza && selectPizza.id == item.id ? 'bg-orange-500 text-white ' : ''} `} onClick={() => handleDecrement(item._id,Subcategoryprice.price)}>-</button>
-                                        </div>
-                                        <div className='px-2'>
-                                            <input type='number' className={`w-16 h-16 rounded-lg focus:outline-none ${selectPizza && selectPizza.id == item.id ? ' text-black ' : ''}   text-center text-xl no-arrows`} value={counts[item._id] || 0} readOnly />
-                                        </div>
-                                        <div>
-                                            <button className={`bg-black  rounded-full w-6 text-white flex justify-center ${selectPizza && selectPizza.id == item.id ? 'bg-orange-500 text-white ' : ''}  `} 
-                                            onClick={() => handleIncrement(item._id,Subcategoryprice.price)}>+</button>
-                                        </div>
-                                    </div>
                                 </div>
-                            </button>
+                            </div>
                         ))}
 
 
@@ -127,7 +180,7 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
                         <button type='input' className='flex items-center justify-between bg-orange-500 text-white font-bold rounded-lg'>
                             <div className='flex items-center px-2 py-2' >
                                 <p className='mr-1'>Total to pay</p>
-                                <p className='text-md' >&#8377;&nbsp;{total}</p>
+                                <p className='text-md' >&#8377;&nbsp;{categorystate[selectPizza]?.total || 0}</p>
                             </div>
                         </button>
                         <p className='text-xs'>Delivery & Tax will be calculated in the next step</p>
@@ -137,7 +190,7 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
                     <div className='flex  items-center justify-end mx-10'>
                         <p className='underline underline-offset-2 cursor-pointer' onClick={closemodal} >Take me back</p>
 
-                        <button className='flex items-center justify-between  bg-green-600 text-white font-bold  rounded-lg mx-2' onClick={() => { AddMOdelisOpen('pizza') }}>
+                        <button className='flex items-center justify-between  bg-green-600 text-white font-bold  rounded-lg mx-2 cursor-pointer' onClick={handleNext} disabled={Object.keys(categorystate).length === 0}>
                             <div className='flex items-center justify-center px-4 py-3' >
                                 <p className='mr-5 text-xl'><BsArrowRightCircleFill /></p>
                                 <p className='text-md' >Next!</p>

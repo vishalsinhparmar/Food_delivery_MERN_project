@@ -5,6 +5,24 @@ const api = axios.create({
     baseURL:"http://localhost:8000/api"
 });
 
+api.interceptors.request.use(
+   (config) => {
+     // Get token from localStorage (or any other secure storage)
+     const token = localStorage.getItem("authToken");
+ 
+     if (token) {
+       // Add token to headers
+       config.headers.Authorization = `Bearer ${token}`;
+     }
+ 
+     return config;
+   },
+   (error) => {
+     // Handle errors before request is sent
+     return Promise.reject(error);
+   }
+ );
+
 export const getcategory = async ()=>{
    const response = await api.get('/admin/foodcategorydatashow')
    return response.data;
@@ -17,8 +35,16 @@ export const getCartData = async ()=>{
    return response.data;
 }
 
+export const addsubcategoryCartdata = async (cartData)=>{
+   const response = await api.post('/cart/addCart',cartData)
+   return response.data;
+}
 
 
+export const deleteCartdata = async (id)=>{
+   const response = await api.delete(`/cart/deleteCartcategory/${id}`)
+   return response.data;
+}
 
 
 

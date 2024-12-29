@@ -3,17 +3,25 @@ import { BsArrowDownCircleFill, BsArrowRightCircleFill } from 'react-icons/bs'
 import { FaClock, FaShoppingBasket } from 'react-icons/fa'
 import { MdDeleteForever, MdStore } from 'react-icons/md'
 import { RiEBike2Fill } from 'react-icons/ri'
-import { getCartData } from '../../../services/Api'
+import { deleteCartdata, getCartData } from '../../../services/Api'
 
 export default function MyBasket() {
 
-  const [data,setdata] = useState([]);
+  const [data,setdata] = useState();
+ const handelDelete = async(id) =>{
+   const deletres = await deleteCartdata(id);
+   console.log('deletres',deletres)
 
+ }
   useEffect(()=>{
     try{
       const fetchCartData = async ()=>{
          const res = await getCartData();
-         if(res.success === true)
+         console.log("res of cart",res.data)
+         if(res.success === true){
+             setdata(res.data)
+            //  alert('data fectched success')
+         }
          console.log("res from the cartData",res)
       }
       fetchCartData()
@@ -46,29 +54,33 @@ export default function MyBasket() {
                       </div>
                  </div>
                  <div className='py-4'>
-                  {data.map((item)=>(
+                  {data && data.map((item)=>(
 
-                  <>
-                     <div className='grid grid-flow-col gap-2 border-b items-center px-4 py-4' > 
-                      <div className='col-auto'>
-                       <div className='bg-orange-500 rounded-full  flex items-center justify-center px-3 w-5' >
-                           <p className='font-bold text-md text-white' >{item.qty}x</p>
-                       </div>
-                       </div>
-
-                        <div className='ml-3' >
-                          <h1 className='font-bol text-green-600 '>&#8377;{item.pricing}</h1>
-                          <p className='font-bold'>12” {item.Categorey_Name} </p>
-                          <p>{item.Categorey_Details}</p>
+                    item.Iteam.map((subItem)=>(
+                      <>
+                      <div className='grid grid-flow-col gap-2 border-b items-center px-4 py-4' > 
+                       <div className='col-auto'>
+                        <div className='bg-orange-500 rounded-full  flex items-center justify-center px-3 w-5' >
+                            <p className='font-bold text-md text-white' >{subItem?.qty}x</p>
                         </div>
-
-                        <div className='col-auto' >
-                          <button onClick={()=>{handelDelete(item.id)}}>
-                          <MdDeleteForever className='text-xl text-red-400 ' />
-                          </button>
                         </div>
-                       </div>
-                       </>
+ 
+                         <div className='ml-3' >
+                           <h1 className='font-bol text-green-600 '>&#8377;{subItem?.total}</h1>
+                           <p className='font-bold'>12” {subItem?.subcategoryId?.subCategoryname} </p>
+                           <p>{item.Categorey_Details}</p>
+                         </div>
+ 
+                         <div className='col-auto' >
+                           <button onClick={()=>{handelDelete(subItem._id)}}>
+                           <MdDeleteForever className='text-xl text-red-400 ' />
+                           </button>
+                         </div>
+                        </div>
+                        </>
+                    ))
+
+
                        ))}
                        
                        {/* total */}
