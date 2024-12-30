@@ -40,6 +40,12 @@ export const addsubcategoryCartdata = async (cartData)=>{
    return response.data;
 }
 
+export const addInstructiondata = async (id,info)=>{
+   const response = await api.post(`/cart/addinfoCart/${id}`,info)
+   return response.data;
+}
+
+
 
 export const deleteCartdata = async (id)=>{
    const response = await api.delete(`/cart/deleteCartcategory/${id}`)

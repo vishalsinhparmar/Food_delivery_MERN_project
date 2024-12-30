@@ -1,17 +1,11 @@
 import { useState } from 'react'
-import loadRaorpay from './loadrazorpay';
 
 
 function RazorpayPayment() {
 
   const [address,setaddress] = useState('');
   const handleformsubmit = async (e)=>{
-    //  const res = await loadRaorpay("https://checkout.razorpay.com/v1/checkout.js");
-    //  console.log('the res',res)
-    //  if(!res){
-    //      alert('to failed load sdk')
-    //      return;
-    //  }
+  
       e.preventDefault();
         
       const options = {

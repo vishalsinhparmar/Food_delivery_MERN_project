@@ -10,7 +10,7 @@ import { OrderContext } from './context/MyContext'
 
 export default function PizzaDetailCard() {
 
-  const { orderCopmonentValue ,Subcategoryprice,setSubcategoryprice} = useContext(OrderContext)
+  const { orderCopmonentValue ,Subcategoryprice,setSubcategoryprice,handleModelisopen,modelIsopen,nextmodalIsopen,handleModelisclose} = useContext(OrderContext)
   const [data, setdata] = useState([]);
 
   useEffect(() => {
@@ -27,34 +27,6 @@ export default function PizzaDetailCard() {
   }, [orderCopmonentValue.id])
 
 
-  const [modelIsopen, setmodelisOpen] = useState();
-
-  // for add to cart usestate
-  const [nextmodalIsopen, NextsetmodelIsopen] = useState();
-
-
-  const closemodal = () => {
-    setmodelisOpen(false)
-    NextsetmodelIsopen(false)
-
-  }
-  const Modelisopen = () => {
-    setmodelisOpen(true)
-
-  }
-
-  // const AddMOdelisOpen = (name) => {
-  //   NextsetmodelIsopen(true)
-  //   SetaddSelectedValue(name)
-  //   setmodelisOpen(false)
-
-  // }
-  // for selected button value
-
-  // const [selectPrice, setSelctedPricebutton] = useState({});
-
-
-  // const [selectButton, setselectedButton] = useState({});
   const HandelSelectedButton = (price) => {
     setSubcategoryprice((prev)=>(
       {
@@ -63,15 +35,8 @@ export default function PizzaDetailCard() {
 
       }
     ))
-    Modelisopen(true);
+    handleModelisopen()
   }
-
-
-
-
-
-
-
 
 
   return (
@@ -79,29 +44,21 @@ export default function PizzaDetailCard() {
       <div className=''>
         {/* modal-start */}
         <Modal isOpen={modelIsopen}
-          onRequestClose={closemodal}
+          onRequestClose={handleModelisclose}
           className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[1000] '
           overlayClassName='z-50'
         >
-          <PizzaModal closemodal={closemodal} />
-
-
-
+          <PizzaModal />
         </Modal>
         {/* first-modal-end */}
 
         {/* second-modal-for add-cart-start*/}
 
         <Modal isOpen={nextmodalIsopen}
-
           overlayClassName='z-50'
-
           className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[1000]'>
-          (
-          <Instructions closemodal={closemodal} />
-          )
-
-        </Modal>
+          <Instructions />
+       </Modal>
         {/* second-modal-for add-cart-end*/}
 
 
@@ -137,7 +94,7 @@ export default function PizzaDetailCard() {
                   <>
 
                     <div className="flex flex-col  bg-white items-center justify-center">
-                      <div className="flex w-full border p-2 items-center justify-center bg-slate-100 rounded-md" onClick={() => HandelSelectedButton(price.price)}>
+                      <div className={`flex w-full border p-2 items-center justify-center bg-slate-100 rounded-md ${Subcategoryprice.price ? "":"bg-black text-white"} `} onClick={() => HandelSelectedButton(price.price)}>
                         <p className='lg:mr-5 mr-2 '>{price.size}</p>
                         <p className='py-2 lg:px-4 px-2 bg-green-700 text-white font-bold rounded-md'>&#8377;&nbsp;{price.price}</p>
                       </div>

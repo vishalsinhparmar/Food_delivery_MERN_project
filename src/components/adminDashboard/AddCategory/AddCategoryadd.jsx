@@ -14,19 +14,18 @@ const CategoreyAdd = () =>{
 
 
 const options = [
-  { id: 1, value: 'Pizza', label: 'Pizza' },
-  { id: 2, value: 'Burger', label: 'Burger' },
-  { id: 3, value: 'Salad', label: 'Salad' },
-  { id: 4, value: 'Garlic_Bread', label: 'Garlic_Bread' },
-  { id: 5, value: 'Calzone', label: 'Calzone' },
-  { id: 6, value: 'Cold_drinks', label: 'Cold_drinks' },
-  { id: 7, value: 'Happy_Meal', label: 'Happy_Meal' },
-  { id: 8, value: 'Hot_drinks', label: 'Hot_drinks' },
-  { id: 9, value: 'Sauces', label: 'Sauces' },
-  { id: 10, value: 'Orbit', label: 'Orbit' },
-  { id: 11, value: 'Kebabas', label: 'Kebabas' },
-  { id: 12, value: 'Dessert', label: 'Dessert' },
-  { id: 13, value: 'Fries', label: 'Fries' }
+  { id: 1, value: 'Pizzas', label: 'Pizzas' },
+  { id: 2, value: 'Garlic Bread', label: 'Garlic Bread' },
+  { id: 3, value: 'Calzone', label: 'Calzone' },
+  { id: 4, value: 'Kebabas', label: 'Kebabas' },
+  { id: 5, value: 'Salads', label: 'Salads' },
+  { id: 6, value: 'Cold drinks', label: 'Cold drinks' },
+  { id: 7, value: 'Happy Meal®', label: 'Happy Meal®' },
+  { id: 8, value: 'Desserts', label: 'Desserts' },
+  { id: 9, value: 'Hot drinks', label: 'Hot drinks' },
+  { id: 10, value: 'Sauces', label: 'Sauces' },
+  { id: 11, value: 'Orbit®', label: 'Orbit®' },
+
 
 ]
 
@@ -41,7 +40,7 @@ const handleaddCategory = async (e) => {
 
 
   try {
-     if(!id){
+    
        const res= await addcategory(product);
        console.log('res of category',res)
 
@@ -50,13 +49,14 @@ const handleaddCategory = async (e) => {
         refreshCategory()
         alert('category response is successfully')
      }
-   }
+   
     // const res = await categoryUpdatebyId(id,product)
 
  
 
   
   } catch (error) {
+    console.log("error occur in the create category",error.response)
     console.log('error message is in addcategory', error.message)
   }
 }

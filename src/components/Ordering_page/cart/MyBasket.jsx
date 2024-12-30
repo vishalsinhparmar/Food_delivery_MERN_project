@@ -4,18 +4,24 @@ import { FaClock, FaShoppingBasket } from 'react-icons/fa'
 import { MdDeleteForever, MdStore } from 'react-icons/md'
 import { RiEBike2Fill } from 'react-icons/ri'
 import { deleteCartdata, getCartData } from '../../../services/Api'
+import { MyContext } from '../../adminDashboard/contextprovider/Mycontext'
+import { useNavigate } from 'react-router-dom'
 
 export default function MyBasket() {
-
-  const [data,setdata] = useState();
+  const navigate = useNavigate()
+  const [data,setdata] = useState([]);
  const handelDelete = async(id) =>{
    const deletres = await deleteCartdata(id);
    console.log('deletres',deletres)
 
+   const updata = data.filter((data)=> id !== data._id )
+   console.log(updata)
+   setdata(updata)
+
  }
-  useEffect(()=>{
-    try{
-      const fetchCartData = async ()=>{
+  
+ const fetchCartData = async ()=>{
+        try{
          const res = await getCartData();
          console.log("res of cart",res.data)
          if(res.success === true){
@@ -23,15 +29,17 @@ export default function MyBasket() {
             //  alert('data fectched success')
          }
          console.log("res from the cartData",res)
+        }catch(err){
+          console.log("error occur in the basket fetchCartData",err.message)
       }
-      fetchCartData()
-    }catch(err){
-      console.log("error occur in the basket fetchCartData",err.message)
+      
     }
      
-  },[])
- 
+  
 
+  useEffect(()=>{
+    fetchCartData()
+  },[])
 
 
 
@@ -54,54 +62,64 @@ export default function MyBasket() {
                       </div>
                  </div>
                  <div className='py-4'>
-                  {data && data.map((item)=>(
+                  {data.Iteam && data.Iteam.map((item)=>(
 
-                    item.Iteam.map((subItem)=>(
+                   
                       <>
                       <div className='grid grid-flow-col gap-2 border-b items-center px-4 py-4' > 
                        <div className='col-auto'>
                         <div className='bg-orange-500 rounded-full  flex items-center justify-center px-3 w-5' >
-                            <p className='font-bold text-md text-white' >{subItem?.qty}x</p>
+                            <p className='font-bold text-md text-white' >{item?.qty}x</p>
                         </div>
                         </div>
  
                          <div className='ml-3' >
-                           <h1 className='font-bol text-green-600 '>&#8377;{subItem?.total}</h1>
-                           <p className='font-bold'>12” {subItem?.subcategoryId?.subCategoryname} </p>
-                           <p>{item.Categorey_Details}</p>
+                           <h1 className='font-bol text-green-600 '>&#8377;{item?.total}</h1>
+                           <p className='font-bold'>12” {item?.subcategoryId?.subCategoryname} </p>
+                           <p>{item.additionalInfo?.detailinfo}</p>
                          </div>
  
                          <div className='col-auto' >
-                           <button onClick={()=>{handelDelete(subItem._id)}}>
+                           <button onClick={()=>{handelDelete(item._id)}}>
                            <MdDeleteForever className='text-xl text-red-400 ' />
                            </button>
                          </div>
                         </div>
                         </>
-                    ))
+                
 
 
                        ))}
                        
                        {/* total */}
-                         
-                         <div className='px-4 py-6 border-b'>
-                             <div className='flex items-center justify-between'>
-                                 <p className='font-bold'>Sub Total:</p>
-                                  <span className=' text-sm'>&#8377;&nbsp;{}</span>
-                             </div>
+                      { data ? (
+                        <>
+                        
+                                                  <div className='px-4 py-6 border-b'>
+                                                  <div className='flex items-center justify-between'>
+                                                      <p className='font-bold'>Sub Total:</p>
+                                                       <span className=' text-sm'>&#8377;&nbsp;{data?.subtotal}</span>
+                                                  </div>
+                     
+                                                  <div className='flex items-center justify-between py-2'>
+                                                      <p className='font-bold'>Discounts:</p>
+                                                       <span>{data?.discount}</span>
+                                                  </div>
+                     
+                                                  <div className='flex items-center justify-between'>
+                                                      <p className='font-bold'>Delivery Fee:</p>
+                                                       <span>{data?.deliveryFee}</span>
+                                                  </div>
+                                                  
+                                              </div>
+                                              </>
+                      ):(
+                        <>
+                           no item found
+                        </>
+                      )
+                    }   
 
-                             <div className='flex items-center justify-between py-2'>
-                                 <p className='font-bold'>Discounts:</p>
-                                  <span>-3.00</span>
-                             </div>
-
-                             <div className='flex items-center justify-between'>
-                                 <p className='font-bold'>Delivery Fee:</p>
-                                  <span>2.50</span>
-                             </div>
-                             
-                         </div>
 
                        {/* total-end */}
 
@@ -111,7 +129,7 @@ export default function MyBasket() {
                            <button className='flex items-center justify-between bg-orange-500 text-white font-bold rounded-lg'>
                              <div className='flex items-center px-4 py-3' >
                                 <p className='mr-4'>Total to pay</p> 
-                                <p className='text-xl' >&#8377;&nbsp;{}</p>
+                                <p className='text-xl' >&#8377;&nbsp;{data?.grandtotal}</p>
                                </div>
                              </button>
                        {/* button-2 */}
@@ -157,7 +175,7 @@ export default function MyBasket() {
                          <button className='flex items-center justify-between bg-green-600 text-white font-bold  rounded-lg'>
                              <div className='flex items-center px-4 py-3' >
                                 <p className='mr-10 text-2xl'><BsArrowRightCircleFill/></p> 
-                                <p className='text-xl' >Checkout!</p>
+                                <p className='text-xl' onClick={()=>navigate('/checkout')} >Checkout!</p>
                                </div>
                           </button>
                   </div>

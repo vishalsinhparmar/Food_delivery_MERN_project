@@ -81,12 +81,12 @@ export default function AdminAddSubCategory() {
 
     if (image.image && typeof image.image !== "string") {
       formdata.append('image', image.image);
+      console.log('form data for subcategory image', image.image)
     }
     if (image.coverimage && typeof image.coverimage !== "string") {
       formdata.append('coverimage', image.coverimage);
     }
     console.log("formdata from the subcategory update", formdata)
-    console.log('form data for subcategory', image.coverimage)
 
     try {
       if(id){

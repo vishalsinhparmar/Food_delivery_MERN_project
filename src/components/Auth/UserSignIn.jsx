@@ -12,7 +12,6 @@ function SignIn() {
   const [Form, setForm] = useState({ email: '', password: '' });
   const [Error, setError] = useState({email:"",password:""});
 
-  // const [error, setError] = useState(null); // Error state for displaying form errors
   const [loading,setloading] = useState(false);
   
   // const { setuserToken,Error,setError } = useContext(AuthContext);
@@ -28,10 +27,12 @@ function SignIn() {
     })
   };
 
+  //  error using a blur
   const Handleblur = (e)=>{
       const {name,value} = e.target;
       console.log('name from the Handleblur',name)
       if(name === "email" && !Verifyemail(value)){
+        
          setError({
           ...Error,
           email:"email is not provided basis"
@@ -47,6 +48,7 @@ function SignIn() {
 
   }
 
+  // form submit
   const submitForm = async (e) => {
     e.preventDefault();
     setloading(true)

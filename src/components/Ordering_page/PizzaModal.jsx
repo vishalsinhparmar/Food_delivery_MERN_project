@@ -7,9 +7,9 @@ import { getsubcategory } from '../adminDashboard/Apibaseurl';
 import { OrderContext } from './context/MyContext';
 import { addsubcategoryCartdata } from '../../services/Api';
 
-export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lPrice, setCount, setSelectedPizza }) {
+export default function PizzaModal() {
     // const [counts, setCounts] = useState({});
-    const { orderCopmonentValue, Subcategoryprice } = useContext(OrderContext)
+    const { orderCopmonentValue,setInstructionid, Subcategoryprice,NextsetmodelIsopen,handleModelisclose} = useContext(OrderContext)
     const [data, setdata] = useState([]);
    
     const [selectPizza, setselectpizza] = useState(null)
@@ -31,11 +31,13 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
             const res = await addsubcategoryCartdata(categoryItem)
             console.log('res is',res)
             if(res.success === true){
-               AddMOdelisOpen('pizza')
-               alert('added a success a subcategories to a cart')
+                alert('added a success a subcategories to a cart')
+                setInstructionid(res.data._id)
+                NextsetmodelIsopen(true)
+                handleModelisclose()
             }
          }catch(err){
-            console.log(err.message)
+            console.log("error occur in pizzamodel",err.response)
          }
     }
  
@@ -121,7 +123,7 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
                     <div>
                         <img src={Rectangle56} alt="" className='h-16 w-full object-cover' />
                         <div className='' >
-                            <MdCancel className='text-4xl text-orange-500 absolute top-0 right-0 bg-orange-50 cursor-pointer' onClick={closemodal} />
+                            <MdCancel className='text-4xl text-orange-500 absolute top-0 right-0 bg-orange-50 cursor-pointer' onClick={handleModelisclose} />
                         </div>
                     </div>
 
@@ -188,7 +190,7 @@ export default function PizzaModal({ closemodal, selectPrice, AddMOdelisOpen, lP
                     {/*for pay button-end  */}
 
                     <div className='flex  items-center justify-end mx-10'>
-                        <p className='underline underline-offset-2 cursor-pointer' onClick={closemodal} >Take me back</p>
+                        <p className='underline underline-offset-2 cursor-pointer' onClick={handleModelisclose} >Take me back</p>
 
                         <button className='flex items-center justify-between  bg-green-600 text-white font-bold  rounded-lg mx-2 cursor-pointer' onClick={handleNext} disabled={Object.keys(categorystate).length === 0}>
                             <div className='flex items-center justify-center px-4 py-3' >
