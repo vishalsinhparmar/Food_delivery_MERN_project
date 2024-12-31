@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import { BsArrowDownCircleFill, BsArrowRightCircleFill } from 'react-icons/bs'
 import { FaClock, FaShoppingBasket } from 'react-icons/fa'
 import { MdDeleteForever, MdStore } from 'react-icons/md'
@@ -6,10 +6,11 @@ import { RiEBike2Fill } from 'react-icons/ri'
 import { deleteCartdata, getCartData } from '../../../services/Api'
 import { MyContext } from '../../adminDashboard/contextprovider/Mycontext'
 import { useNavigate } from 'react-router-dom'
+import { OrderContext } from '../context/MyContext'
 
 export default function MyBasket() {
+  const {data,setdata} = useContext(OrderContext)
   const navigate = useNavigate()
-  const [data,setdata] = useState([]);
  const handelDelete = async(id) =>{
    const deletres = await deleteCartdata(id);
    console.log('deletres',deletres)
@@ -62,9 +63,7 @@ export default function MyBasket() {
                       </div>
                  </div>
                  <div className='py-4'>
-                  {data.Iteam && data.Iteam.map((item)=>(
-
-                   
+                  {data?.Iteam && data?.Iteam.map((item)=>(   
                       <>
                       <div className='grid grid-flow-col gap-2 border-b items-center px-4 py-4' > 
                        <div className='col-auto'>
@@ -185,5 +184,6 @@ export default function MyBasket() {
            {/* my  basket-end */}
     
     </div>
+    
   )
 }

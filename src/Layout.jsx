@@ -1,13 +1,7 @@
-import React from 'react'
 import NavabarApp from './components/Layout/NavabarApp'
-import Hersection from './components/Layout/Hersection'
-import Exclusicedeal from './components/Layout/Exclusicedeal'
-import Categories from './components/Layout/Categories'
-import Restaurant from './components/Layout/Restaurant'
-import Order from './components/Layout/Order'
-import AboutUs from './components/Layout/AboutUs'
 import Footer from './components/Layout/Footer'
 import { Outlet } from 'react-router-dom'
+import { OrderProvider } from './components/Ordering_page/context/MyContext'
 
 export default function Layout() {
   return (
@@ -19,7 +13,9 @@ export default function Layout() {
           <Restaurant/>
           <Order/>
           <AboutUs/> */}
+          <OrderProvider>
             <Outlet/>
+          </OrderProvider>
           <Footer/>
    </>
   )

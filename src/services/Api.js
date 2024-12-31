@@ -82,3 +82,15 @@ export const UserSignUp = async (formdata)=>{
     return response.data;
  }
  
+
+//  order api
+
+export const razorpayOrderid = async ()=>{
+   const response = await api.post(`/cart/create_order`)
+   return response.data;
+}
+export const chekOut= async (paymentData)=>{
+   console.log("paymentData",paymentData)
+   const response = await api.post(`/cart/verify_order`,paymentData)
+   return response.data;
+}

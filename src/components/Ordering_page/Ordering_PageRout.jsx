@@ -4,13 +4,11 @@ import OrderingPageDetail from './OrderingPageDetail'
 import RestaurantLocation from '../Restaurant/RestaurantLocation'
 import CustomerReviews from '../Restaurant/CustomerReviews'
 import SimiliarRestaurant from '../Restaurant/SimiliarRestaurant'
-import Footer from '../Layout/Footer'
 import InformationAbout from '../Restaurant/InformationAbout'
-import { OrderProvider } from './context/MyContext'
 
 export default function Ordering_PageRout() {
   return (
-    <OrderProvider>
+    <>
       
         <Tandoori_Pizza/>
          <OrderingPageDetail/>
@@ -19,6 +17,6 @@ export default function Ordering_PageRout() {
         <CustomerReviews/>
         <SimiliarRestaurant/>
        
-    </OrderProvider>
+        </>
   )
 }

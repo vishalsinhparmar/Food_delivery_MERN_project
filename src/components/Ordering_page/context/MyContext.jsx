@@ -2,6 +2,8 @@ import { createContext, useState } from "react"
 
 const OrderContext = createContext();
 const OrderProvider = ({ children }) => {
+  const [data,setdata] = useState([]);
+
   const [orderCopmonentValue, SetOrderComponentValue] = useState({ name: "", id: null });
   const [Subcategoryprice, setSubcategoryprice] = useState({ price: 0 })
   const [modelIsopen, setmodelisOpen] = useState(false);
@@ -43,7 +45,9 @@ const OrderProvider = ({ children }) => {
       modelIsopen,
       nextmodalIsopen,
       handleModelisopen,
-      NextsetmodelIsopen
+      NextsetmodelIsopen,
+      setdata,
+      data
     }} >
       {children}
     </OrderContext.Provider>
