@@ -1,11 +1,12 @@
 import { MdOutlineVerified } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import RazorpayPayment from "../../../utils/PaymentGateway.js";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { OrderContext } from "../context/MyContext";
+import { addAddress, getAddressdetail, selectAddaddressid } from "../../../services/Api.js";
 
 const OrderPage = () => {
-  const  handleformsubmit = RazorpayPayment()
+  const handleformsubmit = RazorpayPayment()
   const [address, setAddress] = useState({});
   console.log("address is", address)
   const [savedAddress, setsavedAddress] = useState([]);
@@ -24,36 +25,65 @@ const OrderPage = () => {
     ))
   }
 
-  const handleAddress = () => {
+  const handleAddress = async () => {
     if (address.address.trim() === "") {
-      
-     alert('fill the address first') ;
-     return;
-     
+
+      alert('fill the address first');
+      return;
+
     }
 
-    setsavedAddress((savedAddress) => (
-      [
-        ...savedAddress,
-        address
-      ]
-    ))
+    try {
+      const resAddress = await addAddress(address);
+      if (resAddress.success === true) {
+        alert('address added success')
+      }
 
-    //  setAddress((prev)=>(
-    //   {
-    //     ...prev
-    //   }
-    //  ))
+    } catch (err) {
+      console.log('error occur in the addAddress')
+    }
 
   }
 
 
+  const addressDetail = async () => {
+    try {
+      const res = await getAddressdetail();
+      console.log("res of addressDetail", res)
+      if (res.success === true) {
+        setsavedAddress(res.data)
+      }
+    } catch (err) {
+      console.log("error in the fetch address", err.message)
+    }
+  }
+  useEffect(() => {
 
-  const handleSelectAddress = (add) => {
-    setSelectedAddress(add)
+    addressDetail()
+  }, [])
+
+
+
+  const handleSelectAddress = async (selectId) => {
+      const addressId = {
+        addressId:selectId
+      }
+    try {
+      const resAddress = await selectAddaddressid(addressId);
+      if (resAddress.success === true) {
+        alert('address added success')
+        setSelectedAddress(addressId)
+      }
+
+    } catch (err) {
+      console.log('error occur in the addAddress',err.response)
+    }
+     
   }
 
   // console.log("savedAddress",savedAddress)
+
+  // api of address
 
 
 
@@ -100,12 +130,12 @@ const OrderPage = () => {
 
 
             {savedAddress.length > 0 ? (
-              savedAddress.map((add, index) => (
+              savedAddress.map((adr, index) => (
                 <>
-                  <div className={`border rounded-md p-4 my-2 ${add.address === selectAddress ? "bg-green-100" : ""}`} key={index}>
-                    <p>{add.address}</p>
+                  <div className={`border rounded-md p-4 my-2 ${adr._id == selectAddress.addressId? "bg-green-100" : ""}`} key={index}>
+                    <p>{adr.address}</p>
                     <button
-                      onClick={() => handleSelectAddress(add.address)}
+                      onClick={() => handleSelectAddress(adr._id)}
                       className="bg-green-500 text-white px-3 py-1 rounded-md mt-2"
                     >
                       Deliver Here
@@ -196,9 +226,9 @@ const OrderPage = () => {
 
       </div>
       <div className="w-full flex items-end">
-        <button onClick={handleformsubmit} className={`${selectAddress ? "bg-blue-600" : "bg-slate-200 "} rounded-md px-4 py-2 text-white cursor-pointer`}
+        <button onClick={handleformsubmit} className={`${selectAddress.addressId ? "bg-blue-600" : "bg-slate-200 "} rounded-md px-4 py-2 text-white cursor-pointer`}
           disabled={!selectAddress}>
-             Pay Now
+          Pay Now
         </button>
       </div>
     </section>

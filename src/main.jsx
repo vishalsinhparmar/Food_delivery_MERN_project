@@ -19,6 +19,7 @@ import NewPassword from './components/Auth/NewPassword';
 import ForgotPassword from './components/Auth/ForgottePassword';
 import VerifyuserBymail from './components/Auth/VerifyUser';
 import OrderPage from './components/Ordering_page/cart/OrderPage';
+import Userprofile from './components/Auth/Profile';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -31,6 +32,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route  path='/restaurant' element={<RestaurantRout/>}/>
        <Route  path='/order-detail' element={<OrderingPageDetail/>}/>
        <Route  path='/checkout' element={<OrderPage/>}/>
+       <Route  path='/profile' element={<Userprofile/>}/>
+
 
         
         

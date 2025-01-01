@@ -94,3 +94,19 @@ export const chekOut= async (paymentData)=>{
    const response = await api.post(`/cart/verify_order`,paymentData)
    return response.data;
 }
+
+// adresses
+
+export const addAddress = async (address)=>{
+   const response = await api.post(`/cart/addAddress`,address)
+   return response.data;
+}
+export const getAddressdetail = async ()=>{
+   const response = await api.get(`/cart/showAddress`)
+   return response.data;
+}
+
+export const selectAddaddressid = async (addressId)=>{
+   const response = await api.post(`/cart/selectAddress`,addressId)
+   return response.data;
+}
