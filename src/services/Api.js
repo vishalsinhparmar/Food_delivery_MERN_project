@@ -110,3 +110,10 @@ export const selectAddaddressid = async (addressId)=>{
    const response = await api.post(`/cart/selectAddress`,addressId)
    return response.data;
 }
+
+// order
+
+export const showOrderDetail = async ()=>{
+   const response = await api.get(`/cart/userOreder`)
+   return response.data;
+}

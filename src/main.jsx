@@ -20,6 +20,11 @@ import ForgotPassword from './components/Auth/ForgottePassword';
 import VerifyuserBymail from './components/Auth/VerifyUser';
 import OrderPage from './components/Ordering_page/cart/OrderPage';
 import Userprofile from './components/Auth/Profile';
+import Addresslayout from './components/Layout/profile/AddresPage';
+import Order from './components/Layout/Order';
+import Favourites from './components/Layout/profile/Favourites';
+import OrderUk from './components/Layout/profile/OrderUK';
+import OrderDetail from './components/Layout/profile/Orderdetail';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -32,9 +37,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route  path='/restaurant' element={<RestaurantRout/>}/>
        <Route  path='/order-detail' element={<OrderingPageDetail/>}/>
        <Route  path='/checkout' element={<OrderPage/>}/>
-       <Route  path='/profile' element={<Userprofile/>}/>
-
-
+     
+     {/* profille */}
+       
+     <Route path="/profile" element={<Userprofile/>}>
+                    <Route path="address" element = {<Addresslayout/>} />
+                    <Route path="Orders" element = {<OrderDetail/>} />
+                    <Route path="Favourites" element = {<Favourites/>} />
+                    <Route path="OrderUk" element = {<OrderUk/>} />
+      </Route>
         
         
        <Route path='/auth' element={<AuthRoute/>}>
