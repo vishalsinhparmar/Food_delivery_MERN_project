@@ -104,8 +104,8 @@ export default {
     },
   },
   plugins: [
-    require('tailwind-scrollbar'),
-    require('tailwind-scrollbar-hide')
+    import('tailwind-scrollbar'),
+    import('tailwind-scrollbar-hide')
   ],
 }
 
