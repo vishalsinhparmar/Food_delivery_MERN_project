@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 function NewPassword() {
 
   const { token } = useParams();
+  console.log("token is provide by new passsword",token)
   const navigate = useNavigate();
   const [userPassword, setUserPassword] = useState('');
   const [error, setError] = useState()
@@ -27,24 +28,20 @@ function NewPassword() {
     console.log('userPassword', userPassword);
     setLoading(true)
     try {
-        const resetpassword = {newpassword: userPassword}
+        const resetpassword = {newpassword:userPassword}
         const res = await ResetPassword(resetpassword,token)
+        console.log("res in resetpassword",res)
 
+      if (res.success === true) {
 
-      if (res.ok) {
-        const data = await res.json();
-        console.log('the data is', data);
-        alert(`The message is: ${data.message}`);
         Swal.fire('Update','password update a successfully')
-        navigate('/SignIn')
+        navigate('/auth')
          
       } else {
-        const data = await res.json();
-        console.log('the error', data.err);
-        setError('Something went wrong. Please try again.')
+          setError('Something went wrong. Please try again.')
       }
     } catch (err) {
-      console.log('The error occurred in resetting password', err.message);
+      console.log('The error occurred in resetting password', err.response);
       setError('Something went wrong. Please try again.')
 
     } finally {
@@ -62,15 +59,7 @@ function NewPassword() {
                {error && <p className='text-red-400 text-center mb-10'>{error}</p>}
      
                <div>
-                 {/* <input
-                   type="password"
-                   name="password"
-                   placeholder="Enter your new password"
-                   required
-                   // value={userPassword}
-                   onChange={handleChange}
-                   className="w-full p-3 text-xl text-blue-600 bg-white border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                 /> */}
+               
                      <PasswordComponets
                    onChangefn = {handleChange} 
                    valName = {userPassword} 

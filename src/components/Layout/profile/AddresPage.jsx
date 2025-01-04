@@ -3,54 +3,73 @@ import { FaHome } from "react-icons/fa";
 import { getAddressdetail } from "../../../services/Api";
 
 const Addresslayout = () => {
+    const [addressData, setsavedAddress] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const [addressData, setsavedAddress] = useState([])
     const addressDetail = async () => {
         try {
             const res = await getAddressdetail();
-            console.log("res of addressDetail", res)
-            if (res.success === true) {
-                setsavedAddress(res.data)
+            if (res.success) {
+                setsavedAddress(res.data);
+            } else {
+                setError("No address found.");
             }
         } catch (err) {
-            console.log("error in the fetch address", err.message)
+            setError("Error fetching address details. Please try again.");
+            console.log("Error in fetching address", err.message);
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
+        addressDetail();
+    }, []);
 
-        addressDetail()
-    }, [])
     return (
-        <div className=" bg-slate-400 rounded-md p-4">
-            <h1>Address page</h1>
-            <div className="border-slate-300 p-2">
-                {
-                    addressData.length === 0 ? (
-                        <p className="text-xl font-medium"> NO address found </p>
+        <div className=" max-w-7xl mx-auto p-6 bg-gray-50 rounded-md">
+            {/* Page Header */}
+            <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Your Saved Addresses</h1>
+
+            {/* Conditional Content */}
+            {loading ? (
+                <div className="flex justify-center items-center min-h-[50vh]">
+                    <div className="text-lg font-semibold animate-pulse">Loading...</div>
+                </div>
+            ) : error ? (
+                <div className="flex justify-center items-center min-h-[50vh]">
+                    <div className="text-lg font-semibold text-red-600">{error}</div>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* No Address Found */}
+                    {addressData.length === 0 ? (
+                        <div className="col-span-full text-center text-xl font-medium text-gray-500">
+                            No address found.
+                        </div>
                     ) : (
-                        addressData && addressData.map((item, index) => (
-                            <div key={item._id} className="bg-white rounded-md my-2 p-4">
-                                <div className=" rounded-md bg-white" >
-                                    <label htmlFor="address" className="text-2xl flex items-center">
-                                        <FaHome className="text-2xl mr-2" />
-                                     Address
-                                    </label>
-
+                        // Address Cards
+                        addressData.map((item) => (
+                            <div
+                                key={item._id}
+                                className="bg-white border border-gray-200 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                            >
+                                {/* Address Header */}
+                                <div className="flex items-center mb-4">
+                                    <FaHome className="text-4xl text-blue-500 mr-3" />
+                                    <h2 className="text-xl font-bold text-gray-800">Address</h2>
                                 </div>
 
-                                <div className="flex flex-row  justify-items-center ">
-                                    <p className="text-sm text-center font-normal">{item.address}</p>
-                                </div>
+                                {/* Address Details */}
+                                <p className="text-gray-600 text-sm leading-relaxed">{item.address}</p>
                             </div>
                         ))
-
-                    )
-                }
-
-            </div>
+                    )}
+                </div>
+            )}
         </div>
-    )
+    );
 };
 
 export default Addresslayout;

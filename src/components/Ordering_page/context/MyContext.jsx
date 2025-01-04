@@ -1,10 +1,15 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 
 const OrderContext = createContext();
 const OrderProvider = ({ children }) => {
   const [data,setdata] = useState([]);
-
-  const [orderCopmonentValue, SetOrderComponentValue] = useState({ name: "", id: null });
+  // const [category,setCategory] = useState();
+    const [category,setcategoryData] = useState([]);
+  
+  console.log("category is context",category[0])
+  const [orderCopmonentValue, SetOrderComponentValue] = useState(
+                                                                 { name:category.length  > 0 ? category[0].Categoryname:"",
+                                                                   id:category.length  > 0 ? category[0]._id:null});
   const [Subcategoryprice, setSubcategoryprice] = useState({ price: 0 })
   const [modelIsopen, setmodelisOpen] = useState(false);
   const [nextmodalIsopen, NextsetmodelIsopen] = useState(false);
@@ -19,8 +24,17 @@ const OrderProvider = ({ children }) => {
   const handleModelisclose = () => {
     setmodelisOpen(!modelIsopen)
   }
+  
+  useEffect(() => {
+    if (category.length > 0) {
+      SetOrderComponentValue({
+        name: category[0].Categoryname,
+        id: category[0]._id,
+      });
+    }
+  }, [category]);
 
-  const handelSetOrderComponentValue = (menuItem, id) => {
+  const handelSetOrderComponentValue = (menuItem , id) => {
     console.log('id is', id)
     console.log("menuItem", menuItem)
     SetOrderComponentValue((prevState) => ({
@@ -38,6 +52,7 @@ const OrderProvider = ({ children }) => {
       handelSetOrderComponentValue,
       orderCopmonentValue,
       setSubcategoryprice,
+      SetOrderComponentValue,
       Subcategoryprice,
       setInstructionid,
       instructionId,
@@ -47,6 +62,8 @@ const OrderProvider = ({ children }) => {
       handleModelisopen,
       NextsetmodelIsopen,
       setdata,
+      setcategoryData,
+      category,
       data
     }} >
       {children}

@@ -9,14 +9,28 @@ import { OrderContext } from './context/MyContext'
 
 
 export default function OrderSidebarApp() {
-  const {orderCopmonentValue,handelSetOrderComponentValue} = useContext(OrderContext)
-  const [category,setcategoryData] = useState([]);
+  const {orderCopmonentValue,handelSetOrderComponentValue,setcategoryData,category,SetOrderComponentValue} = useContext(OrderContext);
+  const [loading,setloading] = useState(false)
+
+  console.log("orderCopmonentValue",orderCopmonentValue)
+  // const [category,setcategoryData] = useState([]);
+  console.log("category from the sidebar",category)
   const FetchcategoryData = async ()=>{
+  try{
+    setloading(true)
     const res = await getcategory();
     console.log("res in the FetchcategoryData",res)
     if(res.success === true){
-      setcategoryData(res.data)
+      setcategoryData(res.data);
+      
+      
     }
+  } catch(err){
+     console.log("error hapen in the categoryFetch")
+  } finally{
+        setloading(false)
+      }
+ 
    
   }
 
@@ -28,6 +42,7 @@ export default function OrderSidebarApp() {
         <div className='space-y-4' >
           <div className='border rounded-lg bg-Mainccolor '>
             <ul className=''>
+            <p>{loading ? "loading":""}</p>
                 <li className='my-10 flex items-center ps-10'>
                   <h1 className='font-bold text-2xl flex items-center' >
                     <BiSolidFoodMenu className='mr-4 text-3xl'/>
@@ -38,9 +53,10 @@ export default function OrderSidebarApp() {
                 </li>
            {category.map((item)=>(
             <>
+             
              <li className='my-6 font-bold'>
              <button 
-             className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue ===`${item.Categoryname}` ? 'bg-black text-white ':''}`} 
+             className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue.name ===`${item.Categoryname}` ? 'bg-black text-white ':''}`} 
              onClick={()=>handelSetOrderComponentValue(item.Categoryname,item._id)}>
               {item.Categoryname}
              </button>

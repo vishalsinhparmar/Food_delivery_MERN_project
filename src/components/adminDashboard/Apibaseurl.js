@@ -76,3 +76,8 @@ export const  categoryItemUpdatebyId = async (id,formdata)=> {
    const response = await axios.patch(`${api_base_url}/categoryItemupdatebyId/${id}`,formdata)
    return response.data
 }
+
+export const  showOrderDetail = async (id,formdata)=> {
+   const response = await axios.patch(`${api_base_url}/categoryItemupdatebyId/${id}`,formdata)
+   return response.data
+}

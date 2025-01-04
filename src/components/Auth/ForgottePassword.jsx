@@ -20,21 +20,21 @@ function ForgotPassword() {
     console.log('userEmail', userEmail);
     setloading(true)
     try {
-        const userEmail = { email: userEmail }
-        const res = await ForgottePassword(userEmail)
-   
-      if (res.ok) {
-        const data = await res.json();
-        console.log('the data is', data);
-        navigate('/newPassword');
-        alert(`the message is ${data.message}`);
+        const Email = { email: userEmail }
+        const res = await ForgottePassword(Email)
+        console.log('the data is', res);
+        
+      if (res.success === true) {
+        alert('email are verify thanks')
+        navigate('/auth/newPassword');
+     
       } else {
         const data = await res.json();
         console.log('the error', data.err);
         setError('Something went wrong please try again')
       }
     } catch (err) {
-      console.log('the error occur in the send mail', err.message);
+      console.log('the error occur in the send mail', err.response);
       setError('Something went wrong please try again')
 
     } finally {
@@ -48,7 +48,7 @@ function ForgotPassword() {
         <p className="text-center text-yellow-400 text-3xl font-semibold">Forgot Password</p>
         <hr className="w-28 mx-auto my-4 border-t-2 border-yellow-300" />
         <form onSubmit={formPassword} className="flex flex-col space-y-4">
-           {/* {error && <p className="text-red-500 text-center mb-4"></p>} */}
+           {error && <p className="text-red-500 text-center mb-4"></p>}
           
            <div>
             <input

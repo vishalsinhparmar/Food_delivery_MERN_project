@@ -2,39 +2,47 @@ import { FaApple, FaGooglePay } from "react-icons/fa";
 
 const OrderUk = () => {
     return (
-        <div className="py-3">
-            <h1 className="text-orange-600 font-semibold">Order Uk</h1>
+        <div className="py-6 px-4 md:px-8 lg:px-16 bg-gray-50 min-h-screen">
+            {/* Header */}
+            <h1 className="text-orange-600 font-bold text-2xl text-center mb-6">
+                Order UK
+            </h1>
 
+            {/* Company Info */}
+            <div className="flex items-center justify-center mb-8">
+                <p className="text-center text-gray-600 max-w-md">
+                    Company # 490039-445, Registered with House of Companies.
+                </p>
+            </div>
 
-            <div>
-                <div className='flex items-center w-full justify-center'>
-                    <p className='mt-5 justify-item text-center max-w-42'>Company # 490039-445, Registered with House of companies.</p>
+            {/* Download Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                {/* App Store Button */}
+                <button
+                    onClick={() => window.location.href = "https://apps.apple.com"}
+                    className="flex items-center px-4 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-800 transition-transform transform hover:scale-105"
+                >
+                    <FaApple className="h-10 w-10 mr-3" />
+                    <div className="text-left">
+                        <p className="text-sm">Download on the</p>
+                        <p className="text-xl font-semibold">App Store</p>
+                    </div>
+                </button>
 
-                </div>
-                {/* button */}
-                <div className='flex  justify-center mt-5'>
-                    <button onClick={() => window.location.href = "https://apps.apple.com"}
-                        className="flex items-center px-2 py-2 bg-black text-white rounded-md hover:bg-gray-800">
-                        <FaApple className="h-8 w-8 mr-2" />
-
-                        <div className="text-left">
-                            <p className="text-xs">Download on the</p>
-                            <p className="text-lg font-semibold">App Store</p>
-                        </div>
-                    </button>
-
-                    <button className='bg-black text-white  px-2 py-2 border flex justify-center items-center rounded-md '>
-                        <FaGooglePay className='h-6 w-6 mr-3' />
-                        <div className='text-left'>
-                            <p className='text-xs' >GET IT ON</p>
-                            <p className='text-lg font-semibold'>Google Play</p>
-                        </div>
-                    </button>
-
-                </div>
+                {/* Google Play Button */}
+                <button
+                    onClick={() => window.location.href = "https://play.google.com/store"}
+                    className="flex items-center px-4 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-800 transition-transform transform hover:scale-105"
+                >
+                    <FaGooglePay className="h-10 w-10 mr-3" />
+                    <div className="text-left">
+                        <p className="text-sm">GET IT ON</p>
+                        <p className="text-xl font-semibold">Google Play</p>
+                    </div>
+                </button>
             </div>
         </div>
-    )
+    );
 };
 
 export default OrderUk;

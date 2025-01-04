@@ -93,9 +93,9 @@ export default function PizzaDetailCard() {
                 {item.pricing.map((price) => (
                   <>
 
-                    <div className="flex flex-col  bg-white items-center justify-center">
-                      <div className={`flex w-full border p-2 items-center justify-center bg-slate-100 rounded-md ${Subcategoryprice.price ? "":"bg-black text-white"} `} onClick={() => HandelSelectedButton(price.price)}>
-                        <p className='lg:mr-5 mr-2 '>{price.size}</p>
+                    <div className="flex flex-col  bg-white items-center  justify-center">
+                      <div className={`flex w-full border p-2 items-center justify-between  hover:bg-slate-300 hover:text-white  bg-slate-100 rounded-md ${Subcategoryprice.price ? "":"bg-black "} `} onClick={() => HandelSelectedButton(price.price)}>
+                        <p className='lg:mr-5 mr-2 text-black  '>{price.size}</p>
                         <p className='py-2 lg:px-4 px-2 bg-green-700 text-white font-bold rounded-md'>&#8377;&nbsp;{price.price}</p>
                       </div>
 

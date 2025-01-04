@@ -14,14 +14,12 @@ import Home from './components/Layout/Home';
 import AuthRoute from './components/Auth/AuthRoute';
 import SignIn from '../src/components/Auth/UserSignIn';
 import SignUp from './components/Auth/UserSignUp';
-import { ForgottePassword, VerifyUser } from './services/Api';
 import NewPassword from './components/Auth/NewPassword';
 import ForgotPassword from './components/Auth/ForgottePassword';
 import VerifyuserBymail from './components/Auth/VerifyUser';
-import OrderPage from './components/Ordering_page/cart/OrderPage';
+import OrderPage from './components/Ordering_page/cart/Order/OrderPage';
 import Userprofile from './components/Auth/Profile';
 import Addresslayout from './components/Layout/profile/AddresPage';
-import Order from './components/Layout/Order';
 import Favourites from './components/Layout/profile/Favourites';
 import OrderUk from './components/Layout/profile/OrderUK';
 import OrderDetail from './components/Layout/profile/Orderdetail';
@@ -41,10 +39,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
      {/* profille */}
        
      <Route path="/profile" element={<Userprofile/>}>
-                    <Route path="address" element = {<Addresslayout/>} />
-                    <Route path="Orders" element = {<OrderDetail/>} />
-                    <Route path="Favourites" element = {<Favourites/>} />
-                    <Route path="OrderUk" element = {<OrderUk/>} />
+                    <Route index element = {<OrderDetail/>} />
+                    <Route path="address" index element = {<Addresslayout/>} />
+                    <Route path="payments" element = {<Favourites/>} />
+                    <Route path="favourites" element = {<OrderUk/>} />
       </Route>
         
         

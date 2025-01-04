@@ -78,7 +78,7 @@ export const UserSignUp = async (formdata)=>{
  }
 
  export const ResetPassword = async (password,token)=>{
-    const response = await api.post(`/auth/resetpassword/:${token}`,password)
+    const response = await api.post(`/auth/resetpassword/${token}`,password)
     return response.data;
  }
  
@@ -115,5 +115,11 @@ export const selectAddaddressid = async (addressId)=>{
 
 export const showOrderDetail = async ()=>{
    const response = await api.get(`/cart/userOreder`)
+   return response.data;
+}
+
+
+export const showUserdata = async ()=>{
+   const response = await api.get(`/auth/user`)
    return response.data;
 }

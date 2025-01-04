@@ -170,11 +170,11 @@ export default function MyBasket() {
 
 
                     {/*  */}
-                 <div className='flex flex-col  py-4 mx-auto w-64 '>
+                 <div className='flex flex-col  py-4 mx-auto w-64 ' onClick={()=>navigate('/checkout')}>
                          <button className='flex items-center justify-between bg-green-600 text-white font-bold  rounded-lg'>
                              <div className='flex items-center px-4 py-3' >
                                 <p className='mr-10 text-2xl'><BsArrowRightCircleFill/></p> 
-                                <p className='text-xl' onClick={()=>navigate('/checkout')} >Checkout!</p>
+                                <p className='text-xl'  >Checkout!</p>
                                </div>
                           </button>
                   </div>
