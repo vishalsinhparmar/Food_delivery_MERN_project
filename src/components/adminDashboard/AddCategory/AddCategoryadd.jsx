@@ -25,8 +25,8 @@ const options = [
   { id: 9, value: 'Hot drinks', label: 'Hot drinks' },
   { id: 10, value: 'Sauces', label: 'Sauces' },
   { id: 11, value: 'Orbit®', label: 'Orbit®' },
-
-
+  { id: 12, value: 'Burgers', label: 'Burgers' },
+  { id: 13, value: 'Fries', label: 'Fries' },
 ]
 
 console.log('category from Categorey componets',product)

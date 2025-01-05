@@ -12,7 +12,7 @@ import PizzaDetailCard from './PizzaDetailCard';
 
 export default function OrderingPageDetail() {
   const [ValueforToggelMenu, setMenuToggel] = useState(false);
-  const { orderCopmonentValue,category,SetOrderComponentValue} = useContext(OrderContext)
+  const { orderCopmonentValue} = useContext(OrderContext)
   const HangelToggelMenu = () => {
     setMenuToggel(!ValueforToggelMenu)
   }
@@ -72,7 +72,7 @@ export default function OrderingPageDetail() {
                     <BiSolidFoodMenu className='mr-4 text-3xl' />
 
                     Menu
-                    <p className='font-normal text-sm flex items-center' >{orderCopmonentValue.name}
+                    <p className='font-normal text-sm flex items-center' >{orderCopmonentValue?.name}
                       <BsArrowDownCircleFill className='ml-5 text-gray-300' />
                     </p>
                   </h1>

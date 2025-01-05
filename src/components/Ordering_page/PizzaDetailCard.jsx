@@ -10,15 +10,14 @@ import { OrderContext } from './context/MyContext'
 
 export default function PizzaDetailCard() {
 
-  const { orderCopmonentValue ,Subcategoryprice,setSubcategoryprice,handleModelisopen,modelIsopen,nextmodalIsopen,handleModelisclose} = useContext(OrderContext)
-  const [data, setdata] = useState([]);
+  const { orderCopmonentValue,categoryData ,setdataCategory,Subcategoryprice,setSubcategoryprice,handleModelisopen,modelIsopen,nextmodalIsopen,handleModelisclose} = useContext(OrderContext)
 
   useEffect(() => {
     const FetchcategoryItem = async () => {
       console.log("category", orderCopmonentValue.id)
       const res = await getfoodcategory(orderCopmonentValue.id);
       if (res.success === true) {
-        setdata(res.data.categoryIteam)
+        setdataCategory(res.data.categoryIteam)
       }
       console.log("res of the categoryItem", res)
     }
@@ -66,7 +65,7 @@ export default function PizzaDetailCard() {
 
 
         <div className='grid grid-flow-row gap-5'>
-          {data.map((item) => (
+          {categoryData.map((item) => (
             <div className='bg-white rounded-lg shadow-xl p-4 border cursor-pointer' key={item.id} >
               <div className='flex items-center justify-items-center justify-between gap-10'>
                 <div className='felx items-center justify-between '>

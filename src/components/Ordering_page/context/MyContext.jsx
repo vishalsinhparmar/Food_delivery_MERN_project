@@ -5,7 +5,8 @@ const OrderProvider = ({ children }) => {
   const [data,setdata] = useState([]);
   // const [category,setCategory] = useState();
     const [category,setcategoryData] = useState([]);
-  
+    const [categoryData, setdataCategory] = useState([]);
+
   console.log("category is context",category[0])
   const [orderCopmonentValue, SetOrderComponentValue] = useState(
                                                                  { name:category.length  > 0 ? category[0].Categoryname:"",
@@ -64,7 +65,9 @@ const OrderProvider = ({ children }) => {
       setdata,
       setcategoryData,
       category,
-      data
+      data,
+      setdataCategory,
+      categoryData
     }} >
       {children}
     </OrderContext.Provider>
