@@ -62,8 +62,8 @@ export const UserSignUp = async (formdata)=>{
     return response.data;
  }
 
- export const VerifyUser = async ()=>{
-    const response = await api.get('/auth/verifyemail/:token')
+ export const VerifyUser = async (token)=>{
+    const response = await api.get(`/auth/verifyemail/${token}`)
     return response.data;
  }
 

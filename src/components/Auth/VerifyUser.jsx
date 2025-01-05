@@ -14,11 +14,13 @@ function VerifyuserBymail() {
     console.log('verifyToken',token)
     try {
         const res = await VerifyUser(token)
-   
-        const data = await res.json();
-        setdata(data);
+         console.log("res of the verifyEmail",res)
+        if(res.success === true){
+          alert("user verified")
+          setdata(res);
+        }
     } catch (err) {
-        console.log(err);
+        console.log("error occur in the",err.response);
     }
 };
 
@@ -38,11 +40,11 @@ useEffect(() => {
        
         <div className='max-w-full mx-auto items-center flex justify-center my-4 '>
         <div className='flex  flex-col justify-center items-center h-56 border shadow-lg border-dotted px-4 w-full  rounded-lg bg-blue-50 '>
-            <p className='text-black font-semibold text-xl'>{data?.message}</p>
+            <p className='text-black font-semibold text-xl text-center'>{data?.data}</p>
              <span><FcApproval className=' text-6xl'/></span>
             <TfiEmail className='text-4xl text-blue-700 mt-4'/>
          {/* <p>{data?.message}</p> */}
-             <span className='text-sm font-semibold  underline underline-offset-4 mt-4'><Link to="/SignIn">You can SignIn now</Link></span>
+             <span className='text-sm font-semibold  underline underline-offset-4 mt-4'><Link to="/auth">You can SignIn now</Link></span>
          </div>
          </div>
         
