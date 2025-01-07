@@ -9,32 +9,25 @@ import { useNavigate } from 'react-router-dom'
 import { OrderContext } from '../context/MyContext'
 
 export default function MyBasket() {
-  const {data,setdata} = useContext(OrderContext)
-  const navigate = useNavigate()
- const handelDelete = async(id) =>{
-   const deletres = await deleteCartdata(id);
-   console.log('deletres',deletres)
+  const {data,setdata,fetchCartData} = useContext(OrderContext)
+  const navigate = useNavigate();
 
-   const updata = data.filter((data)=> id !== data._id )
-   console.log(updata)
-   setdata(updata)
+ const handelDelete = async(id) =>{
+  try{
+    const deletres = await deleteCartdata(id);
+    console.log('deletres',deletres)
+ 
+    const updata = data.filter((data)=> data._id !== id )
+    console.log("delete data by id",updata)
+    setdata(updata)
+    await fetchCartData()
+  }catch(err){
+    console.log("error occur in the deleteCategory",err.response)
+  }
 
  }
   
- const fetchCartData = async ()=>{
-        try{
-         const res = await getCartData();
-         console.log("res of cart",res.data)
-         if(res.success === true){
-             setdata(res.data)
-            //  alert('data fectched success')
-         }
-         console.log("res from the cartData",res)
-        }catch(err){
-          console.log("error occur in the basket fetchCartData",err.message)
-      }
-      
-    }
+
      
   
 

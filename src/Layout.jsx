@@ -11,8 +11,7 @@ export default function Layout() {
    
           <OrderProvider>
             
-             <div>Testing Outlet Rendering</div>
-            <Outlet/>
+                        <Outlet/>
              
           </OrderProvider>
           <Footer/>

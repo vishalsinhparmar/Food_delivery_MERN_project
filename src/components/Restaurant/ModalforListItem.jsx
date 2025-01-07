@@ -5,50 +5,72 @@ import { MdCancel, MdNoCell } from 'react-icons/md'
 import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { ProductContext } from './Context/ProductContext';
+import { getfoodcategoryItembyid } from '../adminDashboard/Apibaseurl';
+import { addsubcategoryCartdata } from '../../services/Api';
 
 export default function ModalforListItem() {
-  
-  const { modalData,handelModelIsclose} = useContext(ProductContext)
+  const [modalData,setModaldata] = useState(null);
+  const {handelModelIsclose,modaldataId} = useContext(ProductContext);
 
-  const HandelAddcart = ()=>{
+  const fetchDataModel = async ()=>{
+    try{
+       
+      const res = await getfoodcategoryItembyid(modaldataId);
+       console.log("modaldataId",modaldataId)
+      if(res.success === true){
+        
+         setModaldata(res.data)
+      } 
+
+  }catch(err){
+     console.log("err is happen in the fectchModldata",err.response)
+  }
+  }
+  console.log("modalData from model",modalData)
+  const HandelAddcart = async ()=>{
 
     setTimeout(()=>{
    handelModelIsclose(true);
   },1500)
 
-    // const cart = {
-    //   Categorey_Name:Categorey_Name.current.innerText,
-    //   Categorey_Details:Categorey_Name.current.innerText,
-    //   pricing:Small_pricing.current.innerText,
+  const categoryItem  = {
+    qty:1,
+    total:modalData?.pricing[1]?.price,
+    subcategoryId:null
+ };
 
-    // }
+
   
 
-    axios.post(`http://localhost:4000/BaketData`,cart).then(()=>{
-      // passed message
-      Swal.fire({
-        position: "top-bottom",
-        icon: "success",
-        title: "Your item has been saved",
-        showConfirmButton: false,
-        timer: 1000
-      });
-    })
+           try{
+               const res = await addsubcategoryCartdata(categoryItem)
+               console.log('res is',res)
+               if(res.success === true){
+                   alert('added a success a subcategories to a cart')
+                    
+                   handelModelIsclose()
+               }
+            }catch(err){
+               console.log("error occur in pizzamodel",err.response)
+            }
   }
+
+  useEffect(()=>{
+    fetchDataModel()
+  },[modaldataId])
 
   return (
     <>
    
     <div className=' inset-0   bg-black  w-450 rounded-md border shadow-xl  text-white relative px-3'>
-    {modalData && modalData.length>0 ? (
+    {modalData  ? (
         <div>
-                   <div className='absolute top-0 right-0 z-40 '>
+                     <div className='absolute top-0 right-0 z-40 '>
                        <MdCancel  className='  text-2xl text-orange-500 cursor-pointer ' onClick={handelModelIsclose}/>
                     </div>
         <div className='grid grid-cols-2 gap-2   py-6 px-4   relative'>
                 
                          <div className=' text-xs ' >
-                          
                             <h1 className='font-bold text-sm'>{modalData?.categoryItemName} </h1>
                               <p className='text-xs py-5'>{modalData?.description}</p>
                               <button className='bg-white px-5 py-1 rounded-md text-xl text-black'> &#8377; <span className='font-bold' >{modalData?.pricing[1]?.price}</span></button>

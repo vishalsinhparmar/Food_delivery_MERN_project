@@ -96,9 +96,23 @@ const AddfoddCategoryItem = () => {
                         { size: "large", price: 0 },
                         { size: "xlarge", price: 0 }  
                       ])
-                    setimage({})
-                    setproductvalue({})
+                  
+                    setproductvalue((prev) => (
+                        {
+                          ...prev,
+                          categoryId:"",
+                          categoryItemname:"",
+                          description:"",
+                         
+                        }
+                      ))
                     setSelectvalue({})
+                    setimage((prev) => (
+                        {
+                          ...prev,
+                          image:"",
+                        }
+                      ))
                     navigate('/admin/Managefoodcategory')
                 }
                  
@@ -114,7 +128,19 @@ const AddfoddCategoryItem = () => {
                     { size: "large", price: 0 },
                     { size: "xlarge", price: 0 }  
                   ])
-                setimage({})
+                  setimage((prev) => (
+                    {
+                      ...prev,
+                     
+                    }
+                  ))
+                setproductvalue((prev) => (
+                    {
+                      ...prev
+                   
+                     
+                    }
+                  ))
                 setproductvalue({})
                 
                 

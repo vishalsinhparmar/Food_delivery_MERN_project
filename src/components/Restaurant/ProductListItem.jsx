@@ -9,8 +9,6 @@ import { ProductContext } from './Context/ProductContext';
 Modal.setAppElement('#root');
 export default function ProductListItem() {
   const { newProductdata ,handelModelIsopen,modalIsopen} = useContext(ProductContext)
- 
-
 
   return (
     <>
@@ -31,8 +29,7 @@ export default function ProductListItem() {
     
       
   <div key={item._id}>
-      <h1 className='text-3xl font-bold my-6' >{item?.Categoryname}</h1>
-       
+      <h1 className='text-3xl font-bold  my-8 text-orange-400' >{item?.Categoryname}</h1>
    
                  <div className='grid lg:grid-cols-3 sm:grid-cols-2 sm:gap-3 md:grid-cols-2 grid-flow-row gap-6' >
                               {item.categoryIteam && item?.categoryIteam?.map((category)=>(
@@ -61,70 +58,6 @@ export default function ProductListItem() {
     )
     }
  
-
-        {/* Burgers */}
-             
-        {/* Fries */}
-        <div className=' mt-20'>
-             <h1 className='text-3xl font-bold my-8 text-orange-400'>Fries</h1>
-              
-                 <div className='grid lg:grid-cols-3 sm:grid-cols-2 sm:gap-3   grid-flow-row gap-6' >
-                 {/* {FriesData.map((item)=>(
-                    <div className='grid grid-cols-2  gap-2 bg-PRodecDetailcolor shadow-xl border p-4 rounded-md'>
-                         <div className='py-4 text-xs' >
-                            <h1 className='font-bold text-sm' >{item.Categorey_Name}</h1>
-                              <p className='text-xs py-5'>{item.Categorey_Details}</p>
-                              <p className='felx text-xl font-medium'>Pricing<span className='font-bold ml-3 text-sm' >&#8377;{item.Small_pricing}</span></p>
-                             
-                         </div>
-
-                          <div className='relative cursor-pointer' onClick={()=>{handelModelIsopen(item)}}>
-                               <img src={item.Categorey_Img} className='relative w-full h-full object-cover'/>
-                                 <div className='bg-customgray flex items-center justify-center p-3 opacity-85 cursor-pointer rounded-tl-3xl absolute z-30 bottom-0 right-0 ' >
-                                   <img src={Plusimg} alt="plus" />
-                                 </div> 
-                          </div>
-                   </div>
-                   ))} */}
-             </div>
-             
-        </div>
-        {/* Fries */}
-
-        {/* Coldrinks */}
-             
-        <div className='mt-20'>
-             <h1 className='text-3xl font-bold my-8 text-orange-400'>Cold Drinks</h1>
-              
-                 <div className='grid lg:grid-cols-3 sm:grid-cols-2 sm:gap-3  grid-flow-row gap-6' >
-                 {/* {Colddrinks.map((item)=>(
-                  //   <div className='grid grid-cols-2 gap-2 bg-PRodecDetailcolor shadow-xl border p-4 rounded-md'>
-                  //        <div className='py-4 text-xs' >
-                  //           <h1 className='font-bold text-sm' >{item.Categorey_Name}</h1>
-                  //             <p className='text-xs py-5'>{item.Categorey_Details}</p>
-                  //             <p className='felx text-xl font-medium'>Pricing<span className='font-bold ml-3 text-sm' >&#8377;{item.Small_pricing}</span></p>
-
-                  //        </div>
-
-                  //         <div className='relative cursor-pointer'onClick={()=>{handelModelIsopen(item)}} >
-                  //              <img src={item.Categorey_Img} className='relative w-full h-full object-cover'/>
-                  //              <button >
-                  //                <div className='bg-customgray flex items-center justify-center p-3 opacity-85 cursor-pointer rounded-tl-3xl absolute z-30 bottom-0 right-0 ' >
-                  //                  <img src={Plusimg} alt="plus"  className='' />
-                  //                </div> 
-                  //                </button>
-                  //         </div>
-                  //  </div>
-                   ))} */}
-             </div>
-             
-          </div>    
-        {/* Coldrinks */}
-         
-
-
-        
-
      </div>
      </div>
      </>

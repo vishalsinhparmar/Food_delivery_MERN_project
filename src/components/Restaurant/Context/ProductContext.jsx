@@ -4,16 +4,17 @@ import { getfoodcategoryItembyid } from "../../adminDashboard/Apibaseurl";
 
 const ProductContext = createContext();
 const ProductContextProvider = ({children}) =>{
-      const [modaldata,setmodaldata]=useState(null);
-      const [modalData,setModaldata] = useState([]);
+      const [modaldataId,setmodaldataId]=useState();
+      console.log("modaldataId",modaldataId)
+      const [modalData,setModaldata] = useState(null);
 
     const [productData,setProductdata] = useState([]);
      console.log("productData",productData)
     const  [newProductdata , setnewProductdata] = useState([])
      const [modalIsopen,setmodalIsopen]=useState(false);
-      const handelModelIsopen = (item)=>{
+      const handelModelIsopen = (id)=>{
         setmodalIsopen(!modalIsopen);
-        setmodaldata(item)
+        setmodaldataId(id)
       }
       const handelModelIsclose = ()=>{
         setmodalIsopen(!modalIsopen);
@@ -24,24 +25,29 @@ const ProductContextProvider = ({children}) =>{
             const res = await ProductData();
              console.log('res of the producList',res)
             if(res.success === true){
-                 setProductdata(res.data)
+                 const ProduList = res.data;
+                 setProductdata(ProduList)
           
-                 console.log('producList',productData)
+                
                 const desireProduct = ["Burgers","Fries","Cold drinks"];
-                const newProductdata = productData.filter(item => desireProduct.includes(item.Categoryname))
+                const newProductdata = ProduList.filter(item => desireProduct.includes(item.Categoryname))
                 console.log("newProductdata",newProductdata);
                 setnewProductdata(newProductdata)
             
          
-            }   
+            }else{
+               console.log('error to fetching a data')
+            }  
          }catch(err){
             console.log("error message",err.response)
          }
 
          try{
-             const res = await getfoodcategoryItembyid(modaldata);
-             console.log("res are happen in the getfoodcategoryItem",res)
+       
+             const res = await getfoodcategoryItembyid(modaldataId);
+              console.log("modaldataId",modaldataId)
              if(res.success === true){
+               
                 setModaldata(res.data)
              } 
 
@@ -57,7 +63,7 @@ const ProductContextProvider = ({children}) =>{
 
     return (
          <ProductContext.Provider value={{
-            modalData, newProductdata,setmodaldata,modaldata,handelModelIsopen,modalIsopen,handelModelIsclose
+            modalData, newProductdata,setmodaldataId,modaldataId,handelModelIsopen,modalIsopen,handelModelIsclose
          }}>
              {children}
          </ProductContext.Provider>

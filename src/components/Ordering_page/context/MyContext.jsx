@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react"
 import { getcategory, getfoodcategory } from "../../adminDashboard/Apibaseurl";
+import { getCartData } from "../../../services/Api";
 
 const OrderContext = createContext();
 const OrderProvider = ({ children }) => {
@@ -19,6 +20,22 @@ const OrderProvider = ({ children }) => {
   const [instructionId,setInstructionid] = useState(null)
 
   console.log('model is Open',modelIsopen)
+ 
+  const fetchCartData = async ()=>{
+    try{
+     const res = await getCartData();
+     console.log("res of cart",res.data)
+     if(res.success === true){
+       
+         setdata(res.data)
+        //  alert('data fectched success')
+     }
+     console.log("res from the cartData",res)
+    }catch(err){
+      console.log("error occur in the basket fetchCartData",err.message)
+  }
+  
+}
 
   const handleModelisopen = () => {
     setmodelisOpen(!modelIsopen)
@@ -107,7 +124,8 @@ const OrderProvider = ({ children }) => {
       data,
       setdataCategory,
       categoryData,
-      loading
+      loading,
+      fetchCartData
     }} >
       {children}
     </OrderContext.Provider>

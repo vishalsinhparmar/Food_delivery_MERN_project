@@ -14,7 +14,7 @@ const OrderPage = () => {
   const [selectAddress, setSelectedAddress] = useState("");
   const { data } = useContext(OrderContext);
   
-
+ console.log("savedAddress",savedAddress)
   const handleAddAddress = (e) => {
     const { name, value } = e.target;
     setAddress((prevAddress) => ({
@@ -43,6 +43,7 @@ const OrderPage = () => {
   const addressDetail = async () => {
     try {
       const res = await getAddressdetail();
+      console.log('res of the getAddressdetail',res)
       if (res.success === true) {
         setsavedAddress(res.data);
       }

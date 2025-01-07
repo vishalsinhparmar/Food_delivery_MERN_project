@@ -9,7 +9,7 @@ import { addsubcategoryCartdata } from '../../services/Api';
 
 export default function PizzaModal() {
     // const [counts, setCounts] = useState({});
-    const { orderCopmonentValue,setInstructionid, Subcategoryprice,NextsetmodelIsopen,handleModelisclose} = useContext(OrderContext)
+    const { orderCopmonentValue,fetchCartData,setInstructionid, Subcategoryprice,NextsetmodelIsopen,handleModelisclose} = useContext(OrderContext)
     const [data, setdata] = useState([]);
    
     const [selectPizza, setselectpizza] = useState(null)
@@ -35,6 +35,7 @@ export default function PizzaModal() {
                 setInstructionid(res.data._id)
                 NextsetmodelIsopen(true)
                 handleModelisclose()
+                await fetchCartData()
             }
          }catch(err){
             console.log("error occur in pizzamodel",err.response)
