@@ -12,18 +12,7 @@ export default function PizzaDetailCard() {
 
   const { orderCopmonentValue,categoryData ,setdataCategory,Subcategoryprice,setSubcategoryprice,handleModelisopen,modelIsopen,nextmodalIsopen,handleModelisclose} = useContext(OrderContext)
 
-  useEffect(() => {
-    const FetchcategoryItem = async () => {
-      console.log("category", orderCopmonentValue.id)
-      const res = await getfoodcategory(orderCopmonentValue.id);
-      if (res.success === true) {
-        setdataCategory(res.data.categoryIteam)
-      }
-      console.log("res of the categoryItem", res)
-    }
-    FetchcategoryItem()
 
-  }, [orderCopmonentValue.id])
 
 
   const HandelSelectedButton = (price) => {

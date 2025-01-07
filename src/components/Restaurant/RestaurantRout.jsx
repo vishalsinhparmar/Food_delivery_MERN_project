@@ -9,12 +9,13 @@ import CustomerReviews from './CustomerReviews'
 // import Restaurant from './Restaurant'
 import SimiliarRestaurant from './SimiliarRestaurant'
 import Footer from '../Layout/Footer'
+import { ProductContextProvider } from './Context/ProductContext'
 
 export default function RestaurantRout() {
   return (
     <div className=''>
       <div className='flex flex-col'>
-          
+      <ProductContextProvider>  
           <Mackdonald/>
           <Offers/>
           <ProductListItem/>
@@ -22,7 +23,7 @@ export default function RestaurantRout() {
           <RestaurantLocation/>
           <CustomerReviews/>
           <SimiliarRestaurant/>
-         
+       </ProductContextProvider>  
           
           
       </div>

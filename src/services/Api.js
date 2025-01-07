@@ -123,3 +123,11 @@ export const showUserdata = async ()=>{
    const response = await api.get(`/auth/user`)
    return response.data;
 }
+
+
+// productdata
+ 
+export const ProductData = async ()=>{
+   const response = await api.get(`/admin/categorydata`)
+   return response.data;
+}

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react"
+import { getcategory, getfoodcategory } from "../../adminDashboard/Apibaseurl";
 
 const OrderContext = createContext();
 const OrderProvider = ({ children }) => {
@@ -6,7 +7,8 @@ const OrderProvider = ({ children }) => {
   // const [category,setCategory] = useState();
     const [category,setcategoryData] = useState([]);
     const [categoryData, setdataCategory] = useState([]);
-
+    const [loading,setloading] = useState(false)
+    
   console.log("category is context",category[0])
   const [orderCopmonentValue, SetOrderComponentValue] = useState(
                                                                  { name:category.length  > 0 ? category[0].Categoryname:"",
@@ -35,6 +37,31 @@ const OrderProvider = ({ children }) => {
     }
   }, [category]);
 
+  const FetchcategoryData = async ()=>{
+    try{
+      setloading(true)
+      const res = await getcategory();
+      console.log("res in the FetchcategoryData",res)
+      if(res.success === true){
+        setcategoryData(res.data);
+        
+        
+      }
+    } catch(err){
+       console.log("error hapen in the categoryFetch")
+    } finally{
+          setloading(false)
+        }
+   
+     
+    }
+  
+    useEffect(()=>{
+      FetchcategoryData();
+    },[])
+
+
+
   const handelSetOrderComponentValue = (menuItem , id) => {
     console.log('id is', id)
     console.log("menuItem", menuItem)
@@ -44,10 +71,22 @@ const OrderProvider = ({ children }) => {
       id:id, // Update the id
     }));
 
-   
+
 
 
   }
+  useEffect(() => {
+    const FetchcategoryItem = async () => {
+      console.log("category", orderCopmonentValue.id)
+      const res = await getfoodcategory(orderCopmonentValue.id);
+      if (res.success === true) {
+        setdataCategory(res.data.categoryIteam)
+      }
+      console.log("res of the categoryItem", res)
+    }
+    FetchcategoryItem()
+
+  }, [orderCopmonentValue.id])
   return (
     <OrderContext.Provider value={{
       handelSetOrderComponentValue,
@@ -67,7 +106,8 @@ const OrderProvider = ({ children }) => {
       category,
       data,
       setdataCategory,
-      categoryData
+      categoryData,
+      loading
     }} >
       {children}
     </OrderContext.Provider>

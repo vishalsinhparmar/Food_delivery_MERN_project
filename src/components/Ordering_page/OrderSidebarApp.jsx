@@ -9,34 +9,12 @@ import { OrderContext } from './context/MyContext'
 
 
 export default function OrderSidebarApp() {
-  const {orderCopmonentValue,handelSetOrderComponentValue,setcategoryData,category,SetOrderComponentValue} = useContext(OrderContext);
-  const [loading,setloading] = useState(false)
+  const {orderCopmonentValue,handelSetOrderComponentValue,loading,setcategoryData,category,SetOrderComponentValue} = useContext(OrderContext);
 
   console.log("orderCopmonentValue",orderCopmonentValue)
   // const [category,setcategoryData] = useState([]);
   console.log("category from the sidebar",category)
-  const FetchcategoryData = async ()=>{
-  try{
-    setloading(true)
-    const res = await getcategory();
-    console.log("res in the FetchcategoryData",res)
-    if(res.success === true){
-      setcategoryData(res.data);
-      
-      
-    }
-  } catch(err){
-     console.log("error hapen in the categoryFetch")
-  } finally{
-        setloading(false)
-      }
- 
-   
-  }
-
-  useEffect(()=>{
-    FetchcategoryData();
-  },[])
+  
   return (
       <nav className=''>
         <div className='space-y-4' >

@@ -1,20 +1,23 @@
-import Plusimg from '@assets/Offer_img/Plus_(1).png'
 import { useContext, useEffect, useState } from 'react';
 import { OrderContext } from '../../Ordering_page/context/MyContext';
 
 const BurgerItem = () => {
-     const {category,SetOrderComponentValue,orderCopmonentValue,categoryData} = useContext(OrderContext);
+     const {category,SetOrderComponentValue,categoryData} = useContext(OrderContext);
      console.log("category from the burgerItem",category);
      const Burger =  category.find(item => item.Categoryname === "Burgers");
     //  console.log("Burger item",Burger)
      const burgerItem = Burger;
      console.log("burgerITem",burgerItem)
-      useEffect(()=>{
+     
+     useEffect(() => {
+      if (category.length > 0) {
         SetOrderComponentValue({
-            name:burgerItem.Categoryname,
-            id:burgerItem._id,
-        })
-      },[])
+          name:Burger ? Burger.Categoryname:"" ,
+          id:Burger ? Burger._id:null,
+        });
+      }
+    }, []);
+
    
     return (
 

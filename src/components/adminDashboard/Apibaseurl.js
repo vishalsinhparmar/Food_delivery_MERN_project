@@ -45,8 +45,8 @@ export const  getfoodcategory = async (id)=> {
    return response.data
 }
 // get foodcategoryitembyId
-export const  getfoodcategoryItembyid = async (id,formdata)=> {
-   const response = await axios.get(`${api_base_url}/categoryItembyId/${id}`,formdata)
+export const  getfoodcategoryItembyid = async (id)=> {
+   const response = await axios.get(`${api_base_url}/categoryItembyId/${id}`)
    return response.data
 }
 // 
