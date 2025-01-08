@@ -107,7 +107,7 @@ export default function AdminAddSubCategory() {
         Swal.fire("Added!", "Subcategory added successfully", "success");
 
         alert(res.success)
-        setproductvalue({}),
+      
           setimage({})
       }
       console.log('subcategory is', res) 

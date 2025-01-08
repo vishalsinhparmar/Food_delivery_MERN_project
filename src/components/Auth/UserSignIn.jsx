@@ -1,161 +1,134 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import PasswordComponets from './PasswordInput';
+import PasswordComponents from './PasswordInput';
 import { UserSignIn } from '../../services/Api';
-// import { AuthContext } from './AuthContext/Authcontex';
 import Swal from 'sweetalert2';
-import { passwordverify, Verifyemail,} from '../../utils/VerifyInput';
+import { passwordverify, Verifyemail } from '../../utils/VerifyInput';
 
-// const {} = useContext(AuthContext)
 function SignIn() {
   const navigate = useNavigate();
-  const [Form, setForm] = useState({ email: '', password: '' });
-  const [Error, setError] = useState({email:"",password:""});
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
 
-  const [loading,setloading] = useState(false);
-  
-  // const { setuserToken,Error,setError } = useContext(AuthContext);
-
-  console.log('error message in the sigIn',Error)
   const handleChange = (e) => {
     const { value, name } = e.target;
-    setForm({
-      ...Form, [name]: value
-    });
-    setError({
-      ...Error,[name]:""
-    })
+    setForm({ ...form, [name]: value });
+    setError({ ...error, [name]: '' });
   };
 
-  //  error using a blur
-  const Handleblur = (e)=>{
-      const {name,value} = e.target;
-      console.log('name from the Handleblur',name)
-      if(name === "email" && !Verifyemail(value)){
-        
-         setError({
-          ...Error,
-          email:"email is not provided basis"
-         })
-      }
-      console.log("passsword verify output",passwordverify(value))
-      if(name === "passsword" && !passwordverify(value)){
-        setError({
-         ...Error,
-         password:"passsword lenght are not required"
-        })
-     }
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    if (name === 'email' && !Verifyemail(value)) {
+      setError((prev) => ({ ...prev, email: 'Invalid email address.' }));
+    }
+    if (name === 'password' && !passwordverify(value)) {
+      setError((prev) => ({ ...prev, password: 'Password must meet requirements.' }));
+    }
+  };
 
-  }
-
-  // form submit
   const submitForm = async (e) => {
     e.preventDefault();
-    setloading(true)
-    const { email, password } = Form;
-     const verifyEmail = Verifyemail(email);
-     const VerifyPassword = passwordverify(password);
-     console.log('VerifyPassword from the submit button',VerifyPassword)
-    if(!verifyEmail || !VerifyPassword){
-          setError({
-            ...Error,
-            email:verifyEmail ? "":"email is are not required credentials",
-            password:VerifyPassword ? "":"passsword lenght are not required"
-          })
+    setLoading(true);
+
+    const { email, password } = form;
+    const emailValid = Verifyemail(email);
+    const passwordValid = passwordverify(password);
+
+    if (!emailValid || !passwordValid) {
+      setError({
+        email: emailValid ? '' : 'Invalid email address.',
+        password: passwordValid ? '' : 'Password must meet requirements.',
+      });
+      setLoading(false);
+      return;
     }
 
     try {
-        const user  =  { email, password };
-        console.log('user in signIn',user)
-        const res = await UserSignIn(user);
-        console.log("signIn res",res)
-      
-        
-        
-        if (res.success === true) {
-          localStorage.setItem('authToken', res.data?.token);
-          // console.log("token",res.data?.token)
-          // setuserToken(res.token);
-          setForm({ email: '', password: '' });
-          setError(null); 
-          navigate('/');
-          setError({email:"",password:""})
-        } else {
-          // Set error message if no token
-        }
-        
-        
-      } catch (err) {
+      const response = await UserSignIn({ email, password });
+      if (response.success) {
+        localStorage.setItem('authToken', response.data?.token);
+        setForm({ email: '', password: '' });
+        navigate('/');
+      } else {
+        Swal.fire('Error', 'Invalid credentials. Please try again.', 'error');
+      }
+    } catch (err) {
       const errorData = err.response?.data?.data || {};
-      console.log("errorData",errorData)
-      Swal.fire({
-        title: "Oops",
-        text: "Please check the highlighted fields and try again.",
-        icon: "error",
-        timer:3000
+      Swal.fire('Error', 'Check the highlighted fields and try again.', 'error');
+      setError({
+        email: errorData.email || '',
+        password: errorData.password || '',
       });
-       setError({
-         email:errorData.email || "",
-         password:errorData.password || ""
-        })
-      console.log("response have error in sigIn",err.response);
-      // setError('Something went wrong. Please try again.');
     } finally {
-       setloading(false)
+      setLoading(false);
     }
   };
 
   return (
-    <div className="rounded-md  flex items-center justify-center">
-      <div className=" w-full max-w-md p-8 rounded-md ">
-        <p className="text-center text-3xl font-semibold text-yellow-500 mb-4">Sign In</p>
+    <div className="flex items-center justify-center  bg-gray-100 px-4 py-4">
+      <div className="w-full max-w-md bg-white rounded-md shadow-md p-6">
+        <h1 className="text-3xl font-bold text-yellow-500 text-center mb-4">Sign In</h1>
         <hr className="w-1/4 mx-auto mb-5 border-gray-300" />
 
-        {/* Form */}
-        <form onSubmit={submitForm} className="flex flex-col space-y-4">
-
+        <form onSubmit={submitForm} className="space-y-6">
+          {/* Email Field */}
           <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
             <input
+              id="email"
               type="email"
               name="email"
-              placeholder="Email"
-              required
-              value={Form.email}
+              value={form.email}
               onChange={handleChange}
-              onBlur={Handleblur}
-              className={`bg-white rounded-sm  border-black border border-2  focus:outline-none focus:shadow-sm focus:border-yellow-300  p-3 w-full text-xl placeholder-gray-500  ${Error.email ? "border-red-500" : "border-black"}`}
+              onBlur={handleBlur}
+              className={`mt-1 block w-full rounded-md border-2 p-2 text-lg ${
+                error.email ? 'border-red-500' : 'border-gray-300'
+              } focus:border-yellow-400 focus:outline-none`}
+              placeholder="Enter your email"
+              required
             />
-           {Error.email && <p className="text-red-500 text-center mb-4">{Error.email}</p>}
-
-          </div>  
-
-          <div className=''>
-         <PasswordComponets
-              onChangefn = {handleChange} 
-              valName = {Form.password} 
-              name = "password" 
-              label="passsword"
-              placeholderName = "passsword"
-              error={Error.password}
-         />
+            {error.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
           </div>
 
+          {/* Password Field */}
+          <div>
+            <PasswordComponents
+              onChangefn={handleChange}
+              valName={form.password}
+              name="password"
+              label="Password"
+              placeholderName="Enter your password"
+              error={error.password}
+            />
+            {error.password && <p className="text-red-500 text-sm mt-1">{error.password}</p>}
+          </div>
+
+          {/* Submit Button */}
           <button
-            
             type="submit"
-            disabled = {loading}
-            className={` text-white text-2xl font-medium rounded-md p-3 mt-5 ${loading ? `bg-slate-600 blur-none cursor-progress`:"hover:bg-slate-800 bg-black"} transition duration-200`}
+            disabled={loading}
+            className={`w-full p-3 text-white text-lg font-semibold rounded-md ${
+              loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600'
+            }`}
           >
-           {loading ? "processing...":"Sign In"} 
+            {loading ? 'Processing...' : 'Sign In'}
           </button>
         </form>
 
-        {/* Sign Up and Forgot Password Links */}
-        <div className="mt-4 text-right">
-          <p className="text-sm font-light">Don't have an account? <Link to="/auth/SignUp" className="text-blue-600 font-medium hover:underline">Sign Up</Link></p>
+        {/* Footer Links */}
+        <div className="mt-4 text-center">
+          <p className="text-sm">
+            Don't have an account?{' '}
+            <Link to="/auth/SignUp" className="text-blue-600 font-medium hover:underline">
+              Sign Up
+            </Link>
+          </p>
           <button
-            className="text-red-500 text-sm font-medium mt-3 hover:underline"
             onClick={() => navigate('/auth/ForgottePassword')}
+            className="mt-2 text-sm text-red-500 font-medium hover:underline"
           >
             Forgot Password?
           </button>

@@ -8,8 +8,9 @@ const OrderProvider = ({ children }) => {
   // const [category,setCategory] = useState();
     const [category,setcategoryData] = useState([]);
     const [categoryData, setdataCategory] = useState([]);
-    const [loading,setloading] = useState(false)
-    
+    const [loading,setloading] = useState(false);
+    const [error,setError] = useState({err:""})
+     console.log('error come from the context for cartITem',error)
   console.log("category is context",category[0])
   const [orderCopmonentValue, SetOrderComponentValue] = useState(
                                                                  { name:category.length  > 0 ? category[0].Categoryname:"",
@@ -32,7 +33,15 @@ const OrderProvider = ({ children }) => {
      }
      console.log("res from the cartData",res)
     }catch(err){
-      console.log("error occur in the basket fetchCartData",err.message)
+      console.log("error occur in the basket fetchCartData",err.response)
+      const {user} = err.response.data.data;
+      console.log("error are ",error)
+      setError((prev)=>(
+         {
+           ...prev,
+           err:user
+         }
+      ))
   }
   
 }
@@ -125,7 +134,8 @@ const OrderProvider = ({ children }) => {
       setdataCategory,
       categoryData,
       loading,
-      fetchCartData
+      fetchCartData,
+      error
     }} >
       {children}
     </OrderContext.Provider>

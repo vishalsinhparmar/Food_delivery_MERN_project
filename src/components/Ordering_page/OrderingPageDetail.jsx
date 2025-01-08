@@ -83,18 +83,23 @@ export default function OrderingPageDetail() {
             {/* menu item for ToggelMenu in mobileScreeen-start */}
 
             {ValueforToggelMenu && (
-              <div className='border rounded-lg bg-Mainccolor absolute z-50 w-full top-0'>
-                <ul className=''>
-                  <li className='my-10 flex items-center ps-10'>
-                    <h1 className='font-bold text-2xl flex items-center' >
-                      <BiSolidFoodMenu className='mr-4 text-3xl' />
-                      Menu
-                    </h1>
-                  </li>
 
-                </ul>
+              // <div className='border rounded-lg bg-Mainccolor absolute z-50 w-full top-0'>
+              //   <ul className=''>
+              //     <li className='my-10 flex items-center ps-10'>
+              //       <h1 className='font-bold text-2xl flex items-center' >
+              //         <BiSolidFoodMenu className='mr-4 text-3xl' />
+              //         Menu
+              //       </h1>
+              //     </li>
 
-              </div>
+              //   </ul>
+
+              // </div>
+
+              <OrderSidebarApp/>
+
+              
             )}
             {/* menu item for ToggelMenu in mobileScreeen-End */}
 

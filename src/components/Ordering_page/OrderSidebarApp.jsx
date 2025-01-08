@@ -30,9 +30,9 @@ export default function OrderSidebarApp() {
                   </h1>
                 </li>
            {category.map((item)=>(
-            <>
+         
              
-             <li className='my-6 font-bold'>
+             <li className='my-6 font-bold' key={item._id}>
              <button 
              className={`hover:bg-slate-200 w-full ps-10 text-left py-2 ${orderCopmonentValue.name ===`${item.Categoryname}` ? 'bg-black text-white ':''}`} 
              onClick={()=>handelSetOrderComponentValue(item.Categoryname,item._id)}>
@@ -40,7 +40,7 @@ export default function OrderSidebarApp() {
              </button>
              </li>
            
-           </>
+       
            ))}
                 
             </ul>

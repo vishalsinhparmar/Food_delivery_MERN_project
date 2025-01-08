@@ -1,44 +1,69 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
 import { AuthContext } from './AuthContext/Authcontex';
 
-function PasswordComponets({onChangefn, valName, placeholderName,handleBlur, label, name, error }) {
-  console.log("error in the password components",error)
-  const [showpasssword, setshowPassword] = useState(false);
-  console.log("showpasssword are from the password", showpasssword)
-  const { Error } = useContext(AuthContext)
-  console.log("valName", valName)
+function PasswordComponent({
+  onChangefn,
+  valName,
+  placeholderName,
+  handleBlur,
+  label,
+  name,
+  error
+}) {
+  const [showPassword, setShowPassword] = useState(false);
+  const { Error } = useContext(AuthContext);
 
-  const handleSetpassword = () => {
-    setshowPassword((prevpassword) => !prevpassword)
-  }
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevPassword) => !prevPassword);
+  };
+
   return (
-    <>
-      <div className='relative'>
+    <div className="w-full mb-4">
+      {/* Label for the input field */}
+      {label && (
+        <label
+          htmlFor={name}
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          {label}
+        </label>
+      )}
+
+      <div className="relative">
+        {/* Password Input */}
         <input
-          type={showpasssword ? "text" : "password"}
-          className={`bg-white rounded-sm  border-black border border-2  focus:outline-none focus:shadow-sm focus:border-yellow-300  p-3 w-full text-xl placeholder-gray-500  ${error ? "border-red-500" : "focus:border-yellow-300"
-            }`} value={valName}
+          id={name}
+          type={showPassword ? "text" : "password"}
+          className={`bg-white rounded-md border focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-yellow-300 p-3 w-full text-sm placeholder-gray-500 shadow-sm ${
+            error ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+          }`}
+          value={valName}
           placeholder={placeholderName}
           onChange={onChangefn}
           name={name}
           onBlur={handleBlur}
-
-
+          aria-invalid={error ? "true" : "false"}
         />
 
-        <button onClick={handleSetpassword}
-          className="absolute right-3 top-4 text-sm font-medium text-blue-600 hover:underline"
-          type='button'
-          aria-label={showpasssword ? "Hide password" : "Show password"}
-        >{showpasssword ? "hide" : "show"
-
-          }</button>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
-
+        {/* Show/Hide Password Button */}
+        <button
+          onClick={togglePasswordVisibility}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm font-medium text-blue-600 hover:underline focus:outline-none"
+          type="button"
+          aria-label={showPassword ? "Hide password" : "Show password"}
+        >
+          {showPassword ? "Hide" : "Show"}
+        </button>
       </div>
-    </>
-  )
+
+      {/* Error Message */}
+      {error && (
+        <p className="mt-2 text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  );
 }
 
-export default PasswordComponets;
+export default PasswordComponent;

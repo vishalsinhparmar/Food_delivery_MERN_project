@@ -43,6 +43,7 @@ export default function PizzaDetailCard() {
         {/* second-modal-for add-cart-start*/}
 
         <Modal isOpen={nextmodalIsopen}
+        onRequestClose={handleModelisclose}
           overlayClassName='z-50'
           className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-[1000]'>
           <Instructions />

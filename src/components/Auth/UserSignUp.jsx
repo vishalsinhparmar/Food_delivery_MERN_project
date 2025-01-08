@@ -1,208 +1,215 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import PasswordComponets from './PasswordInput';
+import PasswordComponents from './PasswordInput';
 import { UserSignUp } from '../../services/Api';
-import { FcAddImage } from 'react-icons/fc';
 import Swal from 'sweetalert2';
-import { fileSizeverify, Verifyemail, verifyUsername } from '../../utils/VerifyInput';
+import { fileSizeverify, passwordverify, Verifyemail, verifyUsername } from '../../utils/VerifyInput';
+import { FcAddImage } from 'react-icons/fc';
 
 function SignUp() {
   const navigate = useNavigate();
-  const [Form, setForm] = useState({ username: '', email: '', password: '' });
-  const [Error, setError] = useState({ email: "", password: "", image: "",username:""});
+  const [form, setForm] = useState({ username: '', email: '', password: '' });
+  const [error, setError] = useState({ email: '', password: '', image: '', username: '' });
   const [image, setImage] = useState(null);
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { value, name } = e.target;
-    setForm({
-      ...Form, [name]: value
-    });
-    setError({...Error,[name]:""})
+    setForm({ ...form, [name]: value });
+    setError({ ...error, [name]: '' });
   };
 
-  console.log("Error",Error)
-
-  console.log("image",image?.size)
   const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setImage(file);
 
-    if(!fileSizeverify(image)){
-      setError({
-        ...Error,
-        image:"image are must be under 100kb"
-      })
-   }
+    if (!fileSizeverify(file)) {
+      setError((prev) => ({ ...prev, image: 'Image must be under 100KB' }));
+    } else {
+      setError((prev) => ({ ...prev, image: '' }));
+    }
   };
 
-  const handleBlur = (e)=>{
-     const {name,value} = e.target;
-     if(name === "email" && !Verifyemail(value)){
-       alert("next")
-        setError({
-          ...Error,
-          email:"email is not valid form"
-        })
-     }else{
-       setError({...Error,email:""})
-     }
-     
-     if(name === "username" && !verifyUsername(value)){
-      setError({
-        ...Error,
-        username:"username  is not valid character"
-      })
-   }else{
-    setError({...Error,username:""})
-  }
-  }
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
 
-  const validateForm = ()=>{
-    const errors = {};
-    if(!verifyUsername(Form.username)) return errors.username = "invalid uername"
-    if(!Verifyemail(Form.username)) return errors.email = "invlaid email"
-    if(image && !fileSizeverify(image)) return errors.image = "invalid image"
-    setError(errors)
-     return Object.keys(errors).length === 0;
-  }
- 
+    if (name === 'email' && !Verifyemail(value)) {
+      setError((prev) => ({ ...prev, email: 'Invalid email address.' }));
+    } else if (name === 'username' && !verifyUsername(value)) {
+      setError((prev) => ({ ...prev, username: 'Invalid username.' }));
+    } else if (name === 'password' && !passwordverify(value)) {
+      setError((prev) => ({ ...prev, password: 'Password must meet requirements.' }));
+    }
+  };
+
+  const validateForm = () => {
+    const { username, email, password } = form;
+    const emailValid = Verifyemail(email);
+    const usernameValid = verifyUsername(username);
+    const passwordValid = passwordverify(password);
+
+    return emailValid && usernameValid && passwordValid && !error.image;
+  };
 
   const submitForm = async (e) => {
     e.preventDefault();
-     if(!validateForm()) return;
+    setLoading(true);
 
-    const { username, email, password } = Form;
-    setloading(true)
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
+
+    const { username, email, password } = form;
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('username', username);
+    if (image) {
+      formData.append('image', image);
+    }
+
     try {
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
-      formData.append('username', username);
-      if (image) {
-        formData.append('image', image);
-      }
-
-      const res = await UserSignUp(formData);
-      console.log('signUp res', res)
-
-      if (res.ok) {
-        const result = await res.json();
-        alert(result.message);
-        setForm({ email: '', password: '', username: '' });
+      const response = await UserSignUp(formData);
+      if (response.success === true) {
+        Swal.fire('Success', 'Account created successfully. Please verify your email.', 'success');
+        setForm({ username: '', email: '', password: '' });
         setImage(null);
-        navigate('/verifyemail')
+        navigate('/auth/verifyemail');
       } else {
-        setError('Something went wrong, please try again')
-        alert("Error: " + res.message);
+        Swal.fire('Error', 'Something went wrong, please try again.', 'error');
       }
     } catch (err) {
-      // error handle
       const errorData = err.response?.data?.data || {};
-      console.log("errorData", errorData)
-      Swal.fire({
-        title: "Oops",
-        text: "Please check the highlighted fields and try again.",
-        icon: "error",
-        timer: 3000
-      });
+      Swal.fire('Error', 'Check the highlighted fields and try again.', 'error');
       setError({
-        email: errorData.email || "",
-        password: errorData.password || "",
-        image: errorData.image || ""
-      })
-      console.log("response have error in sigIn", err.response);
-      setError('Something went wrong, please try again')
-
-      console.log(err.message);
+        email: errorData.email || '',
+        password: errorData.password || '',
+        image: errorData.image || '',
+        username: errorData.username || '',
+      });
     } finally {
-      setloading(false)
+      setLoading(false);
     }
   };
 
   return (
-    <div className="  rounded-md  flex items-center justify-center">
+    <div className="flex items-center justify-center bg-gray-100 px-4 py-4">
+      <div className="w-full max-w-md bg-white rounded-md shadow-md p-6">
+        <h1 className="text-3xl font-bold text-yellow-500 text-center mb-4">Sign Up</h1>
+        <hr className="w-1/4 mx-auto mb-5 border-gray-300" />
 
-      <div className="bg- w-full max-w-md p-3 rounded-lg ">
-
-        <p className="text-center mx-auto text-yellow-500 text-3xl mb-1 ">Sign Up</p>
-
-        <hr className="w-28 text-black mx-auto mb-5" />
-        <form onSubmit={submitForm} className="flex flex-col gap-y-4">
-
-          <div className="w-full my-1">
+        <form onSubmit={submitForm} className="space-y-6">
+          {/* Username Field */}
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
             <input
+              id="username"
               type="text"
               name="username"
-              placeholder="Username"
-              required
-              value={Form.username}
+              value={form.username}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`bg-white rounded-sm  border-black border border-2  focus:outline-none focus:shadow-sm focus:border-yellow-300  p-3 w-full text-xl placeholder-gray-500  ${Error.username ? "border-red-500" : "border-black"}`}
+              className={`mt-1 block w-full rounded-md border-2 p-2 text-lg ${
+                error.username ? 'border-red-500' : 'border-gray-300'
+              } focus:border-yellow-400 focus:outline-none`}
+              placeholder="Enter your username"
+              required
             />
-            {Error.username && <p className='text-red-400 text-center mb-10'>{Error.username}</p>}
-
+            {error.username && <p className="text-red-500 text-sm mt-1">{error.username}</p>}
           </div>
 
-          <div className="w-full my-1">
+          {/* Email Field */}
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
             <input
+              id="email"
               type="email"
               name="email"
-              placeholder="Email"
-              required
-              value={Form.email}
+              value={form.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`bg-white rounded-sm  border-black border border-2  focus:outline-none focus:shadow-sm focus:border-yellow-300  p-3 w-full text-xl placeholder-gray-500  ${Error.email ? "border-red-500" : "border-black"}`}
+              className={`mt-1 block w-full rounded-md border-2 p-2 text-lg ${
+                error.email ? 'border-red-500' : 'border-gray-300'
+              } focus:border-yellow-400 focus:outline-none`}
+              placeholder="Enter your email"
+              required
             />
-            {Error.email && <p className='text-red-400 text-center mb-10'>{Error.email}</p>}
-
+            {error.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
           </div>
 
-          <div className="w-full my-1">
-
-            <PasswordComponets
+          {/* Password Field */}
+          <div>
+            <PasswordComponents
               onChangefn={handleChange}
-              valName={Form.password}
+              valName={form.password}
               name="password"
-              label="passsword"
-              placeholderName="passsword"
-              error={Error.password}
-              handleBlur ={handleBlur}
+              label="Password"
+              placeholderName="Enter your password"
+              error={error.password}
+              handleBlur={handleBlur}
             />
+            {/* {error.password && <p className="text-red-500 text-sm mt-1">{error.password}</p>} */}
           </div>
 
-          <div className="w-full my-1 flex items-center justify-items-center gap-5">
-            <label htmlFor="file" className='flex items-center justify-center flex-row gap-3 border border-dashed  border-gray-400 w-1/2 rounded-lg h-14 cursor-pointer bg-gray-50'>
-              <FcAddImage className='text-2xl transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-125  duration-300' />
-              <p className='text-yellow-800'>upoad image</p>
-
+          {/* Image Upload */}
+          <div>
+            <label
+              htmlFor="file"
+              className="block text-sm font-medium text-gray-700 cursor-pointer"
+            >
+              Upload Profile Image (optional)
             </label>
-
             <input
-              id='file'
+              id="file"
               type="file"
               name="image"
               accept="image/*"
               onChange={handleFileChange}
-              onBlur={handleBlur}
-              className='hidden'
+              className="hidden"
             />
+            <label
+              htmlFor="file"
+              className="flex items-center justify-center gap-3 border border-dashed border-gray-400 rounded-lg p-4 cursor-pointer bg-gray-50"
+            >
+              <FcAddImage className="text-2xl" />
+              <p className="text-yellow-800">Choose Image</p>
+            </label>
             {image && (
-              typeof image === "string" ? (
-                <img src={image} alt="preview" className="w-20 h-16 object-cover rounded-lg" />
-              ) : (
-                <img src={URL.createObjectURL(image)} alt="preview" className=" w-20 h-20 rounded-full flex items-center justify-center  bg-cover border border-black" />
-              )
+              <img
+                src={URL.createObjectURL(image)}
+                alt="preview"
+                className="w-20 h-20 rounded-full mt-2"
+              />
             )}
-            {Error.image && <p className='text-red-400 text-center mb-10'>{Error.image}</p>}
-
+            {error.image && <p className="text-red-500 text-sm mt-1">{error.image}</p>}
           </div>
 
-          <button type="submit" disabled={loading} className={`text-white  font-medium text-2xl w-1/2 mx-auto mt-1 p-3  rounded-md border ${loading ? "bg-slate-600 cursor-progress" : "bg-black  hover:bg-slate-800"} `}>{loading ? "processing..." : "signUp"}</button>
-
-          <p className="font-thin text-right mt-1">Already have an account? <span className="text-blue-600"><Link to="/auth">Sign In</Link></span></p>
-
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full p-3 text-white text-lg font-semibold rounded-md ${
+              loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-yellow-500 hover:bg-yellow-600'
+            }`}
+          >
+            {loading ? 'Processing...' : 'Sign Up'}
+          </button>
         </form>
+
+        {/* Footer Links */}
+        <div className="mt-4 text-center">
+          <p className="text-sm">
+            Already have an account?{' '}
+            <Link to="/auth" className="text-blue-600 font-medium hover:underline">
+              Sign In
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

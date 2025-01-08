@@ -5,13 +5,14 @@ import { MdDeleteForever, MdStore } from 'react-icons/md'
 import { RiEBike2Fill } from 'react-icons/ri'
 import { deleteCartdata, getCartData } from '../../../services/Api'
 import { MyContext } from '../../adminDashboard/contextprovider/Mycontext'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { OrderContext } from '../context/MyContext'
 
 export default function MyBasket() {
-  const {data,setdata,fetchCartData} = useContext(OrderContext)
+  const {data,setdata,fetchCartData,error} = useContext(OrderContext)
   const navigate = useNavigate();
-
+  console.log('error happen in cart',error)
+  
  const handelDelete = async(id) =>{
   try{
     const deletres = await deleteCartdata(id);
@@ -23,6 +24,8 @@ export default function MyBasket() {
     await fetchCartData()
   }catch(err){
     console.log("error occur in the deleteCategory",err.response)
+    
+    
   }
 
  }
@@ -56,9 +59,11 @@ export default function MyBasket() {
                       </div>
                  </div>
                  <div className='py-4'>
-                  {data?.Iteam && data?.Iteam.map((item)=>(   
-                      <>
-                      <div className='grid grid-flow-col gap-2 border-b items-center px-4 py-4' > 
+                
+                  {data && data?.Iteam && data?.Iteam.map((item)=>(  
+                  
+                  
+                      <div className='grid grid-flow-col gap-2 border-b items-center px-4 py-4' key={item._id}> 
                        <div className='col-auto'>
                         <div className='bg-orange-500 rounded-full  flex items-center justify-center px-3 w-5' >
                             <p className='font-bold text-md text-white' >{item?.qty}x</p>
@@ -77,14 +82,13 @@ export default function MyBasket() {
                            </button>
                          </div>
                         </div>
-                        </>
+                    
                 
-
 
                        ))}
                        
                        {/* total */}
-                      { data ? (
+                      {  data ? (
                         <>
                         
                                                   <div className='px-4 py-6 border-b'>
@@ -106,9 +110,16 @@ export default function MyBasket() {
                                               </div>
                                               </>
                       ):(
-                        <>
-                           no item found
-                        </>
+                      
+                 
+                        
+                 error.err ? (
+                  <div className='py-6 text-center'>
+                    <p className='text-red-500  font-semibold '>{error.err}<NavLink to="/auth" className="text-blue-500 text-2xl ml-2">Login</NavLink></p>
+                    
+                 </div>
+                 ):(<></>) 
+                                                       
                       )
                     }   
 

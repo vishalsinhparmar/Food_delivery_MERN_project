@@ -5,6 +5,7 @@ import {MdMarkEmailRead} from 'react-icons/md'
 import PasswordComponets from './PasswordInput';
 import { ResetPassword } from '../../services/Api';
 import Swal from 'sweetalert2'
+import { passwordverify } from '../../utils/VerifyInput';
 
 
 function NewPassword() {
@@ -13,7 +14,7 @@ function NewPassword() {
   console.log("token is provide by new passsword",token)
   const navigate = useNavigate();
   const [userPassword, setUserPassword] = useState('');
-  const [error, setError] = useState()
+  const [error, setError] = useState({err:""})
   const [loading, setLoading] = useState(false);
 
   console.log('userPassword', userPassword);
@@ -26,7 +27,18 @@ function NewPassword() {
   const formPassword = async (e) => {
     e.preventDefault();
     console.log('userPassword', userPassword);
-    setLoading(true)
+    if(!passwordverify(userPassword)){
+      setError((prev)=>(
+        {
+          ...prev,
+          err:"provide valid passsword"
+        }
+      ));
+      return
+    }
+    setLoading(true);
+ 
+
     try {
         const resetpassword = {newpassword:userPassword}
         const res = await ResetPassword(resetpassword,token)
@@ -42,7 +54,13 @@ function NewPassword() {
       }
     } catch (err) {
       console.log('The error occurred in resetting password', err.response);
-      setError('Something went wrong. Please try again.')
+      const errorMessage  = err.response.data.data.password || "password are provided a valid user"
+       setError((prev)=>(
+        {
+          ...prev,
+          err:errorMessage
+        }
+       ))
 
     } finally {
        setLoading(false)
@@ -56,7 +74,6 @@ function NewPassword() {
              <p className="text-center text-yellow-400 text-3xl font-semibold mb-6">Set New Password</p>
              <hr className="w-28 mx-auto my-4 border-t-2 border-yellow-300" />
              <form onSubmit={formPassword} className="flex flex-col space-y-4">
-               {error && <p className='text-red-400 text-center mb-10'>{error}</p>}
      
                <div>
                
@@ -67,6 +84,8 @@ function NewPassword() {
                    label="passsword"
                    placeholderName = "passsword"
                  />
+               {error.err && <p className='text-red-400 text-center mb-2'>{error.err}</p>}
+
                </div>
      
                <button

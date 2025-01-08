@@ -102,7 +102,7 @@ const OrderDetail = () => {
                         {item.subcategoryId.subCategoryname}
                       </p>
                       <p className="text-xs text-gray-500">
-                        Info: {item.additionalInfo || "N/A"}
+                        Info: {item?.additionalInfo?.detailinfo || "N/A"}
                       </p>
                     </div>
                   </div>

@@ -6,7 +6,7 @@ const ProductContext = createContext();
 const ProductContextProvider = ({children}) =>{
       const [modaldataId,setmodaldataId]=useState();
       console.log("modaldataId",modaldataId)
-      const [modalData,setModaldata] = useState(null);
+      
 
     const [productData,setProductdata] = useState([]);
      console.log("productData",productData)
@@ -42,18 +42,7 @@ const ProductContextProvider = ({children}) =>{
             console.log("error message",err.response)
          }
 
-         try{
-       
-             const res = await getfoodcategoryItembyid(modaldataId);
-              console.log("modaldataId",modaldataId)
-             if(res.success === true){
-               
-                setModaldata(res.data)
-             } 
 
-         }catch(err){
-            console.log("err is happen in the fectchModldata",err.response)
-         }
      }
 
 
@@ -63,7 +52,7 @@ const ProductContextProvider = ({children}) =>{
 
     return (
          <ProductContext.Provider value={{
-            modalData, newProductdata,setmodaldataId,modaldataId,handelModelIsopen,modalIsopen,handelModelIsclose
+             newProductdata,setmodaldataId,modaldataId,handelModelIsopen,modalIsopen,handelModelIsclose
          }}>
              {children}
          </ProductContext.Provider>
