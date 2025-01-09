@@ -1,71 +1,52 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { MyContext } from "../contextprovider/Mycontext";
-import { FaRegEdit } from "react-icons/fa"
-import { RiDeleteBin5Fill } from "react-icons/ri"
-import { categorydeleteByid, categoryUpdatebyId } from "../Apibaseurl";
-
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { categorydeleteByid } from "../Apibaseurl";
 
 const MangeCategory = () => {
-    // const [data,setNewData] = useState([]);
-    const {
-        categoryId,
-        setcategoryId,setSelectvalue
-    } = useContext(MyContext);
-    console.log('categoryId', categoryId)
-
-
-   
+    const { categoryId, setcategoryId } = useContext(MyContext);
 
     const handleCategorydelete = async (id) => {
-        alert(id)
         try {
             const res = await categorydeleteByid(id);
             if (res.success === true) {
-                const deletdata = categoryId.filter(data => data._id !== id)
-
-                setcategoryId(deletdata)
-                console.log("delete data", deletdata)
+                const updatedData = categoryId.filter(data => data._id !== id);
+                setcategoryId(updatedData);
             }
-            console.log('categoryDelete', res)
         } catch (err) {
-            console.log('error in the category', err.message)
+            console.log("Error deleting category:", err.message);
         }
     }
 
     return (
-        <>
-            <div>
-                <div className="grid grid-flow-row gap-5 mt-5">
-                    {
-                        categoryId.map((data) => (
-                            <>
-                                <div className=" bg-white  w-full rounded-md hover:bg-blue-50">
-                                    <div className="border p-4 grid grid-cols-3 justify-center items-center">
-
-
-                                        <div className="p-3">
-                                            <h1 className="text-2xl font-medium ">{data.Categoryname}</h1>
-                                        </div>
-
-                                        <div className=" gap-2 flex items-center justify-center">
-                                            <button className="p-2 bg-red-400 flex items-center justify-center gap-2 text-xl text-white w-1/3 hover:bg-red-500 rounded-md mx-2" onClick={() => handleCategorydelete(data._id)}><RiDeleteBin5Fill />delete</button>
-                                            <button className="p-2 bg-yellow-300 font-medium flex items-center justify-center gap-2 text-xl text-white w-1/3 hover:bg-yellow-400 rounded-md mx-2"><FaRegEdit />edit</button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </>
-                        )
-
-                        )
-                    }
-                </div>
+        <div className="py-6 px-4 bg-gray-50 min-h-screen">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {categoryId.map((data) => (
+                    <div key={data._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                        <div className="flex justify-between items-center p-4 border-b">
+                            <h2 className="text-xl font-semibold text-gray-700">{data.Categoryname}</h2>
+                        </div>
+                        <div className="p-4 flex justify-between items-center">
+                            <button
+                                className="flex items-center gap-2 p-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none transition"
+                                onClick={() => handleCategorydelete(data._id)}
+                            >
+                                <RiDeleteBin5Fill size={20} />
+                                <span>Delete</span>
+                            </button>
+                            <button
+                                className="flex items-center gap-2 p-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 focus:outline-none transition"
+                            >
+                                <FaRegEdit size={20} />
+                                <span>Edit</span>
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
-        </>
-    )
-
+        </div>
+    );
 }
 
-export default MangeCategory
+export default MangeCategory;

@@ -1,81 +1,136 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { showArchivedOrderDetail } from "./Apibaseurl";
 
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
+const ArchivedOrder = () => {
+  const [orders, setOrders] = useState([]);
+  console.log("address",orders.address)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const {id} = useParams();
+  console.log("id",id)
+  const fetchOrderData = async () => {
 
-export default function AdminOrderDetail() {
-  const navigation = useNavigate();
-  const {id}= useParams();
-  const [Productdata,setProductdata]=useState([]);
+    try {
+      const res = await showArchivedOrderDetail(id);
+      console.log("Response of orders show", res);
+      if (res.success) {
+        setOrders(res.data);
+      } else {
+        setError("Failed to fetch order details");
+      }
+    } catch (err) {
+      setError("Error fetching order details. Please try again.");
+      console.log("Error fetching order details", err.response);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  useEffect(()=>{
-    axios.get(`http://localhost:4000/BaketData`).then((res)=>{
-         setProductdata(res.data);
-    })
-  },[Productdata]);
+  useEffect(() => {
+    fetchOrderData();
+  }, []);
 
-  const HandelSuccess = (id)=>{
-    
-    axios.delete(`http://localhost:4000/BaketData/${id}`).then(()=>{
-      Swal.fire({
-        position: "top-bottom",
-        icon: "success",
-        title: "item has successfully delivered",
-        showConfirmButton: false,
-        timer: 900
-      });
- }) 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <div className="loader animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div>
+        <p className="text-lg font-medium text-gray-700 ml-4">Loading orders...</p>
+      </div>
+    );
   }
-  const handelPandeing=()=>{
-    Swal.fire({
-      position: "top-bottom",
-      icon: "warning",
-      title: "item has not delivered",
-      showConfirmButton: false,
-      timer: 1500
-    });
+
+  if (!id) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <p className="text-lg font-semibold text-red-500">{error}</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <p className="text-lg font-semibold text-red-500">{error}</p>
+      </div>
+    );
   }
 
+  if (orders?.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <p className="text-lg font-semibold text-gray-600">No orders found.</p>
+      </div>
+    );
+  }
 
   return (
-      <div className='py-4'>
-            <div className=' py-5'>
-              <h1 className=' font-semibold text-4xl' >Order list data</h1>
-              <p className=' opacity-55'>detail about my order list</p>
+    <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-8">Order Details</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {orders.map((order) => (
+          <div
+            key={order._id}
+            className="bg-white border rounded-lg shadow-sm p-6 transition-transform transform hover:scale-105"
+          >
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Order Summary</h2>
+            <div className="mb-2">
+              <p className="text-sm font-semibold text-gray-500">Grand Total:</p>
+              <p className="text-lg font-bold text-gray-900">₹{order.grandtotal}</p>
             </div>
-
-            <table className='w-full border border-black' cellPadding={10}>
-               <thead className='bg-slate-200 p-4 mx-10 font-bold text-xl'>
-                 <tr className=' bg-slate-200 p-4 px-5'>
-                  <td className='p-4' >ID</td>
-                  <td>Qty</td>
-                  <td>Price</td>
-                  <td>ProductDescription</td>
-                  <td>ProductDetail</td>
-                  <td>Action</td>
-                 </tr>
-               </thead>
-
-               <tbody>
-                {Productdata.map((item)=>(
-                  <tr className=' border-b border-black p-4 bg-blue-50 font-semibold' key={item.id}>
-                    <td><button >{item.id}</button></td>
-                    <td>{item.qty}</td>
-                    <td>&#8377;{item.pricing}</td>
-                    <td className=' w-14'>{item.Categorey_Details}</td>
-                    <td className=' w-44'>{item.Categorey_Name}</td>
-                    <td className='space-x-2'><button className='bg-green-500 hover:bg-green-400 p-2 px-4 rounded-xl text-white howe'onClick={()=>{HandelSuccess(item.id)}}>Success</button>
-                    <button className='bg-blue-500 hover:bg-blue-400 p-2 px-4 rounded-xl text-white howe' onClick={handelPandeing}>Pending</button>
-                   
-                    </td>
-                    
-                    
-                  </tr>
-
-                ))}
-               </tbody>
-            </table>
+            <div className="mb-2">
+              <p className="text-sm font-semibold text-gray-500">Delivery Address:</p>
+              <p className="text-sm text-gray-700">{order.address?.address || "Not provided"}</p>
+            </div>
+            <div className="mb-4">
+              <p className="text-sm font-semibold text-gray-500">Payment Status:</p>
+              <p
+                className={`text-sm font-bold text-green-500 ${
+                  order.paymentStatus === "success"
+                    ? "text-green-500"
+                    : "text-green-500"
+                }`}
+              >
+                {order.paymentStatus || "success"}
+              </p>
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-3">Items:</h3>
+            {order.Iteam?.length === 0 ? (
+              <p className="text-sm text-gray-500">No items in this order</p>
+            ) : (
+              order?.Iteam.map((item) => (
+                <div
+                  key={item._id}
+                  className="flex items-center justify-between mb-3"
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={item.subcategoryId.image}
+                      alt={item.subcategoryId.subCategoryname}
+                      className="w-12 h-12 object-cover rounded-md"
+                    />
+                    <div className="ml-3">
+                      <p className="text-sm font-semibold text-gray-700">
+                        {item.subcategoryId.subCategoryname}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Info: {item?.additionalInfo?.detailinfo || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-600">Qty: {item.qty}</p>
+                    <p className="text-sm font-bold text-gray-800">
+                      ₹{item.total}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        ))}
       </div>
-  )
-}
+    </div>
+  );
+};
+
+export default ArchivedOrder;

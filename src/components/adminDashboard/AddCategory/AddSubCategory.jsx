@@ -109,6 +109,7 @@ export default function AdminAddSubCategory() {
         alert(res.success)
       
           setimage({})
+          navigate('/admin/Managefoodcategory')
       }
       console.log('subcategory is', res) 
 
@@ -121,122 +122,101 @@ export default function AdminAddSubCategory() {
   }
 
   return (
-    <div>
+    <div className='bg-gray-100 min-h-screen py-10'>
+    <div className='max-w-3xl mx-auto'>
+      <h1 className='text-3xl font-semibold mb-4 text-center text-gray-700'>Subcategory {id ? 'Update' : 'Add'}</h1>
+      <p className='text-lg text-center text-gray-500 mb-6'>Please fill out the form below to {id ? 'update' : 'add'} a subcategory</p>
+      
+      <form onSubmit={handelsubCategoryform} className='bg-white p-6 rounded-xl shadow-lg space-y-6'>
+        <fieldset className='border border-gray-300 p-5 rounded-lg'>
+          <legend className='text-2xl font-semibold text-white bg-green-400 p-2 rounded-md'>Subcategory Details</legend>
+          
+          <div className='flex flex-col space-y-4'>
+            {/* Category Dropdown */}
+            <div>
+              <label htmlFor="subcategory" className='block text-lg font-medium text-gray-700'>Select Category</label>
+              <select
+                name="subcategory"
+                id="category"
+                value={select.subcategory || "default"}
+                className='w-full p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500'
+                onChange={handleChangeCategory}
+              >
+                <option value="default" disabled>Select Category</option>
+                {categoryId.map((val) => (
+                  <option key={val._id} value={val._id}>{val.Categoryname}</option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Subcategory Name */}
+            <div>
+              <label htmlFor='subCategory1' className='block text-lg font-medium text-gray-700'>Subcategory Name</label>
+              <input
+                name="subCategory"
+                value={product.subCategory}
+                type="text"
+                className='w-full p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500'
+                onChange={handleChangevalue}
+              />
+            </div>
 
-      <div className='py-6 '>
-        <h1 className='text-3xl font-semibold my-2'>Category name :<span className=' underline underline-offset-8 ml-2 text-blue-400 mb-3 font-normal'>Subcategory</span>
-        </h1>
-        <p className='opacity-50 font-medium'>Add this category</p>
-      </div>
-      <form onSubmit={handelsubCategoryform}>
+            {/* Cover Image */}
+            <div className='space-y-2'>
+              <label className='text-lg font-medium text-gray-700'>Cover Image (Optional)</label>
+              <button
+                type='button'
+                onClick={handlecoverImage}
+                className='px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none'
+              >
+                {cover ? "Remove" : "Add"} Cover Image
+              </button>
+              {cover && (
+                <div>
+                  <input
+                    type="file"
+                    name='coverimage'
+                    className='w-full p-3 border rounded-md shadow-sm mt-3'
+                    onChange={handlchangeImage}
+                  />
+                  {typeof image.coverimage === "string" ? (
+                    <img src={image.coverimage} className="mt-4 w-32 h-32 object-cover rounded-lg" />
+                  ) : (
+                    image.coverimage && <img src={URL.createObjectURL(image.coverimage)} className="mt-4 w-32 h-32 object-cover rounded-lg" />
+                  )}
+                </div>
+              )}
+            </div>
 
-        <fieldset className='border border-spacing-2 border-black p-5 '>
-          <legend className=' font-semibold text-2xl text-white rounded-md bg-green-400 border p-2 px-4'>subCategory</legend>
-          <div>
-            <select
-              name="subcategory"
-
-              id="category"
-              value={select.subcategory || "default"}
-              className='bg-white p-2 w-1/4 border hover:bg-slate-50 '
-              onChange={handleChangeCategory}
-            >
-              <option value="default" disabled >
-                Select category
-              </option>
-              {
-                categoryId.map((val) => (
-                  <>
-
-                    <option
-                      value={val._id}
-                      className=''
-                    >
-                      {val.Categoryname}
-                    </option>
-                  </>
-                ))
-              }
-            </select>
+            {/* Subcategory Image */}
+            <div className='space-y-2'>
+              <label className='text-lg font-medium text-gray-700'>Subcategory Image</label>
+              <input
+                type="file"
+                name='image'
+                className='w-full p-3 border rounded-md shadow-sm'
+                onChange={handlchangeImage}
+              />
+              {typeof image.image === "string" ? (
+                <img src={image.image} className="mt-4 w-32 h-32 object-cover rounded-lg" />
+              ) : (
+                image.image && <img src={URL.createObjectURL(image.image)} className="mt-4 w-32 h-32 object-cover rounded-lg" />
+              )}
+            </div>
           </div>
-          <div className='w-1/2 my-5'>
-            <label htmlFor='subCategory1' className=' font-semibold text-2xl mr-4'>coverimg:</label>
-            <button className='bg-slate-500 font-semibold px-4 py-2 border-black rounded-md text-white' onClick={() => handlecoverImage()}>{cover ? "remove" : "AddCoverImage"}</button>
-            <p className='text-red-400 '>{cover ? "" : "*it is not require for every same subcategory"}</p>
-            {cover && <input
-              type="file"
-              name='coverimage'
-              // value={image.coverimage} 
-              className='w-full p-4 rounded-lg my-1 outline-none border bg-white'
-              placeholder='Subcategory'
-              onChange={handlchangeImage}
-            />
-            }
-            {typeof image.coverimage === "string" ? (
-
-              < img src={image.coverimage} className="mt-4 w-32 h-32 object-cover rounded-lg" />
-            ) : (
-              image.coverimage && (
-
-                < img src={URL.createObjectURL(image.coverimage)} className="mt-4 w-32 h-32 object-cover rounded-lg" />
-              )
-            )
-            }
-          </div>
-
-          <div className='w-1/2 my-5'>
-            <label htmlFor='subCategory1' className=' font-bold text-2xl mr-4'>subCategory Img:</label>
-            <input
-              type="file"
-              name='image'
-              // value={image.image}
-              className='w-full p-4 rounded-lg my-1 outline-none border bg-white'
-              // value={image.image}
-              onChange={handlchangeImage}
-
-
-            />
-            {typeof image.image === "string" ? (
-
-              < img src={image.image} className="mt-4 w-32 h-32 object-cover rounded-lg" />
-            ) : (
-              image.image && (
-
-                <img src={URL.createObjectURL(image.image)} className="mt-4 w-32 h-32 object-cover rounded-lg" />
-              )
-            )
-            }
-
-
-          </div>
-
-          <div className='w-2/3 my-5'>
-            <label htmlFor='subCategory1' className=' font-bold text-2xl mr-4'>subCategory Name:</label>
-            <input
-              name="subCategory"
-              value={product.subCategory}
-              type="text"
-              className='w-full p-4 rounded-lg my-1 outline-none border'
-              onChange={handleChangevalue}
-            />
-          </div>
-
-
-
-          <div className='py-4 flex items-center justify-center space-x-4'>
-            <button type='submit' className='p-2 px-4 border bg-blue-400 hover:bg-blue-500 text-white rounded-lg ' >{id ? "Update" : "Submit"}</button>
-            <button type='reset' className='p-2 px-4 border bg-red-300 hover:bg-red-400 text-white rounded-lg '>Reset</button>
-          </div>
-
-
-
         </fieldset>
 
-
-
-
-
+        {/* Submit/Reset Buttons */}
+        <div className='flex justify-center gap-4'>
+          <button type='submit' className='w-32 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none'>
+            {id ? "Update" : "Submit"}
+          </button>
+          <button type='reset' className='w-32 py-3 bg-red-400 text-white rounded-md hover:bg-red-500 focus:outline-none'>
+            Reset
+          </button>
+        </div>
       </form>
     </div>
+  </div>
   )
 }

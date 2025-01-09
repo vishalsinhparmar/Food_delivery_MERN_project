@@ -1,78 +1,79 @@
-
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { showUserList } from './Apibaseurl';
 
 export default function OrderList() {
-  const navigation = useNavigate();
-  const {id}= useParams();
-  const [Productdata,setProductdata]=useState([]);
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
 
-  useEffect(()=>{
-    axios.get(`http://localhost:4000/BaketData`).then((res)=>{
-         setProductdata(res.data);
-    })
-  },[Productdata]);
+  const fetchUsers = async () => {
+    try {
+      const res = await showUserList();
+      if (res.success === true) {
+        setUsers(res.data);
+      }
+    } catch (err) {
+      console.error('Error fetching users:', err.response);
+    }
+  };
 
-  const HandelSuccess = (id)=>{
-    
-    axios.delete(`http://localhost:4000/BaketData/${id}`).then(()=>{
-      Swal.fire({
-        position: "top-bottom",
-        icon: "success",
-        title: "item has successfully delivered",
-        showConfirmButton: false,
-        timer: 900
-      });
- }) 
-  }
-  const handelPandeing=()=>{
-    Swal.fire({
-      position: "top-bottom",
-      icon: "warning",
-      title: "item has not delivered",
-      showConfirmButton: false,
-      timer: 1500
-    });
-  }
-
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
-      <div className='py-4'>
-            <div className=' py-5'>
-              <h1 className=' font-semibold text-4xl' >Order list data</h1>
-              <p className=' opacity-55'>detail about my order list</p>
-            </div>
-
-            <table className='w-full border border-black' cellPadding={10}>
-               <thead className='bg-slate-200 p-4 mx-10 font-bold text-xl'>
-                 <tr className=' bg-slate-200 p-4 px-5'>
-                  <td className='p-4' >ID</td>
-                  <td>Qty</td>
-                  <td>Price</td>
-                  <td>ProductDescription</td>
-                  <td>ProductDetail</td>
-                  
-                 </tr>
-               </thead>
-
-               <tbody>
-                {Productdata.map((item)=>(
-                  <tr className=' border-b border-black p-4 bg-blue-50 font-semibold' key={item.id}>
-                    <td><button >{item.id}</button></td>
-                    <td>{item.qty}</td>
-                    <td>&#8377;{item.pricing}</td>
-                    <td>{item.Categorey_Details}</td>
-                    <td>{item.Categorey_Name}</td>
-                   
-                    
-                    
-                  </tr>
-
-                ))}
-               </tbody>
-            </table>
+    <div className="py-8 px-6 bg-gray-100 min-h-screen">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-800">Order List</h1>
+        <p className="text-gray-600">Details about the order list</p>
       </div>
-  )
+
+      <div className="overflow-x-auto shadow-lg rounded-lg bg-white">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-gray-200 text-gray-800 uppercase text-sm font-medium">
+              <th className="px-6 py-4">User</th>
+              <th className="px-6 py-4">Username</th>
+              <th className="px-6 py-4">Email</th>
+              <th className="px-6 py-4">Verified</th>
+              <th className="px-6 py-4">User ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users?.map((user) => (
+              <tr
+                key={user._id}
+                className="hover:bg-gray-100 border-b transition duration-200"
+              >
+                <td className="px-6 py-4">
+                  <img
+                    src={user.filepath}
+                    alt={user.username}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                </td>
+                <td className="px-6 py-4 text-gray-700">{user.username}</td>
+                <td className="px-6 py-4 text-gray-700">{user.email}</td>
+                <td className="px-6 py-4">
+                  {user.isVerified ? (
+                    <span className="text-green-600 font-medium">Verified</span>
+                  ) : (
+                    <span className="text-red-500 font-medium">Not Verified</span>
+                  )}
+                </td>
+                <td
+                  onClick={() => navigate(`/admin/Product-detail/${user._id}`)}
+                  className="px-6 py-4 text-blue-600 cursor-pointer underline hover:text-blue-800"
+                >
+                  {user._id}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }

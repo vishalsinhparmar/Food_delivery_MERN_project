@@ -143,124 +143,160 @@ const AddfoddCategoryItem = () => {
                   ))
                 setproductvalue({})
                 
-                
+                navigate('/admin/Managefoodcategory')
             }
         }
          }catch(error){
             console.log('error occur in the AddFoodCategoryitem',error.message)
          }
     }
-
+   
+    const resetForm = () => {
+      setprice([
+        { size: "small", price: 0 },
+        { size: "medium", price: 0 },
+        { size: "large", price: 0 },
+        { size: "xlarge", price: 0 },
+      ]);
+      setproductvalue({
+        categoryId: "",
+        categoryItemname: "",
+        description: "",
+      });
+      setSelectvalue({});
+      setimage({ image: "" });
+    };
 
     return (
-        <>
-            <form onSubmit={FormHandelSubmit}>
+      <div className="max-w-4xl mx-auto bg-gray-50 p-8 rounded-lg shadow-md mt-10">
+      <h2 className="text-3xl font-semibold text-gray-800 mb-8">
+        {id ? "Update Food Category Item" : "Add Food Category Item"}
+      </h2>
+      <form onSubmit={FormHandelSubmit} className="space-y-6">
+        {/* Category Selector */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-600 mb-2">
+            Select Category
+          </label>
+          <select
+            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:outline-none"
+            name="categoryItemselect"
+            value={select.categoryItemselect || "default"}
+            onChange={handleChangeCategory}
+            required
+          >
+            <option value="default" disabled>
+              Select category
+            </option>
+            {categoryId.map((val) => (
+              <option key={val._id} value={val._id}>
+                {val.Categoryname}
+              </option>
+            ))}
+          </select>
+        </div>
 
-                <div className="bg-white mt-10 p-4 rounded-md ">
-                    <select type="text"
-                        className='w-full rounded-2xl p-3 border outline-none '
-                        name="categoryItemselect"
-                        value={select.categoryItemselect || "default"}
-                        onChange={handleChangeCategory}
-                        placeholder="category"
-                        required
-                    >
-                        <option value="default" disabled>
-                            Select category
-                        </option>
-                        {
-                            categoryId.map((val) => (
-                                <>
-                                    <option value={val._id} className=''>
-                                        {val.Categoryname}
-                                    </option>
-                                </>
-                            ))
-                        }
+        {/* Category Item Name */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Category Item Name
+          </label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:outline-none"
+            name="categoryItemname"
+            value={product.categoryItemname}
+            onChange={handleChangevalue}
+            placeholder="Enter category item name"
+            required
+          />
+        </div>
 
-                    </select>
+        {/* Description */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Description
+          </label>
+          <textarea
+            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:outline-none"
+            name="description"
+            value={product.description}
+            onChange={handleChangevalue}
+            placeholder="Enter description"
+            rows="4"
+            required
+          ></textarea>
+        </div>
 
+        {/* Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Upload Image
+          </label>
+          <input
+            type="file"
+            name="image"
+            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none"
+            onChange={handlchangeImage}
+          />
+          {image.image && (
+            <div className="mt-4">
+              <img
+                src={
+                  typeof image.image === "string"
+                    ? image.image
+                    : URL.createObjectURL(image.image)
+                }
+                className="w-40 h-40 object-cover rounded-lg"
+                alt="Uploaded Preview"
+              />
+            </div>
+          )}
+        </div>
 
-                    <div className='py-1 text-xl'>
-                        <p className=' font-bold py-1'>CategoryItem:</p>
-                        <input type="text"
-                            className='w-full rounded-2xl p-3 border outline-none '
-                            name="categoryItemname"
-                            value={product.categoryItemname}
-                            onChange={handleChangevalue}
-                            placeholder="CategoryItem"
-                            required
-                        />
-                    </div>
-
-                    <div className='py-1 text-xl'>
-                        <p className=' font-bold py-1'>Categorydetail</p>
-                        <input
-                            type="text"
-                            className='w-full rounded-2xl p-3 border outline-none '
-                            name="description"
-                            value={product.description}
-                            onChange={handleChangevalue}
-                            placeholder="description"
-                            required
-                        />
-                    </div>
-
-                    <div className='py-1 text-xl'>
-                        <p className=' font-bold py-1'>Category Img:</p>
-                        <input
-                            type="file"
-                            name="image"
-                            className='w-full rounded-2xl p-3 border outline-none '
-                            onChange={handlchangeImage}
-                        />
-                        
-                       {typeof image.image === "string" ? (
-                      < img src={image.image} className="mt-4 w-32 h-32 object-cover rounded-lg" />
-
-                       ):(
-                           image.image && < img src={URL.createObjectURL(image.image)} className="mt-4 w-32 h-32 object-cover rounded-lg" />
-                       )
-                    }
-
-
-                    </div>
-
-                    <div className='py-4 text-xl flex flex-rows items-center'>
-                        <p className=' font-bold py-1 mr-5'>Pricing:</p>
-                        <div className='flex flex-col justify-around items-center gap-3'>
-                            {
-                                price.map((input, index) => (
-                                    <>
-                                        <div className="flex gap-4">
-                                            <input
-                                                type="number"
-                                                onChange={(e) => handlepriceChange(index, e.target.value)}
-                                                value={input.price}
-                                                name="price"
-                                                placeholder={`price ${input.size}`}
-                                                className="border p-2 w-1/2 rounded"
-                                            />
-                                        </div>
-                                    </>
-                                ))
-                            }
-
-                        </div>
-                    </div>
-
-                    <div className='py-4 flex items-center justify-center space-x-4'>
-                        <button type='submit' className='p-2 px-4 border bg-blue-400 hover:bg-blue-500 text-white rounded-lg ' >{id ? "Update" : "Submit"}</button>
-                        <button type='reset' className='p-2 px-4 border bg-red-300 hover:bg-red-400 text-white rounded-lg '>Reset</button>
-
-                    </div>
-
-
-
+        {/* Pricing Section */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-4">
+            Pricing (By Size)
+          </label>
+          <div className="border border-gray-300 rounded-lg p-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {price.map((input, index) => (
+                <div key={index} className="flex flex-col items-start">
+                  <label className="font-medium text-gray-700 capitalize">
+                    {input.size}
+                  </label>
+                  <input
+                    type="number"
+                    className="border border-gray-300 rounded-lg p-2 w-full mt-2"
+                    onChange={(e) => handlepriceChange(index, e.target.value)}
+                    value={input.price}
+                    placeholder={`Price for ${input.size}`}
+                  />
                 </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-            </form>
-        </>
+        {/* Submit and Reset Buttons */}
+        <div className="flex justify-end space-x-4">
+          <button
+            type="reset"
+            onClick={resetForm}
+            className="px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg"
+          >
+            Reset
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+          >
+            {id ? "Update" : "Submit"}
+          </button>
+        </div>
+      </form>
+    </div>
     )
 };
 

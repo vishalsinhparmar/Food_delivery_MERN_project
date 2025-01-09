@@ -6,66 +6,53 @@ import ManageSubcategory from "./ManageSubcategory.jsx";
 import MangeCategory from "./ManageCategory.jsx";
 
 export default function AddFoodCategory() {
-  
   const {
     handleChangeCategory,
     select,
     setSelectvalue
   } = useContext(MyContext);
 
-
- 
- 
-  console.log(select)
   const categorycomponets = () => {
     switch (select.category) {
       case "category":
-        return <MangeCategory/>
-
+        return <MangeCategory />
       case "categoryIteam":
         return <ManagefoodCategoryitem />
-      
-        case "subcategory":
-          return <ManageSubcategory/>
-        
-
+      case "subcategory":
+        return <ManageSubcategory />
+      default:
+        return null;
     }
   }
 
   return (
-    <div>
-
-      <div className='py-4 '>
-
-
-       
-        <p className='opacity-50 font-medium'>Add this category</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="py-6 px-4">
+        <h2 className="text-xl font-semibold text-gray-700">Manage a Category</h2>
+        <p className="text-sm text-gray-500 mt-1">Please select a category type to manage.</p>
       </div>
 
-      <div className="m-4">
-        <select
-          name="category"
-          id=""
-          value={select.category || "default"}
-          className="bg-white rounded-md p-4"
-          onChange={handleChangeCategory}
+      <div className="m-6 bg-white rounded-lg shadow-lg p-6">
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Select Category Type</label>
+          <select
+            name="category"
+            id=""
+            value={select.category || "default"}
+            className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-3"
+            onChange={handleChangeCategory}
+          >
+            <option disabled value="default">Select List</option>
+            <option value="category">Category</option>
+            <option value="categoryIteam">Category Item</option>
+            <option value="subcategory">Subcategory</option>
+          </select>
+        </div>
 
-        >
-          <option disabled value="default" className="bg-white p-4">selct List</option>
-          <option value="category">category</option>
-          <option value="categoryIteam">categoryIteam</option>
-          <option value="subcategory">subcategory</option>
-
-        </select>
+        <div>
+          {categorycomponets()}
+        </div>
       </div>
-
-      <div>
-        {categorycomponets()}
-      </div>
-
-
-
-
     </div>
   )
 }

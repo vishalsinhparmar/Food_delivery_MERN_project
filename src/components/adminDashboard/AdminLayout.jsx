@@ -13,6 +13,7 @@ import { MyProvider } from './contextprovider/Mycontext'
 import Managefoodcategory from './mangeCategory/AdminMangeCategory'
 import AddFoodCategory from './AddCategory/AddFoodCategory'
 import AdminSignin from './Adminauth/AdminSignIn'
+import ArchivedOrder from './AdminOrderDetail'
 
 
 
@@ -54,7 +55,7 @@ export default function AdminLayout() {
                      <Route path="/" element={<Dashboard />} />
                      <Route path='/dashboard' element={<Dashboard />} />
                      <Route path="/order-list" element={<OrderList />} />
-                     <Route path="/Product-detail" element={<AdminOrderDetail />} />
+                     <Route path="/Product-detail/:id" element={<ArchivedOrder />} />
                      <Route path="/Analytics" element={<AdminAnalytics />} />
                      <Route path="/Reviews" element={<AdminCustomerReview />} />
                      <Route path="/Foods" element={<AddFoodCategory/>} />

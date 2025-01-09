@@ -26,10 +26,6 @@ export default function Instructions() {
     
     try{
     
-     
-
-
-      
       console.log("id for instructionId",instructionId)
       const res = await addInstructiondata(instructionId,description);
       if(res.success === true){

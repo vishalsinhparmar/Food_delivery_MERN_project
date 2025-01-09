@@ -53,7 +53,7 @@ const OrderProvider = ({ children }) => {
   const handleModelisclose = () => {
     setmodelisOpen(!modelIsopen)
   }
-  
+  // default category
   useEffect(() => {
     if (category.length > 0) {
       SetOrderComponentValue({
@@ -63,6 +63,7 @@ const OrderProvider = ({ children }) => {
     }
   }, [category]);
 
+  // fetchcategory data
   const FetchcategoryData = async ()=>{
     try{
       setloading(true)
@@ -101,6 +102,8 @@ const OrderProvider = ({ children }) => {
 
 
   }
+
+  // fetchcategory Item list based on ID
   useEffect(() => {
     const FetchcategoryItem = async () => {
       console.log("category", orderCopmonentValue.id)

@@ -1,122 +1,67 @@
-import { useContext, useEffect, useState } from "react"
-// import AdminAddSubCategory from "./AddSubCategory.jsx";
+import { useContext } from "react";
 import { MyContext } from "../contextprovider/Mycontext.jsx";
-// import AddfoddCategoryItem from "./AddfoddCategory.jsx";
-// import CategoreyAdd from "./AddCategoryadd.jsx";
-import { useParams } from "react-router-dom";
 import AddfoddCategoryItem from "./AddfoddCategoryItem.jsx";
 import AdminAddSubCategory from "./AddSubCategory.jsx";
 import CategoreyAdd from "./AddCategoryadd.jsx";
 
 export default function AddFoodCategory() {
+  const { handleChangeCategory, select } = useContext(MyContext);
 
-  // const {id} = useParams();
-  // const [updid,seupdtId] = useState(null)
-  const {
-   
-    handleChangeCategory,
-    setSelectvalue,
-    select
-  } = useContext(MyContext);
-console.log("for select are providing only a seleted object",select)
- console.log('select value from the category main',select);
+  const renderCategoryComponents = () => {
+    switch (select.category) {
+      case "category":
+        return <CategoreyAdd />;
 
+      case "categoryIteam":
+        return <AddfoddCategoryItem />;
 
- const categorycomponets = ()=>{
-  
-   switch(select.category){
-    
-    case "category":
-    return  <CategoreyAdd/>
+      case "subcategory":
+        return <AdminAddSubCategory />;
 
-     
-    case "categoryIteam":
-     return <AddfoddCategoryItem/>
-    
-
-     case "subcategory":
-      return <AdminAddSubCategory/>
-     
-
-    default :null
-
-   }
-  }
-
-    return (
-
-    <div>
-          <p className="text-2xl flex items-center justify-center font-semibold text-blue-500">please select a category</p>
-          <div className="m-4">
-        <select
-          name="category"
-          id=""
-          value={select.category || "default"}
-          className="bg-white rounded-md p-4"
-          onChange={handleChangeCategory}
-
-        >
-          <option disabled value="default" className="bg-white p-4">selct List</option>
-          <option value="category">category</option>
-          <option value="categoryIteam">categoryIteam</option>
-          <option value="subcategory">subcategory</option>
-
-        </select>
-      </div>
-        
-
-       <div>
-   
-        {categorycomponets()}
-   
-       </div>
-    </div>
-    )
-     
-
-
-
-
-
-
-
-
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div>
-
-      <div className='py-4 '>
-        <h1 className='text-3xl font-semibold my-2'>Category name :<span className=' underline underline-offset-8 ml-2 text-blue-400 mb-3 font-normal'></span>
-
-
-        </h1>
-        <p className='opacity-50 font-medium'>Add this category</p>
+    <div className="max-w-3xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md my-4" >
+      {/* Header Section */}
+      <div className="text-center mb-6">
+        <p className="text-2xl font-semibold text-blue-500">
+          Please select a category
+        </p>
       </div>
 
-      <div className="m-4">
+      {/* Select Dropdown */}
+      <div className="mb-6">
+        <label
+          htmlFor="category"
+          className="block text-lg font-medium text-gray-700 mb-2"
+        >
+          Select Category:
+        </label>
         <select
-          name="slectitem"
-          id=""
-          value={select.slectitem || "default"}
-          className="bg-white rounded-md p-4"
+          name="category"
+          id="category"
+          value={select.category || "default"}
+          className="w-full bg-white border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           onChange={handleChangeCategory}
         >
-
-          <option value="default"  disabled className="bg-white p-4">selct List</option>
-          <option value="category">category</option>
-          <option value="categoryIteam">categoryIteam</option>
-          <option value="subcategory">subcategory</option>
-
+          <option disabled value="default">
+            Select List
+          </option>
+          <option value="category">Category</option>
+          <option value="categoryIteam">Category Item</option>
+          <option value="subcategory">Subcategory</option>
         </select>
       </div>
 
-        <div>
-            {categorycomponets()}
-        </div>
-
-
- 
-
+      {/* Rendered Component */}
+      <div className="bg-white p-6 rounded-md shadow-sm">
+        {renderCategoryComponents() || (
+          <p className="text-gray-500 text-center">No category selected yet.</p>
+        )}
+      </div>
     </div>
-  )
+  );
 }
