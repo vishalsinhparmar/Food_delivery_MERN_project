@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PasswordComponents from './PasswordInput';
 import { UserSignIn } from '../../services/Api';
 import Swal from 'sweetalert2';
 import { passwordverify, Verifyemail } from '../../utils/VerifyInput';
+import { AuthContext } from './AuthContext/Authcontex';
 
 function SignIn() {
+  const {UserData} = useContext(AuthContext)
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState({ email: '', password: '' });
@@ -49,6 +51,7 @@ function SignIn() {
       if (response.success) {
         localStorage.setItem('authToken', response.data?.token);
         setForm({ email: '', password: '' });
+       await UserData()
         navigate('/');
       } else {
         Swal.fire('Error', 'Invalid credentials. Please try again.', 'error');

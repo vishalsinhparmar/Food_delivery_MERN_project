@@ -30,9 +30,9 @@ const AuthRoute = () => {
         </div>
 
         {/* Outlet for Child Components */}
-        <AuthContextProvider>
+        
           <Outlet />
-        </AuthContextProvider>
+        
       </div>
     </div>
   );

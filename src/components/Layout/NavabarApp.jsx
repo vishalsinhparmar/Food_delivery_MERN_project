@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { BiDownload } from "react-icons/bi";
 import { BsBucket } from "react-icons/bs";
 import { GoDesktopDownload, GoDownload } from "react-icons/go";
@@ -9,26 +9,14 @@ import Avatar1 from '@assets/png_logo/Ellipse_9.png'
 import { NavLink } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
 import { FaShoppingBasket } from "react-icons/fa";
-import { showUserdata } from "../../services/Api";
+// import { showUserdata } from "../../services/Api";
+import { AuthContext } from "../Auth/AuthContext/Authcontex";
+import Modal from 'react-modal'
 
 export default function NavabarApp() {
 
-    const [user, setUser] = useState();
+     const {user,UserData,handleModelisopen} = useContext(AuthContext)
 
-    const UserData = async () => {
-    try{
-        const res = await showUserdata();
-
-        console.log("res", res);
-        if(res.success === true){
-
-            setUser(res.data)
-        }
-    }catch(err){
-        console.log("error happen in user data",err.response)
-    }
-        
-    };
 
     useEffect(() => {
         UserData()
@@ -44,6 +32,7 @@ export default function NavabarApp() {
     }
     return (
         <>
+      
             <header className='lg:bg-customgray lg:flex lg:flex-row  pt-0 lg:items-center lg:justify-between lg:ps-12 '>
 
                 {/* Mobile-NavBar */}
@@ -54,18 +43,27 @@ export default function NavabarApp() {
                     <div className="relative ">
                         <FiAlignJustify className='text-3xl border-l border-gray-400 text-left cursor-pointer  h-16 w-20 ' onClick={HandelToggleMenu} />
                         {toggelMenu && (
-                            <nav className='lg:hidden w-auto '>
+                            <nav className='absolute top-16 right-0 bg-slate-800 text-white rounded-xl w-72 shadow-lg z-10 transition-transform transform scale-100 ease-in-out'>
 
-                                <ul className='flex flex-col items-center absolute top-16 rounded-xl text-white bg-slate-800 z-10 right-0 w-96 py-10 object-cover transition duration-200 ease-linear delay-400'>
-                                    <li className='my-4'><NavLink to='/'>Home</NavLink></li>
-                                    <li className='my-4'><NavLink to='/order'>Special Offers</NavLink></li>
-                                    <li className='my-4'><NavLink to='/restaurant'><button className=' bg-orange-400 p-2 px-6 rounded-full text-white' onClick={closeToggelmenu}> Restaurants</button></NavLink></li>
-                                    <li className='my-4'><NavLink to='/order'>Track Order</NavLink></li>
+                                <ul className='flex flex-col items-center '>
+                                    <li className='my-4'><NavLink to='/' onClick={closeToggelmenu}>Home</NavLink></li>
+                                    <li className='my-4'><NavLink to='/order' onClick={closeToggelmenu}>Special Offers</NavLink></li>
+                                    <li className='my-4'><NavLink to='/restaurant' ><button className=' bg-orange-400 p-2 px-6 rounded-full text-white' onClick={closeToggelmenu}> Restaurants</button></NavLink></li>
+                                    <li className='my-4'><NavLink to='/order' onClick={closeToggelmenu}>Track Order</NavLink></li>
                                     <li className='my-4'>
-                                        <button className='bg-white text-black p-3 px-5 rounded-full'>
-                                            <img src={profile} className='inline-flex items-center' />
-                                            <NavLink to='/auth'>Login</NavLink>
-                                        </button>
+
+                                     {user ? (
+                                         <>
+                                         
+                                         </>
+                                    ):(
+                                        <button className='bg-white text-black p-3 px-5 rounded-full'onClick={closeToggelmenu} >
+                                        <img src={profile} className='inline-flex items-center'  />
+                                        <NavLink to='/auth' >Login</NavLink>
+                                    </button>
+                                    )
+                                    
+                                    }
 
                                     </li>
                                 </ul>
@@ -100,7 +98,7 @@ export default function NavabarApp() {
                     )}
 
 
-                    <div className='bg-green-500 flex justify-center items-center h-14' >
+                    <div className='bg-green-500 flex justify-center items-center h-14 cursor-pointer' onClick={handleModelisopen} >
                         <FaShoppingBasket className='text-2xl text-gray-200 mx-4' />
                         <p className='font-bold text-white text-xs' >GBP 79.89</p>
                     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import AdminLayout from "../adminDashboard/AdminLayout"
 import PizzaModal from "../Ordering_page/PizzaModal"
 import AboutUs from "./AboutUs"
@@ -10,10 +10,13 @@ import Restaurant from "./Restaurant"
 import Modal from 'react-modal'
 import AdminComponents from "./AdminComponents"
 import { NavLink } from "react-router-dom"
+import MyBasket from "../Ordering_page/cart/MyBasket"
+import { AuthContext } from "../Auth/AuthContext/Authcontex"
+import { CgClose } from "react-icons/cg"
 Modal.setAppElement('#root');
 
 const Home = ()=>{
-
+const {modelIsopen,handleModelisclose} = useContext(AuthContext)
      const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCount, setShowCount] = useState(0);
   const maxShowCount = 4; // Number of times to show the modal
@@ -22,7 +25,7 @@ const Home = ()=>{
     if (showCount < maxShowCount) {
       const timer = setTimeout(() => {
         setIsModalOpen(true);
-      }, 1000); // Show modal after 4 seconds
+      }, 10000); // Show modal after 4 seconds
       return () => clearTimeout(timer);
     }
   }, [showCount]);
@@ -61,6 +64,16 @@ const Home = ()=>{
           </button>
         </div>
       </Modal>
+    <div className="relative">
+      <Modal isOpen={modelIsopen}
+                  onRequestClose={handleModelisclose}
+                  className='fixed inset-0 flex mt-5 items-center justify-center bg-white bg-opacity-100 z-[1000] '
+                  overlayClassName='z-50'
+                >
+       <p className="text-2xl text-orange-500 my-4 absolute top-0 right-2 cursor-pointer" onClick={handleModelisclose}><CgClose/></p>
+                  <MyBasket />
+                </Modal>
+                </div>
         </>
      )
 }

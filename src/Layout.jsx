@@ -4,24 +4,23 @@ import { Outlet } from 'react-router-dom'
 import { OrderProvider } from './components/Ordering_page/context/MyContext'
 import { ProductContextProvider } from './components/Restaurant/Context/ProductContext'
 import AdminLayout from './components/adminDashboard/AdminLayout'
+import { AuthContextProvider } from './components/Auth/AuthContext/Authcontex'
 
 export default function Layout() {
   return (
    <>
+   <AuthContextProvider>
           <NavabarApp/>
-   
+         
           <OrderProvider>
 
-             {setTimeout(() => {
-                 return (
-                  <AdminLayout/>
-                 )
-             }, 4000)}
+            
             
                         <Outlet/>
              
           </OrderProvider>
           <Footer/>
+          </AuthContextProvider>
    </>
   )
 }
