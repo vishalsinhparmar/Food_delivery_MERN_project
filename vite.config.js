@@ -1,13 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@assets': path.resolve(__dirname, './src/assets'), // Define an alias for the assets folder
+      '@assets': path.resolve(__dirname, './src/assets'),  // Define alias for assets folder
     },
   },
-})
+
+  build: {
+    chunkSizeWarningLimit: 1000,  // Increase limit to suppress large chunk warnings if necessary
+  },
+});
