@@ -1,6 +1,14 @@
 {
-  "routes": [
-    { "src": "/assets/(.*)", "headers": { "Content-Type": "text/css" } }
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
+      ]
+    }
   ],
   "cleanUrls": true
 }
