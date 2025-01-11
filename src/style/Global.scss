@@ -1,5 +1,5 @@
-@import './Variable.scss';
-@import './Custom.scss';
+@use './Variable' as *; 
+@use './Custom.scss' as *;
 
 
 body{
