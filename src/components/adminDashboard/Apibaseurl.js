@@ -1,6 +1,7 @@
 import axios from "axios";
-
-const api_base_url = "http://localhost:8000/api";
+import apiBaseUrl from "../../config";
+console.log('api base_url from the admin',apiBaseUrl)
+const api_base_url = apiBaseUrl;
 // get a category all data
 export const  getcategory = async()=>{
    const response = await axios.get(`${api_base_url}/admin/foodcategorydatashow`)
