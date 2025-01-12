@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api_base_url = "https://foodapprestapi-production.up.railway.app/api";
+const api_base_url = "http://localhost:8000/api";
 // get a category all data
 export const  getcategory = async()=>{
    const response = await axios.get(`${api_base_url}/admin/foodcategorydatashow`)
