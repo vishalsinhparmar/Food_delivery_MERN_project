@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { AuthContext } from "./AuthContext/Authcontex";
 
 const Userprofile = () => {
+    const {handleLogout} = useContext(AuthContext)
     return (
         <>
             <div className=" mx-auto mb-5 px-4 md:px-10">
@@ -27,6 +30,8 @@ const Userprofile = () => {
                             <NavLink to="Favourites" className={({isActive})=>isActive ? "text-lg font-semibold bg-slate-400 p-3 rounded-md":"text-lg font-semibold hover:bg-slate-400 p-3 rounded-md" } >
                             favourites
                             </NavLink>
+
+                            <button className="bg-red-500 px-4 rounded-md py-2" onClick={handleLogout}>Logout?</button>
                         </ul>
                     </div>
 

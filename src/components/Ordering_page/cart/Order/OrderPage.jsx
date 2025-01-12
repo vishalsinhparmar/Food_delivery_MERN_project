@@ -6,8 +6,13 @@ import AddressForm from "./AddressForm";
 import AddressList from "./AddressList.jsx";
 import OrderDetails from "./OrderdetailPage";
 import { OrderContext } from "../../context/MyContext.jsx";
+import { AuthContext } from "../../../Auth/AuthContext/Authcontex.jsx";
+import { NavLink } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const OrderPage = () => {
+  const {user} = useContext(AuthContext)
+
   const handleformsubmit = RazorpayPayment();
   const [address, setAddress] = useState({});
   const [savedAddress, setsavedAddress] = useState([]);
@@ -32,8 +37,8 @@ const OrderPage = () => {
     try {
       const resAddress = await addAddress(address);
       if (resAddress.success === true) {
-        alert("Address added successfully");
-        addressDetail(); // To refresh the address list
+        Swal.fire('Success', 'Address added successfully', 'success');
+        await addressDetail(); // To refresh the address list
       }
     } catch (err) {
       console.log("Error occurred while adding address");
@@ -57,7 +62,7 @@ const OrderPage = () => {
     try {
       const resAddress = await selectAddaddressid(addressId);
       if (resAddress.success === true) {
-        alert("Address selected successfully");
+        Swal.fire('Success', 'Address selected successfully.', 'success');
         setSelectedAddress(selectId);
       }
     } catch (err) {
@@ -74,12 +79,25 @@ const OrderPage = () => {
       <div className="flex flex-col lg:flex-row gap-10">
         {/* User Info and Address Section */}
         <div className="w-full lg:w-1/2">
-          <div className="border-b-2 border-b-black py-10 my-5 bg-white rounded-md">
+         {user ? (
+       
+              <div className="border-b-2 border-b-black py-10 my-5 bg-white rounded-md">
             <p className="text-black text-3xl flex items-center justify-center">
               <MdOutlineVerified className="text-green-500 text-5xl mx-4" />
               User is logged in!
             </p>
           </div>
+        
+         ):(
+          <div className="border-b-2 border-b-black py-10 my-5 bg-white rounded-md">
+          <p className="text-black text-3xl flex items-center justify-center">
+            <MdOutlineVerified className="text-red-300 text-5xl mx-4" />
+              Unotherized
+          <NavLink to="auth" className="ml-2 underline text-yellow-400">sigIn</NavLink>
+          </p>
+        </div>
+         )}
+         
 
           <AddressForm address={address} onChange={handleAddAddress} onSubmit={handleAddress} />
           <div className="grid ">

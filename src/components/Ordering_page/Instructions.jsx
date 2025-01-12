@@ -29,7 +29,7 @@ export default function Instructions() {
       console.log("id for instructionId",instructionId)
       const res = await addInstructiondata(instructionId,description);
       if(res.success === true){
-         alert("cart item in additional info are successfully added")
+         Swal.fire('Success', 'description added successfully',"success");
          await fetchCartData()
 
          NextsetmodelIsopen(false)

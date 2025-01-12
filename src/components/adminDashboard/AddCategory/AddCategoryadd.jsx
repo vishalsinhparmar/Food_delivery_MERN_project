@@ -1,10 +1,13 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { addcategory, getcategory } from "../Apibaseurl";
 import { MyContext } from "../contextprovider/Mycontext";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const CategoreyAdd = () => {
   const { id } = useParams();
+  const [loading,setloading] = useState(false)
+ 
   const {
     handleChangevalue,
     product,
@@ -31,16 +34,25 @@ const CategoreyAdd = () => {
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     try {
       const res = await addcategory(product);
       if (res.success === true) {
         setproductvalue({});
         refreshCategory();
-        alert("Category added successfully!");
+        Swal.fire({
+                        title: "Categorey",
+                        text: "Categorey add successfully",
+                        icon: "success"
+                      });
       }
+      setloading(false)
     } catch (error) {
-      console.error("Error creating category:", error.response);
+      console.error("Error creating category:", error.response.data);
+      setError('you have Already added a category')
+
+    }finally{
+      setloading(false)
     }
   };
 
@@ -83,13 +95,14 @@ const CategoreyAdd = () => {
               </option>
             ))}
           </select>
+          {error && <p className="text-red-400 py-1">{error}</p>}
         </div>
 
         {/* Submit Button */}
         <div className="text-center">
           <button
             type="submit"
-            className="w-full py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+            className={`w-full py-3 ${loading ? "bg-black cursor-wait":"bg-green-600 hover:bg-green-700"}  text-white rounded-lg font-semibold  transition-colors`}
           >
             Add Category
           </button>

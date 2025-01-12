@@ -14,6 +14,7 @@ const AuthContextProvider = ({children})=>{
     const handleModelisclose = () => {
       setmodelisOpen(!modelIsopen)
     }
+   
     const UserData = async () => {
     try{
         const res = await showUserdata();
@@ -26,15 +27,25 @@ const AuthContextProvider = ({children})=>{
     }catch(err){
         console.log("error happen in user data",err.response)
     }
+
+   
+
         
     };
+
+    const handleLogout  = async ()=>{
+      localStorage.setItem('authToken', "");
+      alert('unotherized');
+      await UserData()
+    }
           return (
         <AuthContext.Provider value={{
           UserData,
           user,
           handleModelisopen,
           handleModelisclose,
-          modelIsopen
+          modelIsopen,
+          handleLogout
               
         }}>
           {children}

@@ -4,6 +4,7 @@ import { MyContext } from "../contextprovider/Mycontext";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ManageSubcategory = () => {
     const navigate = useNavigate();
@@ -32,6 +33,11 @@ const ManageSubcategory = () => {
             if (res.success) {
                 const updatedData = subcategoryData.filter((data) => data._id !== id);
                 setcategoryData(updatedData);
+                      Swal.fire({
+                                     title: "subCategoreyItem",
+                                     text: "subCategoreyAdd item remove successfully",
+                                     icon: "error"
+                                 });
             }
         } catch (err) {
             console.log("Error deleting subcategory:", err.message);

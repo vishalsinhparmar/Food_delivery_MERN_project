@@ -5,6 +5,7 @@ const MyContext = createContext();
 
 const MyProvider = ({children}) =>{
     const [categoryId,setcategoryId] = useState([]);
+    const [error,setError] = useState("");
     
     const [select,setSelectvalue] = useState({category:"default"});
 
@@ -39,6 +40,7 @@ const MyProvider = ({children}) =>{
     const handleChangevalue = (e)=>{
           const {name,value} = e.target
           setproductvalue({...product, [name]:value})
+          setError('')
     }
     const handleChangeCategory = (e)=>{
       const {name,value} = e.target
@@ -67,7 +69,9 @@ const MyProvider = ({children}) =>{
                                     refreshCategory,
                                     setSelectvalue,
                                     select,
-                                    handleChangeCategory
+                                    handleChangeCategory,
+                                    setError,
+                                    error
                                     }}>
             {children}
         </MyContext.Provider>

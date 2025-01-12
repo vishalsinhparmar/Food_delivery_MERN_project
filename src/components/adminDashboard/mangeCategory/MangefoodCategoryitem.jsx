@@ -4,6 +4,7 @@ import { MyContext } from "../contextprovider/Mycontext";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ManagefoodCategoryitem = () => {
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ const ManagefoodCategoryitem = () => {
         const deletdata = categoryId.filter((data) => data._id !== id);
         setcategoryData(deletdata);
         setSelectvalue({});
+         Swal.fire({
+                                title: "CategoreyItem",
+                                text: "CategoreyAdd item remove successfully",
+                                icon: "error"
+                              });
       }
     } catch (err) {
       console.log("error in the category", err.message);

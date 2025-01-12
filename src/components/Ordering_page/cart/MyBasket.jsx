@@ -7,8 +7,12 @@ import { deleteCartdata, getCartData } from '../../../services/Api'
 import { MyContext } from '../../adminDashboard/contextprovider/Mycontext'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { OrderContext } from '../context/MyContext'
+import { AuthContext } from '../../Auth/AuthContext/Authcontex'
+import Swal from 'sweetalert2'
 
 export default function MyBasket() {
+  const {user} = useContext(AuthContext)
+  
   const {data,setdata,fetchCartData,error} = useContext(OrderContext)
   const navigate = useNavigate();
   console.log('error happen in cart',error)
@@ -17,11 +21,14 @@ export default function MyBasket() {
   try{
     const deletres = await deleteCartdata(id);
     console.log('deletres',deletres)
- 
-    const updata = data.filter((data)=> data._id !== id )
-    console.log("delete data by id",updata)
-    setdata(updata)
-    await fetchCartData()
+    if(deletres.success === true){;
+      console.log('deletres',data)
+      const updata = data.Iteam.filter(data=> data._id.toString() !== id )
+      console.log("delete data by id",updata)
+      setdata(updata)
+      await fetchCartData()
+    }
+   
   }catch(err){
     console.log("error occur in the deleteCategory",err.response)
     
@@ -30,7 +37,18 @@ export default function MyBasket() {
 
  }
   
-
+ const handleCheckout = () =>{
+     if(!user){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "please sigIn first",
+      });
+       navigate('/auth')
+       return
+     };
+     navigate('/checkout')
+ }
      
   
 
@@ -59,8 +77,11 @@ export default function MyBasket() {
                       </div>
                  </div>
                  <div className='py-4'>
-                
-                  {data && data?.Iteam && data?.Iteam.map((item)=>(  
+
+                  {data.length === 0 ? (
+                        <p className='text-xl text-green-500 px-4 py-6 border-b'>you can added a some category</p>
+                  ):( 
+                    data && data?.Iteam && data?.Iteam.map((item)=>(  
                   
                   
                       <div className='grid grid-flow-col gap-2 border-b items-center px-4 py-4' key={item._id}> 
@@ -85,7 +106,10 @@ export default function MyBasket() {
                     
                 
 
-                       ))}
+                       ))
+                  )}
+                
+                
                        
                        {/* total */}
                       {  data ? (
@@ -174,7 +198,7 @@ export default function MyBasket() {
 
 
                     {/*  */}
-                 <div className='flex flex-col  py-4 mx-auto w-64 ' onClick={()=>navigate('/checkout')}>
+                 <div className='flex flex-col  py-4 mx-auto w-64 ' onClick={handleCheckout}>
                          <button className='flex items-center justify-between bg-green-600 text-white font-bold  rounded-lg'>
                              <div className='flex items-center px-4 py-3' >
                                 <p className='mr-10 text-2xl'><BsArrowRightCircleFill/></p> 

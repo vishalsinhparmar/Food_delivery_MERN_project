@@ -3,6 +3,7 @@ import { MyContext } from "../contextprovider/Mycontext";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { categorydeleteByid } from "../Apibaseurl";
+import Swal from "sweetalert2";
 
 const MangeCategory = () => {
     const { categoryId, setcategoryId } = useContext(MyContext);
@@ -13,6 +14,12 @@ const MangeCategory = () => {
             if (res.success === true) {
                 const updatedData = categoryId.filter(data => data._id !== id);
                 setcategoryId(updatedData);
+                  
+                Swal.fire({
+                                                     title: "Categorey",
+                                                     text: "Categorey  remove successfully",
+                                                     icon: "error"
+                                                 });
             }
         } catch (err) {
             console.log("Error deleting category:", err.message);

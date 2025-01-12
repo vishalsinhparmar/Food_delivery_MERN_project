@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../contextprovider/Mycontext";
 import { addcategoryItem, categoryUpdatebyId, getfoodcategory, getfoodcategoryItembyid } from "../Apibaseurl";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AddfoddCategoryItem = () => {
     const {id} = useParams();
+    const [loading,setloading] = useState(false)
     const navigate = useNavigate()
     const { handleChangevalue,
             product,
@@ -72,7 +74,7 @@ const AddfoddCategoryItem = () => {
         // update form
     const FormHandelSubmit = async (e)=>{
          e.preventDefault();
-
+          setloading(true)
          const formdetail = new FormData();
          formdetail.append('categoryId',select.categoryItemselect)
          formdetail.append('categoryItemName',product.categoryItemname)
@@ -114,6 +116,7 @@ const AddfoddCategoryItem = () => {
                         }
                       ))
                     navigate('/admin/Managefoodcategory')
+                    setloading(false)
                 }
                  
             }else{
@@ -121,7 +124,11 @@ const AddfoddCategoryItem = () => {
             const res = await addcategoryItem(formdetail);
             console.log('categorydataItem',res);
             if(res.success === true){
-                alert('category item added successfully')
+              Swal.fire({
+                title: "CategoreyAdd",
+                text: "CategoreyAdd item successfully",
+                icon: "success"
+              });
                 setprice( [
                     { size: "small", price: 0 },
                     { size: "medium", price: 0 },
@@ -148,6 +155,8 @@ const AddfoddCategoryItem = () => {
         }
          }catch(error){
             console.log('error occur in the AddFoodCategoryitem',error.message)
+         } finally{
+          setloading(false)
          }
     }
    
@@ -289,8 +298,9 @@ const AddfoddCategoryItem = () => {
             Reset
           </button>
           <button
+            disabled = {loading}
             type="submit"
-            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+            className={`px-6 py-3  ${loading ? "bg-slate-500 hover:bg-slate-500 cursor-wait disabled:bg-black":"bg-blue-500 hover:bg-blue-600"}   text-white rounded-lg`}
           >
             {id ? "Update" : "Submit"}
           </button>

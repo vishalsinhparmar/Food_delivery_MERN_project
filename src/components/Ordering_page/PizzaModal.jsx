@@ -23,6 +23,7 @@ export default function PizzaModal() {
     const [data, setData] = useState([]);
     const [selectPizza, setSelectPizza] = useState(null);
     const [categorystate, setCategoryState] = useState({});
+    console.log("categorystate",categorystate)
 
     const defaultPrice = Number(Subcategoryprice.price) || 0;
 
@@ -42,7 +43,7 @@ export default function PizzaModal() {
         try {
             const res = await addsubcategoryCartdata(categoryItem);
             if (res.success) {
-                alert("Successfully added a subcategory to the cart");
+              Swal.fire('Success', 'Item added successfully', 'success');
                 const instructionId = Array.isArray(res.data.Iteam) ? res.data.Iteam.pop() : res.data._id;
                 setInstructionid(instructionId);
                 NextsetmodelIsopen(true);

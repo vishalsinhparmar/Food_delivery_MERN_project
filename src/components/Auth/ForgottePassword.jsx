@@ -8,12 +8,14 @@ function ForgotPassword() {
   const [userEmail, setUseremail] = useState('');
   const [loading, setloading] = useState(false);
   const [error,setError] = useState({err:""});
+  console.log("error",error)
   const navigate = useNavigate();
   console.log('userEmail', userEmail);
 
   const handleChange = (e) => {
     const { value } = e.target;
     setUseremail(value);
+    setError({err:""})
   };
 
   const formPassword = async (e) => {
@@ -39,10 +41,6 @@ function ForgotPassword() {
         alert('email are verify thanks')
         navigate('/auth/newPassword');
      
-      } else {
-        const data = await res.json();
-        console.log('the error', data.err);
-        setError('Something went wrong please try again')
       }
     } catch (err) {
       console.log('the error occur in the send mail', err.response);
@@ -51,7 +49,7 @@ function ForgotPassword() {
       setError((prev)=>(
         {
            ...prev,
-           error:errorMessage
+           err:errorMessage
         }
       ))
 

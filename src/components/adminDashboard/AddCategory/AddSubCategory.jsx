@@ -8,7 +8,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 
 export default function AdminAddSubCategory() {
-  const [cover, setcoverImage] = useState(false)
+  const [cover, setcoverImage] = useState(false);
+  const [loading,setloading] = useState(false)
+
   const navigate = useNavigate()
   const handlecoverImage = () => {
     setcoverImage(!cover)
@@ -74,7 +76,7 @@ export default function AdminAddSubCategory() {
 
   const handelsubCategoryform = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     const formdata = new FormData();
     formdata.append('categoryId', select.subcategory)
     formdata.append('subCategoryname', product.subCategory);
@@ -106,9 +108,10 @@ export default function AdminAddSubCategory() {
       if (res.success === true) {
         Swal.fire("Added!", "Subcategory added successfully", "success");
 
-        alert(res.success)
+        setloading(true)
       
           setimage({})
+          setproductvalue({})
           navigate('/admin/Managefoodcategory')
       }
       console.log('subcategory is', res) 
@@ -118,6 +121,8 @@ export default function AdminAddSubCategory() {
 
     } catch (error) {
       console.log('error is the subCategory', error.message)
+    } finally{
+      setloading(true)
     }
   }
 
@@ -208,7 +213,7 @@ export default function AdminAddSubCategory() {
 
         {/* Submit/Reset Buttons */}
         <div className='flex justify-center gap-4'>
-          <button type='submit' className='w-32 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none'>
+          <button type='submit' disabled ={loading} className={`w-32 py-3 ${loading ? "bg-slate-800 disabled:bg-black cursor-wait":"bg-blue-500 hover:bg-blue-600 "}  text-white rounded-md focus:outline-none`}>
             {id ? "Update" : "Submit"}
           </button>
           <button type='reset' className='w-32 py-3 bg-red-400 text-white rounded-md hover:bg-red-500 focus:outline-none'>
